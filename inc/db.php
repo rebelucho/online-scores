@@ -1,8 +1,8 @@
 <?php
 $dbhost = "localhost";
-$dbname = "имя базы";
-$dbuser = "пользоваель базы данных";
-$dbpass = "пароль";
+$dbname = "РёРјСЏ Р±Р°Р·С‹";
+$dbuser = "РїРѕР»СЊР·РѕРІР°РµР»СЊ Р±Р°Р·С‹ РґР°РЅРЅС‹С…";
+$dbpass = "РїР°СЂРѕР»СЊ";
 
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 // create
