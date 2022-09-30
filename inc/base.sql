@@ -14,7 +14,7 @@ CREATE TABLE `games` (
   `gamer2_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `legs2` int DEFAULT NULL,
   `json` json DEFAULT NULL,
-  `time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `last_update` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `tag` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `guid` (`guid`)
