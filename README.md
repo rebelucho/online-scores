@@ -1,7 +1,7 @@
 # online-scores
 
 Сервис онлайн просмотра игр для приложения "Дартс База". 
-Пример: http://online-scores.darts28.ru
+Пример: https://scores.darts28.ru
 
 ## Установка
 
