@@ -162,12 +162,13 @@ function replaceGameData() {
     c1801.innerHTML = player1GameData.c180
     c1401.innerHTML = player1GameData.c140
     c1001.innerHTML = player1GameData.c100
-    // adl1.innerHTML = player1GameData.adl
+    
     let strAdl1 = '';
         for (let i = 0; i< player1GameData.adl.length; i++  ) {
         if (player1GameData.adl[i]!==undefined) strAdl1 += '<span> ' + player1GameData.adl[i]+'</span>';
         }
     adl1.innerHTML = strAdl1
+    
     let strAcheck1 = '';
         for (let i = 0; i< player1GameData.acheck.length; i++  ) {
         if (player1GameData.acheck[i]!==undefined) strAcheck1 += '<span> ' + player1GameData.acheck[i]+'</span>';
@@ -179,23 +180,17 @@ function replaceGameData() {
     c1402.innerHTML = player2GameData.c140
     c1002.innerHTML = player2GameData.c100
 
-    if (Object.keys(player2GameData.adl).length !== 0) {
-        // console.log('данные есть')
     let strAdl2 = '';
         for (let i = 0; i< player2GameData.adl.length; i++  ) {
         strAdl2 += '<span>' + player2GameData.adl[i]+' </span>';
         }
     adl2.innerHTML = strAdl2
-    } else {
-        // console.log('данных нет')
-        adl2.innerHTML = 0
-    }
+    
     let strAcheck2 = '';
         for (let i = 0; i< player2GameData.acheck.length; i++  ) {
         if (player2GameData.acheck[i]!==undefined) strAcheck2 += '<span>' + player2GameData.acheck[i]+' </span>';
         }
     acheck2.innerHTML = strAcheck2
- 
 }
  
 getScore()
