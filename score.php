@@ -1,5 +1,5 @@
 <?php
-include 'template/header.php';
+require_once('template/header.tpl');
 $id = $_GET["id"];
 // $view = $_GET["view"];
 
