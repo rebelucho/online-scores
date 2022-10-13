@@ -1,5 +1,5 @@
 <?php
-include 'template/header.php';
+require_once('template/header.tpl');
 include 'inc/db.php';
 ?>
 
@@ -38,5 +38,5 @@ include 'inc/db.php';
 </div>
 
 <?php
-include 'template/footer.php';
+require_once('template/footer.tpl');
 ?>
