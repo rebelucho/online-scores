@@ -42,5 +42,5 @@ function curdate() {
 </script>
 
 <?php
-require_once('template/footer.php');
+require_once('template/footer.tpl');
 ?>
