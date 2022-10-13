@@ -1,5 +1,5 @@
 <?php
-require_once('template/header.php');
+require_once('template/header.tpl');
 function curdate() {
     return date('Y-m-d');
 }
