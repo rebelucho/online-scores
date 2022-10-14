@@ -113,33 +113,41 @@ function replaceGameData() {
     legs1.innerHTML=player1GameData.legs
     legs2.innerHTML=player2GameData.legs
     if (gameData.throwCurrent == 1) {
-        np1.innerHTML='<u>' + player1GameData.name + '</u>'
+        np1.innerHTML=player1GameData.name
         document.getElementById("throwPlayer1").innerHTML='<i class="bi bi-caret-right" style="color: red;"></i>&nbsp;'
         document.getElementById("throwPlayer2").innerHTML=''
         np2.innerHTML=player2GameData.name
         if ((player1GameData.require && player2GameData.require) == 501) {
-            rp1.innerHTML=player1GameData.require
+            rp1.innerHTML='<font color="green">' + player1GameData.require  + '</font>'
             rp2.innerHTML=player2GameData.require
         } else {
             counterAnim("#requirePlayer2", player2GameData.lastRequire, player2GameData.require, 500)
             player2GameData.lastRequire = player2GameData.require
             // console.log(player2GameData.lastRequire)
-            rp1.innerHTML=player1GameData.require
+            rp1.innerHTML='<font color="green">' + player1GameData.require  + '</font>'
         }
-    } else {
+        
+    } else if (gameData.throwCurrent == 2) {
         np1.innerHTML=player1GameData.name        
-        np2.innerHTML='<u>' + player2GameData.name + '</u>'
+        np2.innerHTML=player2GameData.name
         document.getElementById("throwPlayer2").innerHTML='&nbsp;<i class="bi bi-caret-left" style="color: red;"></i>'
         document.getElementById("throwPlayer1").innerHTML=''
         if ((player1GameData.require && player2GameData.require) == 501) {
             rp1.innerHTML=player1GameData.require
-            rp2.innerHTML=player2GameData.require
+            rp2.innerHTML='<font color="green">' + player2GameData.require  + '</font>'
         } else {
         counterAnim("#requirePlayer1", player1GameData.lastRequire, player1GameData.require, 500)
         player1GameData.lastRequire = player1GameData.require
         // console.log(player1GameData.lastRequire)
-        rp2.innerHTML=player2GameData.require
+        rp2.innerHTML='<font color="green">' + player2GameData.require  + '</font>'
         }
+    } else {
+        np1.innerHTML=player1GameData.name
+        np2.innerHTML=player2GameData.name
+        rp1.innerHTML=player1GameData.require
+        rp2.innerHTML=player2GameData.require
+        document.getElementById("throwPlayer1").innerHTML=''
+        document.getElementById("throwPlayer2").innerHTML=''
     }
 
     if (gameData.legBegin == 1) {
@@ -150,13 +158,16 @@ function replaceGameData() {
         begin2.innerHTML = '&nbsp;<i class="bi bi-circle-fill" style="color: red;"></i>'
     }
 
-    if (player1GameData.score == "") {
+    if (player1GameData.dartsThrown == "0" && player2GameData.dartsThrown == "0") {
         sp1.innerHTML='<img src="/img/1dart150.png" width="30" height="30">' + player1GameData.dartsThrown
-        sp2.innerHTML='<img src="/img/1dart150.png" width="30" height="30">' + player1GameData.dartsThrown + '&nbsp;<img src="/img/3dart150.png" width="30" height="30">' + player2GameData.score
-    } if (player2GameData.score == "") {
-        sp1.innerHTML='<img src="/img/3dart150.png" width="30" height="30">' + player1GameData.score + '&nbsp;<img src="/img/1dart150.png" width="30" height="30">' + player2GameData.dartsThrown
         sp2.innerHTML='<img src="/img/1dart150.png" width="30" height="30">' + player2GameData.dartsThrown
-    }
+    } else if (player1GameData.score == "" && player2GameData.score >= 0) {
+        sp1.innerHTML='<img src="/img/1dart150.png" width="30" height="30">' + player1GameData.dartsThrown
+        sp2.innerHTML='<img src="/img/1dart150.png" width="30" height="30">' + player2GameData.dartsThrown + '&nbsp;<img src="/img/3dart150.png" width="30" height="30">' + player2GameData.score
+    } else if (player2GameData.score == "" && player1GameData.score >= 0) {
+        sp1.innerHTML='<img src="/img/3dart150.png" width="30" height="30">' + player1GameData.score + '&nbsp;<img src="/img/1dart150.png" width="30" height="30">' + player1GameData.dartsThrown
+        sp2.innerHTML='<img src="/img/1dart150.png" width="30" height="30">' + player2GameData.dartsThrown
+    } 
     ap1.innerHTML=player1GameData.avg
     a9p1.innerHTML=player1GameData.avg9
     c1801.innerHTML = player1GameData.c180
