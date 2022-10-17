@@ -14,12 +14,12 @@ if(isset($_POST['date'])){
 }
 
 if(isset($_POST['tag'])){
-    $tag = '%'.$_POST['tag'].'%';
+    $tag = '%'.trim($_POST['tag'], '#').'%';
 }else{
     $tag = "%";
 }
 
-$sql = "SELECT id, gamer1_name, legs1, gamer2_name, legs2, last_update FROM games WHERE (gamer1_name LIKE '$name' OR gamer2_name LIKE '$name') AND (tag LIKE '$tag' OR tag IS NULL) AND last_update LIKE '%$dategame%' ORDER BY last_update DESC";	
+$sql = "SELECT id, gamer1_name, legs1, gamer2_name, legs2, last_update, tag FROM games WHERE (gamer1_name LIKE '$name' OR gamer2_name LIKE '$name') AND (tag LIKE '$tag' OR tag IS NULL) AND last_update LIKE '%$dategame%' ORDER BY last_update DESC";	
 
 $result = mysqli_query($conn, $sql);
 
@@ -53,8 +53,7 @@ foreach ($rows as $row) {
             <div>'.$row['legs2'].'</div>
         </div>
     </div>
-    
-';
+    ';
 	
 }
 ?>

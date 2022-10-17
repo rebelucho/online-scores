@@ -1,7 +1,6 @@
 <?php
 require_once('template/header.tpl');
 $id = $_GET["id"];
-// $view = $_GET["view"];
 
 if(isset($_GET['view'])){
     $view = $_GET['view'];
@@ -198,17 +197,21 @@ if ($view == "phone") {
 <?php 
 } else {
 
-echo '
-<div class="container">
-<h1>Не выбран вид отображения игры, вы точно попали по адресу?</h1>
-</div>
-';
+    echo '
+        <div class="container">
+        <h1>Не выбран вид отображения игры, вы точно попали по адресу?</h1>
+        </div>
+    ';
 }
 ?>
-<div class="container d-flex align-items-end align-content-end" style="height: 50px">
-<div class="form-check form-switch">
-  <input class="form-check-input" type="checkbox" role="switch" id="toggle">
-  <label class="form-check-label" for="toggle">Не отключать экран</label>
+<div class="container d-flex flex-row align-items-end align-content-end" style="height: 50px">
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" role="switch" id="toggle">
+      <label class="form-check-label" for="toggle">Не отключать экран</label>
+    </div>
+    <div class="flex-fill justify-content-end text-end">
+        <a href="/finalscore.php?id=<?php echo $id; ?>" target="_blank">Пошаговая статистика</a>
+    </div>
 </div>
 </div>
 <script>
