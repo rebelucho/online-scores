@@ -96,7 +96,7 @@ for ($set_i=1; $set_i <= $setCount; $set_i++) {
       if(${"player1LegBegin_$i"}){  
         echo('<span class="h1 who-move">'.${"player1LegLeft_$i"}.'</span>');
       } else {
-        echo('<h1>'.${"player1LegLeft_$i"}.'</h1>');
+        echo('<span class="h1">'.${"player1LegLeft_$i"}.'</span>');
       }
       echo('</td>');
 
@@ -108,7 +108,7 @@ for ($set_i=1; $set_i <= $setCount; $set_i++) {
       if(${"player2LegBegin_$i"}){
         echo('<span class="h1 who-move">'.${"player2LegLeft_$i"}.'</span>');
       } else {
-        echo('<h1>'.${"player2LegLeft_$i"}).'</h1>';  
+        echo('<span class="h1">'.${"player2LegLeft_$i"}).'</span>';  
       }
       echo('</td>'); 
 
