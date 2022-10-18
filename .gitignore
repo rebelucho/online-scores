@@ -14,8 +14,8 @@ LICENSE
 
 
 # Ignore preconfigured files
-/inc/db.php
-/inc/config.php
+inc/db.php
+inc/config.php
 
 # The file containing environment variables 
 .env
