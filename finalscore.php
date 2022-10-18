@@ -13,7 +13,7 @@ if(isset($_POST['last_update'])){
 
 // формируем запрос к БД
 
-$sql = "SELECT gamer1_name, gamer2_name, json, last_update FROM games WHERE id='$id'";
+$sql = "SELECT gamer1_name, gamer2_name, json, last_update, end_match FROM games WHERE id='$id'";
 $result = mysqli_query($conn, $sql);
 
 // Разбираем запрос
@@ -24,6 +24,7 @@ if (mysqli_num_rows($result) > 0) {
     $player1Name=$row['gamer1_name'];
     $player2Name=$row['gamer2_name'];
     $timestamp=$row["last_update"];
+    $endGame=$row["end_match"];
   }
 } else {
   echo "0 results";
@@ -33,9 +34,112 @@ mysqli_close($conn);
 
 $data = json_decode($json, true);
 
-if ($data['codeVer'] == true) {
-  //echo('GAME OVER');
-} 
+//Собираем название игры
+if ($data['gameData']['bestOf'] > '0') {
+    $gameName = 'Лучший из '.$data['gameData']['bestOf'].' легов';
+    $viewSets = false;
+    }
+elseif ($data['gameData']['firstToSets'] > '1') {
+    $gameName = 'До '.$data['gameData']['firstToSets'].' сетов из '.$data['gameData']['firstToLegs'].'';
+    $viewSets = true;
+    }
+else {
+    $gameName = 'До '.$data['gameData']['firstToLegs'].' побед';
+    $viewSets = false;
+    }
+
+// if ($endGame == true) {
+    ?>
+    <div class="container">
+    <div class="row bg-dark text-white">
+        <div class="col-md-12"><strong><?php echo($gameName)?></strong></div>
+    </div>
+</div>
+<div class="container">
+    <div class="row d-flex align-items-center">
+        <div class="col-md-6 text-truncate text-uppercase" style="width: 50%;padding: 0px 0px;text-align: center;font-weight: bold;font-size: 2vmax;"><?php echo($player1Name);?></div>
+        <div class="col-md-6 text-truncate text-uppercase" style="width: 50%;padding: 0px 0px;text-align: center;font-weight: bold;font-size: 2vmax;"><?php echo($player2Name);?></div>
+    </div>
+</div>
+<div class="container">
+    <div class="row d-flex align-items-center">
+        <div class="col-6" style="width: 50%; padding: 0px 0px;text-align: center;font-weight: bold;font-size: 100px;">
+            <?php 
+            if ($viewSets == true){
+                echo($data['player1']['sets']);
+            } else {
+                echo($data['player1']['legs']);
+            }
+            ?>
+        </div>
+        <div class="col-6" style="width: 50%;padding: 0px 0px;text-align: center;font-weight: bold;font-size: 100px;">
+            <?php 
+            if ($viewSets == true){
+                echo($data['player2']['sets']);
+            } else {
+                echo($data['player2']['legs']);
+            }
+            ?>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row bg-dark text-white">
+        <div class="col-md-12"><strong><?php echo($data['gameData']['tournamentName'].'&nbsp;');?><?php echo($data['gameData']['stage']);?></strong></div>
+    </div>
+</div>
+
+<div class="container" style="font-weight: bold;font-size: 20px;">
+    <div class="row d-flex align-items-center border-bottom">
+        <div class="col-4 col-md-5 text-end"><?php echo($data['player1']['avg']) ?></div>
+        <div class="col-4 col-md-2 text-center">Набор</div>
+        <div class="col-4 col-md-5 text-start"><?php echo($data['player2']['avg']) ?></div>
+    </div>
+    <div class="row d-flex align-items-center border-bottom">
+        <div class="col-4 col-md-5 text-end"><?php echo($data['player1']['first9Avg']) ?></div>
+        <div class="col-4 col-md-2 text-center">Первые 9</div>
+        <div class="col-4 col-md-5 text-start"><?php echo($data['player2']['first9Avg']) ?></div>
+    </div>
+    <div class="row d-flex align-items-center border-bottom">
+        <div class="col-4 col-md-5 text-end"><?php echo($data['player1']['score180Count']) ?></div>
+        <div class="col-4 col-md-2 text-center">180</div>
+        <div class="col-4 col-md-5 text-start"><?php echo($data['player2']['score180Count']) ?></div>
+    </div>
+    <div class="row d-flex align-items-center border-bottom">
+        <div class="col-4 col-md-5 text-end"><?php echo($data['player1']['score140Count']) ?></div>
+        <div class="col-4 col-md-2 text-center">140+</div>
+        <div class="col-4 col-md-5 text-start"><?php echo($data['player2']['score140Count']) ?></div>
+    </div>
+    <div class="row d-flex align-items-center border-bottom">
+        <div class="col-4 col-md-5 text-end"><?php echo($data['player1']['score100Count']) ?></div>
+        <div class="col-4 col-md-2 text-center">100+</div>
+        <div class="col-4 col-md-5 text-start"><?php echo($data['player2']['score100Count']) ?></div>
+    </div>
+    <div class="row d-flex align-items-center border-bottom">
+        <div class="col-4 col-md-5 d-flex flex-wrap justify-content-end"><?php foreach ($data['player1']['allDartsLegs'] as $key => $value) {
+          echo('<span>&nbsp;'.$value.'</span>');
+        } ?>
+        </div>
+        <div class="col-4 col-md-2 text-center">Леги</div>
+        <div class="col-4 col-md-5 text-start d-flex flex-wrap"><?php foreach ($data['player2']['allDartsLegs'] as $key => $value) {
+          echo('<span>'.$value.'&nbsp;</span>');
+        } ?>
+        </div>
+    </div>
+    <div class="row d-flex align-items-center border-bottom">
+        <div class="col-4 col-md-5 text-end d-flex flex-wrap justify-content-end"><?php foreach ($data['player1']['allCheck'] as $key => $value) {
+          echo('<span>&nbsp;'.$value.'</span>');
+        }?>
+        </div>
+        <div class="col-4 col-md-2 text-center">Окончания</div>
+        <div class="col-4 col-md-5 text-start d-flex flex-wrap"><?php foreach ($data['player2']['allCheck'] as $key => $value) {
+          echo('<span>'.$value.'&nbsp;</span>');
+        }?>
+        </div>
+    </div>
+</div>
+<?php
+// } 
 
 $setCount = count($data['stat']['player1']['sets']);
 ?>
@@ -43,10 +147,8 @@ $setCount = count($data['stat']['player1']['sets']);
   <div  style="max-width: 700px;">
   <table class="table table-light table-borderless fs-5 fw-bold">
     <thead>
-      <tr style="font-size: 15px;">
-        <th colspan="2" class="text-end"><?php echo $player1Name; ?></th>
-        <th class="text-center">VS</th>
-        <th colspan="2" ><?php echo $player2Name; ?></th>            
+    <tr style="font-size: 15px;">
+        <th colspan="5" class="text-center">Игра ход за ходом</th>
       </tr>
       <tr>
         <th scope="col" class="text-end ">Набор</th>
@@ -188,28 +290,29 @@ for ($set_i=1; $set_i <= $setCount; $set_i++) {
   	echo('</tr>');	    
 
     echo('<tr>');
-      echo('<td class="text-end">');
-      if (${"player1LegLeft_$i"} == 0) {
-        echo('<img src="/img/1dart150.png" width="30" height="30">'.array_sum(${"player1LegDarts_$i"}));
-      }
-      echo('</td>');
+        echo('<td class="text-end">');
+        if (${"player1LegLeft_$i"} == 0) {
+          echo('<img src="/img/1dart150.png" width="30" height="30">'.array_sum(${"player1LegDarts_$i"}));
+        }
+        echo('</td>');
 
-      echo('<td class="text-end">');
-      echo('<img src="/img/3dart150.png" width="30" height="30">'. round(${"player1LegScoreSum_$i"}/array_sum(${"player1LegDarts_$i"})*3, 2));
-      echo('</td>');
+        echo('<td class="text-end">');
+        echo(round(${"player1LegScoreSum_$i"}/array_sum(${"player1LegDarts_$i"})*3, 2));
+        echo('</td>');
 
-      echo('<td class="table-dark">');
-      echo('</td>');	
+        echo('<td class="table-dark">');
+        echo('<img src="/img/3dart150white.png" width="30" height="30">');
+        echo('</td>');	
 
-      echo('<td>');
-    echo(round(${"player2LegScoreSum_$i"}/array_sum(${"player2LegDarts_$i"})*3, 2).'<img src="/img/3dart150.png" width="30" height="30">' );
-      echo('</td>');
-
-      echo('<td>');
-      if (${"player2LegLeft_$i"} == 0) {
-        echo(array_sum(${"player2LegDarts_$i"}).'<img src="/img/1dart150.png" width="30" height="30">');
-      }
-      echo('</td>');	
+        echo('<td>');
+        echo(round(${"player2LegScoreSum_$i"}/array_sum(${"player2LegDarts_$i"})*3, 2));
+        echo('</td>');
+    
+        echo('<td>');
+        if (${"player2LegLeft_$i"} == 0) {
+          echo(array_sum(${"player2LegDarts_$i"}).'<img src="/img/1dart150.png" width="30" height="30">');
+        }
+        echo('</td>');	
   	echo('</tr>');	
   
   }
@@ -220,7 +323,12 @@ echo('</table>');
 	</table>
 </div>
 </div>
-    <script src="/js/functions.js"></script>
+<script src="/js/functions.js"></script>
+<script>
+  let id = <?php echo $id ?>;
+</script>
+<script src="/js/script.js"></script>
+
   </body>
 </html>
 
