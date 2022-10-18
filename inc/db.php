@@ -2,7 +2,7 @@
 $dbhost = "localhost";
 $dbname = "имя базы";
 $dbuser = "пользоваель базы данных";
-$dbpass = "мойпароль";
+$dbpass = "пароль";
 
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 // create
