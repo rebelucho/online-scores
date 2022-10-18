@@ -347,7 +347,7 @@ $arr = [
 
 $jsonJS = json_encode($arr);
 
-if ($endGame == true) {
+if ($endGame == 1) {
 
 ?>
 <div class="container">
