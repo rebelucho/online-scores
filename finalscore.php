@@ -10,6 +10,9 @@ if(isset($_POST['last_update'])){
     $last_update = "";
 }
 
+$player1AvgArray = array();
+$player2AvgArray = array();
+$legCounter = array();
 
 // формируем запрос к БД
 
@@ -147,8 +150,10 @@ $setCount = count($data['stat']['player1']['sets']);
   <div  style="max-width: 700px;">
   <table class="table table-light table-borderless fs-5 fw-bold">
     <thead>
-    <tr style="font-size: 15px;">
-        <th colspan="5" class="text-center">Игра ход за ходом</th>
+      <tr style="font-size: 15px;">
+        <!-- <th colspan="2" class="text-end"><?php echo $player1Name; ?></th> -->
+        <th colspan="5" class="text-center">Step by Step Stat</th>
+        <!-- <th colspan="2" ><?php echo $player2Name; ?></th>             -->
       </tr>
       <tr>
         <th scope="col" class="text-end ">Набор</th>
@@ -290,29 +295,34 @@ for ($set_i=1; $set_i <= $setCount; $set_i++) {
   	echo('</tr>');	    
 
     echo('<tr>');
-        echo('<td class="text-end">');
-        if (${"player1LegLeft_$i"} == 0) {
-          echo('<img src="/img/1dart150.png" width="30" height="30">'.array_sum(${"player1LegDarts_$i"}));
-        }
-        echo('</td>');
+      echo('<td class="text-end">');
+      if (${"player1LegLeft_$i"} == 0) {
+        echo('<img src="/img/1dart150.png" width="30" height="30">'.array_sum(${"player1LegDarts_$i"}));
+      }
+      echo('</td>');
 
-        echo('<td class="text-end">');
-        echo(round(${"player1LegScoreSum_$i"}/array_sum(${"player1LegDarts_$i"})*3, 2));
-        echo('</td>');
+      echo('<td class="text-end">');
+      echo(round(${"player1LegScoreSum_$i"}/array_sum(${"player1LegDarts_$i"})*3, 2));
+      ${"player1AvgStat_$i"} = round(${"player1LegScoreSum_$i"}/array_sum(${"player1LegDarts_$i"})*3, 2);
+      array_push($player1AvgArray, ${"player1AvgStat_$i"});
+      array_push($legCounter, $legCounter[array_key_last($legCounter)]+1);
+      echo('</td>');
 
-        echo('<td class="table-dark">');
-        echo('<img src="/img/3dart150white.png" width="30" height="30">');
-        echo('</td>');	
+      echo('<td class="table-dark text-center">');
+      echo('<img src="/img/3dart150white.png" width="30" height="30">');
+      echo('</td>');	
 
-        echo('<td>');
-        echo(round(${"player2LegScoreSum_$i"}/array_sum(${"player2LegDarts_$i"})*3, 2));
-        echo('</td>');
-    
-        echo('<td>');
-        if (${"player2LegLeft_$i"} == 0) {
-          echo(array_sum(${"player2LegDarts_$i"}).'<img src="/img/1dart150.png" width="30" height="30">');
-        }
-        echo('</td>');	
+      echo('<td>');
+      echo(round(${"player2LegScoreSum_$i"}/array_sum(${"player2LegDarts_$i"})*3, 2));
+      ${"player2AvgStat_$i"} = round(${"player2LegScoreSum_$i"}/array_sum(${"player2LegDarts_$i"})*3, 2);
+      array_push($player2AvgArray, ${"player2AvgStat_$i"});
+      echo('</td>');
+
+      echo('<td>');
+      if (${"player2LegLeft_$i"} == 0) {
+        echo(array_sum(${"player2LegDarts_$i"}).'<img src="/img/1dart150.png" width="30" height="30">');
+      }
+      echo('</td>');	
   	echo('</tr>');	
   
   }
@@ -323,12 +333,63 @@ echo('</table>');
 	</table>
 </div>
 </div>
-<script src="/js/functions.js"></script>
-<script>
-  let id = <?php echo $id ?>;
-</script>
-<script src="/js/script.js"></script>
 
+  
+<?php
+
+$arr = [
+  'legCounter' => $legCounter,
+  'player1Name' => $player1Name,
+  'player2Name' => $player2Name,
+  'player1Avg' => $player1AvgArray,
+  'player2Avg' => $player2AvgArray
+];
+
+$jsonJS = json_encode($arr);
+
+if ($endGame == true) {
+
+?>
+<div class="container">
+<script src="js/chart.min.js"></script>
+  <div class="clearfix container d-flex justify-content-center text-center">
+    <div  style="max-width: 700px;">
+      <h2>Cредний набор по легам</h2>
+      <canvas id="myChart" width="400" height="200"></canvas>
+    </div>
+  </div>
+<script>
+  var data = JSON.parse('<?php echo $jsonJS; ?>')
+  var legCount = data.legCounter
+  var player1Avg = data.player1Avg
+  var player2Avg = data.player2Avg
+    const ctx = document.getElementById('myChart');
+    const myChart = new Chart(ctx, {
+    data: {
+      datasets: [{
+        type: 'line',
+        label: data.player1Name,
+        data: player1Avg,
+        borderColor: '#ff6384',
+      }, {       
+        type: 'line',
+        label: data.player2Name,
+        data: player2Avg,
+        borderColor: '#36a2eb'
+      }],
+      labels: legCount
+      }
+});
+</script>
+
+</div><!-- /.container -->
+<?php 
+}
+?>
+
+</div>
+</div>
+<script src="/js/functions.js"></script>
   </body>
 </html>
 
