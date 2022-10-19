@@ -4,10 +4,16 @@ include 'inc/db.php';
 
 $id = $_GET["id"];
 
-if(isset($_POST['last_update'])){
-    $last_update = $_POST['last_update'];
+// if(isset($_POST['last_update'])){
+//     $last_update = $_POST['last_update'];
+// }else{
+//     $last_update = "";
+// }
+
+if(isset($_GET['view'])){
+  $view = $_GET['view'];
 }else{
-    $last_update = "";
+  $view = "full";
 }
 
 $player1AvgArray = array();
@@ -152,7 +158,7 @@ $setCount = count($data['stat']['player1']['sets']);
     <thead>
       <tr style="font-size: 15px;">
         <!-- <th colspan="2" class="text-end"><?php echo $player1Name; ?></th> -->
-        <th colspan="5" class="text-center">Step by Step Stat</th>
+        <th colspan="5" class="text-center">Игра ход за ходом</th>
         <!-- <th colspan="2" ><?php echo $player2Name; ?></th>             -->
       </tr>
       <tr>
@@ -353,10 +359,19 @@ if ($endGame == 1) {
 <div class="container">
 <script src="js/chart.min.js"></script>
   <div class="clearfix container d-flex justify-content-center text-center">
+  <?php if ($view == 'phone'){?>
+  
     <div  style="max-width: 700px;">
       <h2>Cредний набор по легам</h2>
       <canvas id="myChart" width="400" height="200"></canvas>
     </div>
+  <?php } else {?>
+    <div  style="max-width: 800px;">
+      <h2>Cредний набор по легам</h2>
+      <canvas id="myChart" width="800" height="400"></canvas>
+    </div>
+  <?php }?>
+
   </div>
 <script>
   var data = JSON.parse('<?php echo $jsonJS; ?>')
