@@ -19,7 +19,7 @@ if(isset($_POST['tag'])){
     $tag = "%";
 }
 
-$sql = "SELECT id, gamer1_name, legs1, gamer2_name, legs2, last_update, tag FROM games WHERE (gamer1_name LIKE '$name' OR gamer2_name LIKE '$name') AND (tag LIKE '$tag' OR tag IS NULL) AND last_update LIKE '%$dategame%' ORDER BY last_update DESC";	
+$sql = "SELECT id, gamer1_name, legs1, gamer2_name, legs2, last_update, tag, end_match, code_version FROM games WHERE (gamer1_name LIKE '$name' OR gamer2_name LIKE '$name') AND (tag LIKE '$tag' OR tag IS NULL) AND last_update LIKE '%$dategame%' ORDER BY last_update DESC";	
 
 $result = mysqli_query($conn, $sql);
 
@@ -32,28 +32,68 @@ echo'<div class="container">';
 
 foreach ($rows as $row) {
 
-?>
+    if (!empty($row['code_version'])) {
+        echo '
+        <div class="row d-flex align-items-center border-bottom">
+            <div class="row d-flex">
+            <div class="col-1 d-flex flex-column align-items-center" style="font-size: 25px;">
+            ';
+            if ($row['end_match'] == 1){
+                echo '
+                <div><a href=finalscore.php?id='.$row['id'].'&view=phone><i class="bi bi-phone"></i></a></div>
+                <div><a href=finalscore.php?id='.$row['id'].'&view=desktop><i class="bi bi-display"></i></a></div>
+                ';
+            } else { 
+                echo '
+                <div><a href=score.php?id='.$row['id'].'&view=phone><i class="bi bi-phone"></i></a></div>
+                <div><a href=score.php?id='.$row['id'].'&view=desktop><i class="bi bi-display"></i></a></div>
+                ';
+            }
+            echo '
+            </div>
+        	<div class="col-5 justify-content-end text-end align-items-center">
+                <div class="text-truncate">'.$row['gamer1_name'].'</div>
+                <div>'.$row['legs1'].'</div>
+            </div>
+            <div class="col-1 align-items-center text-center">
+                VS
+            </div>
+            <div class="col-5 flex-column justify-content-end">
+                <div class=" text-truncate">'.$row['gamer2_name'].'</div>
+                <div>'.$row['legs2'].'</div>
+            </div>
+            </div>';
 
-<?php
-    echo '
-    <div class="row d-flex align-items-center border-bottom">
-    	<div class="col-1 d-flex flex-column align-items-center" style="font-size: 25px;"> 
-            <div><a href=score.php?id='.$row['id'].'&view=phone><i class="bi bi-phone"></i></a></div>
-            <div><a href=score.php?id='.$row['id'].'&view=desktop><i class="bi bi-display"></i></a></div>
-        </div>
-    	<div class="col-5 justify-content-end text-end align-items-center">
-            <div class="text-truncate">'.$row['gamer1_name'].'</div>
-            <div>'.$row['legs1'].'</div>
-        </div>
-        <div class="col-1 align-items-center text-center">
-            VS
-        </div>
-        <div class="col-5 flex-column justify-content-start">
-            <div class=" text-truncate">'.$row['gamer2_name'].'</div>
-            <div>'.$row['legs2'].'</div>
-        </div>
-    </div>
-    ';
+        if (!empty($row['tag'])){
+            echo'
+            <div class="row d-flex text-center justify-content-center">
+                <div class="offset-1 col-12"><span>#'.$row['tag'].'</span></div>
+            </div>
+            ';
+        }
+
+        echo '</div>';    
+    } else {
+        echo '
+            <div class="row d-flex align-items-center border-bottom">
+                <div class="col-1 d-flex flex-column align-items-center" style="font-size: 25px;"> 
+                    <div><a href=score.php?id='.$row['id'].'&view=phone><i class="bi bi-phone"></i></a></div>
+                    <div><a href=score.php?id='.$row['id'].'&view=desktop><i class="bi bi-display"></i></a></div>
+                </div>
+        	    <div class="col-5 justify-content-end text-end align-items-center">
+                    <div class="text-truncate">'.$row['gamer1_name'].'</div>
+                    <div>'.$row['legs1'].'</div>
+                </div>
+                <div class="col-1 align-items-center text-center">
+                    VS
+                </div>
+                <div class="col-5 flex-column justify-content-end">
+                    <div class=" text-truncate">'.$row['gamer2_name'].'</div>
+                    <div>'.$row['legs2'].'</div>
+                </div>
+            </div>
+            ';
+    }
 	
 }
 ?>
