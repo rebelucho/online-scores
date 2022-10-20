@@ -29,14 +29,20 @@ mysqli_close($conn);
 
 
 echo'<div class="container">';
+if (empty($rows)) {
+    echo '
+    <div class="text-center"><h2>Нет игр для отображения</h2></div>
+    ';
+} else {
+
 
 foreach ($rows as $row) {
 
     if (!empty($row['code_version'])) {
         echo '
         <div class="row d-flex align-items-center border-bottom">
-            <div class="row d-flex">
-            <div class="col-1 d-flex flex-column align-items-center" style="font-size: 25px;">
+            <div class="row d-flex align-items-center">
+            <div class="col-1 d-flex flex-column align-items-center align-content-center" style="font-size: 25px;">
             ';
             if ($row['end_match'] == 1){
                 echo '
@@ -51,9 +57,9 @@ foreach ($rows as $row) {
             }
             echo '
             </div>
-        	<div class="col-5 justify-content-end text-end align-items-center">
-                <div class="text-truncate">'.$row['gamer1_name'].'</div>
-                <div>'.$row['legs1'].'</div>
+        	<div class="col-5 d-flex flex-column">
+                <div class="text-truncate  text-end" >'.$row['gamer1_name'].'</div>
+                <div class="text-end">'.$row['legs1'].'</div>
             </div>
             <div class="col-1 align-items-center text-center">
                 VS
@@ -66,10 +72,12 @@ foreach ($rows as $row) {
 
         if (!empty($row['tag'])){
             echo'
-            <div class="row d-flex text-center justify-content-center">
-                <div class="offset-1 col-12"><span>#'.$row['tag'].'</span></div>
+            <div class="row d-flex text-center align-items-top justify-content-center">';
+        ?>
+                <div class="offset-1 col-12 mt-0 pt-0 mb-0 pb-0"><a href="#<?php echo($row['tag']) ?>" id="tagInValue" onclick="setTag('<?php echo($row['tag']) ?>'); return false">#<?php echo($row['tag']) ?></a></div>
             </div>
-            ';
+          
+        <?php    
         }
 
         echo '</div>';    
@@ -96,8 +104,6 @@ foreach ($rows as $row) {
     }
 	
 }
+}
 ?>
 </div>
-
-<?php
-?>
