@@ -1,5 +1,5 @@
 <?php
-include 'inc/db.php';
+require_once __DIR__.'/inc/boot.php';
 
 $id = $_POST["id"];
 
@@ -12,22 +12,14 @@ if(isset($_POST['last_update'])){
 $codeVer = '1';
 
 // формируем запрос к БД
+$stmt = pdo()->prepare("SELECT last_update, json FROM games WHERE id = ?");
+$stmt->execute([$_POST['id']]);
 
-$sql = "SELECT json, last_update FROM games WHERE id='$id'";
-$result = mysqli_query($conn, $sql);
-
-// Разбираем запрос
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
+// Разбираем полученные данные
+foreach ($stmt as $row) {
     $json=$row["json"];
     $timestamp=$row["last_update"];
   }
-} else {
-  echo "0 results";
-}
-
-mysqli_close($conn);
 
 $data = json_decode($json, true);
 
@@ -91,7 +83,7 @@ else {
 			$player2DoublesPercent = 0;
 		}
 	
-	
+		// собираем json для передачи в js
 		$arr = [
 			'tournamentName' => $data['gameData']['tournamentName'],
 			'stage' => $data['gameData']['stage'],
@@ -248,7 +240,7 @@ else {
 			'player2HowToCheck' => ($data["HowToCheck2"]),
 			'last_update' => $timestamp,
 		];
-
+// отдаем сформированный json
 echo json_encode($arr);
 
 	}
