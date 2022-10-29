@@ -1,14 +1,8 @@
 <?php
-require_once('template/header.tpl');
-include 'inc/db.php';
+require_once __DIR__.'/inc/boot.php';
+require_once __DIR__.'/template/header.tpl';
 
 $id = $_GET["id"];
-
-// if(isset($_POST['last_update'])){
-//     $last_update = $_POST['last_update'];
-// }else{
-//     $last_update = "";
-// }
 
 if(isset($_GET['view'])){
   $view = $_GET['view'];
@@ -22,24 +16,18 @@ $legCounter = array();
 
 // формируем запрос к БД
 
-$sql = "SELECT gamer1_name, gamer2_name, json, last_update, end_match FROM games WHERE id='$id'";
-$result = mysqli_query($conn, $sql);
+$stmt = pdo()->prepare("SELECT gamer1_name, gamer2_name, json, last_update, end_match FROM games WHERE id = ?");
+$stmt->execute([$_GET['id']]);
 
-// Разбираем запрос
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
+// разбираем полученные данные
+
+foreach ($stmt as $row) {
     $json=$row["json"];
     $player1Name=$row['gamer1_name'];
     $player2Name=$row['gamer2_name'];
     $timestamp=$row["last_update"];
     $endGame=$row["end_match"];
   }
-} else {
-  echo "0 results";
-}
-
-mysqli_close($conn);
 
 $data = json_decode($json, true);
 
@@ -157,9 +145,7 @@ $setCount = count($data['stat']['player1']['sets']);
   <table class="table table-light table-borderless fs-5 fw-bold">
     <thead>
       <tr style="font-size: 15px;">
-        <!-- <th colspan="2" class="text-end"><?php echo $player1Name; ?></th> -->
         <th colspan="5" class="text-center">Игра ход за ходом</th>
-        <!-- <th colspan="2" ><?php echo $player2Name; ?></th>             -->
       </tr>
       <tr>
         <th scope="col" class="text-end ">Набор</th>
@@ -311,7 +297,11 @@ for ($set_i=1; $set_i <= $setCount; $set_i++) {
       echo(round(${"player1LegScoreSum_$i"}/array_sum(${"player1LegDarts_$i"})*3, 2));
       ${"player1AvgStat_$i"} = round(${"player1LegScoreSum_$i"}/array_sum(${"player1LegDarts_$i"})*3, 2);
       array_push($player1AvgArray, ${"player1AvgStat_$i"});
-      array_push($legCounter, $legCounter[array_key_last($legCounter)]+1);
+      if (empty($legCounter)){
+        array_push($legCounter, 1);
+      } else {
+        array_push($legCounter, $legCounter[array_key_last($legCounter)]+1);
+      }
       echo('</td>');
 
       echo('<td class="table-dark text-center">');

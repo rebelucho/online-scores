@@ -1,6 +1,11 @@
 <?php
+session_start();
 require_once('template/header.tpl');
 include 'inc/db.php';
+
+$addpage = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") 
+    . "://$_SERVER[HTTP_HOST]"."/add.php";
+
 ?>
 
 <div class="container">
@@ -22,7 +27,7 @@ include 'inc/db.php';
             В разделе "Собственный графический сервис" нажмите на изображение QR кода
         </li>
         <li>
-            Отсканируйте QR код указанный ниже
+            Отсканируйте QR код указанный ниже, либо введите адрес вручную: <?php echo $addpage; ?>
         </li>
         <li>
             Проверьте работоспособность сервиса с помощью кнопки "проверить"
