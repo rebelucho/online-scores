@@ -1,7 +1,7 @@
 <?php
 header("Content-Type: application/json");
-
-include 'inc/db.php';
+require_once __DIR__.'/inc/boot.php';
+// include 'inc/db.php';
 
 $json = file_get_contents("php://input");
 
@@ -49,8 +49,11 @@ if ($codeVer >= 2) { // Если версия код 2 и больше, то д�
 	$tag = $data['gameData']['tag'];
 	$curtime = date("Y-m-d H:i:s");
 	$endGame = $data['gameData']['gameEnd'];
-	
-	$sql = "INSERT INTO games (guid, gamer1_name, sets1, legs1, gamer2_name, sets2, legs2, json, last_update, tag, code_version) VALUES ('$guid', '$players1', '$sets1', '$legs1', '$players2', '$sets2', '$legs2', '$json', '$curtime' , '$tag', '$codeVer') ON DUPLICATE KEY UPDATE gamer1_name = '$players1', sets1 = '$sets1', legs1 = '$legs1', gamer2_name= '$players2', sets2 = '$sets2', legs2 = '$legs2', json = '$json', end_match = '$endGame';";
+
+// Формируем запрос к БД
+$stmt = pdo()->prepare("INSERT INTO games (guid, gamer1_name, sets1, legs1, gamer2_name, sets2, legs2, json, last_update, tag, code_version) VALUES ('$guid', '$players1', '$sets1', '$legs1', '$players2', '$sets2', '$legs2', '$json', '$curtime' , '$tag', '$codeVer') ON DUPLICATE KEY UPDATE gamer1_name = '$players1', sets1 = '$sets1', legs1 = '$legs1', gamer2_name= '$players2', sets2 = '$sets2', legs2 = '$legs2', json = '$json', end_match = '$endGame';");
+// $stmt = pdo()->prepare("INSERT INTO games (guid, gamer1_name, sets1, legs1, gamer2_name, sets2, legs2, json, last_update, tag, code_version) VALUES (:guid, :players1, :sets1, :legs1, :players2, :sets2, :legs2, :json, :curtime, :tag, :codeVer) ON DUPLICATE KEY UPDATE gamer1_name = :players1, sets1 = :sets1, legs1 = :legs1, gamer2_name= :players2, sets2 = :sets2, legs2 = :legs2, json = :json, end_match = :endGame ;");
+	// $sql = "INSERT INTO games (guid, gamer1_name, sets1, legs1, gamer2_name, sets2, legs2, json, last_update, tag, code_version) VALUES ('$guid', '$players1', '$sets1', '$legs1', '$players2', '$sets2', '$legs2', '$json', '$curtime' , '$tag', '$codeVer') ON DUPLICATE KEY UPDATE gamer1_name = '$players1', sets1 = '$sets1', legs1 = '$legs1', gamer2_name= '$players2', sets2 = '$sets2', legs2 = '$legs2', json = '$json', end_match = '$endGame';";
 
 } else { // Если версия ниже 2, то используем старый вариант импорта
 
@@ -94,7 +97,8 @@ $sets2 = ($data['sets2']);
 $legs2 = ($data['legs2']);
 $curtime = date("Y-m-d H:i:s");
 
-$sql = "INSERT INTO games (guid, gamer1_name, sets1, legs1, gamer2_name, sets2, legs2, json, last_update) VALUES ('$guid', '$Players1', '$sets1', '$legs1', '$Players2', '$sets2', '$legs2', '$json' , '$curtime') ON DUPLICATE KEY UPDATE gamer1_name = '$Players1', sets1 = '$sets1', legs1 = '$legs1', gamer2_name = '$Players2', sets2 = '$sets2', legs2 = '$legs2', json = '$json';";
+$stmt = pdo()->prepare("INSERT INTO games (guid, gamer1_name, sets1, legs1, gamer2_name, sets2, legs2, json, last_update) VALUES ('$guid', '$Players1', '$sets1', '$legs1', '$Players2', '$sets2', '$legs2', '$json' , '$curtime') ON DUPLICATE KEY UPDATE gamer1_name = '$Players1', sets1 = '$sets1', legs1 = '$legs1', gamer2_name = '$Players2', sets2 = '$sets2', legs2 = '$legs2', json = '$json'");
+// $sql = "INSERT INTO games (guid, gamer1_name, sets1, legs1, gamer2_name, sets2, legs2, json, last_update) VALUES ('$guid', '$Players1', '$sets1', '$legs1', '$Players2', '$sets2', '$legs2', '$json' , '$curtime') ON DUPLICATE KEY UPDATE gamer1_name = '$Players1', sets1 = '$sets1', legs1 = '$legs1', gamer2_name = '$Players2', sets2 = '$sets2', legs2 = '$legs2', json = '$json';";
 }
 
 // отправляем в ответ строку с подтверждением
@@ -102,9 +106,10 @@ if ($guid == ""){
     echo "Connect OK (No GUID)";
 }
 else { 
-    mysqli_query($conn, $sql);
+	$stmt->execute();
+    // mysqli_query($conn, $sql);
 }
 
-mysqli_close($conn);
+// mysqli_close($conn);
 
 ?>
