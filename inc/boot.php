@@ -3,7 +3,7 @@
 // Инициализируем сессию
 session_start();
 
-// Простой способ сделать глобально доступным подключение в БД
+// Делаем доступным подключение к БД
 function pdo(): PDO
 {
     static $pdo;
@@ -19,6 +19,8 @@ function pdo(): PDO
     return $pdo;
 }
 
+// Функция показа сообщений через сессии. 
+
 function flash(?string $message = null)
 {
     if ($message) {
@@ -32,6 +34,8 @@ function flash(?string $message = null)
         unset($_SESSION['flash']);
     }
 }
+
+// Функция проверки пользователя
 
 function check_auth(): bool
 {

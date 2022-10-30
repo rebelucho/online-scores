@@ -26,7 +26,7 @@ if (check_auth()) {
     </div>
     <div class="d-flex justify-content-between">
         <button type="submit" class="btn btn-primary">Войти</button>
-        <a class="btn btn-outline-primary" href="index1.php">Регистрация</a>
+        <a class="btn btn-outline-primary" href="register.php">Регистрация</a>
     </div>
 </form>
 </div>
