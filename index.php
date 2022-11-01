@@ -12,8 +12,11 @@ if (check_auth()) {
 }
 ?>
 <?php 
-if ($user['role'] == 1 ) { 
-// показываем меню для админа
+
+if (isset($user['role'])) {
+  if ($user['role'] == 1 ) { 
+
+  // показываем меню для админа
 ?>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -45,13 +48,14 @@ if ($user['role'] == 1 ) {
 </nav>
 
 <?php }
+}
 
 
 function curdate() {
     return date('Y-m-d');
 }
 
-require_once __DIR__.'/template/header.tpl';
+require_once __DIR__.'/template/header.html';
 
 flash();
 
@@ -111,5 +115,5 @@ if (isset($_SESSION["tag"])){
 </script>
 
 <?php
-require_once('template/footer.tpl');
+require_once __DIR__.'/template/footer.html';
 ?>

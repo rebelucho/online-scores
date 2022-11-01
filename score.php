@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__.'/inc/boot.php';
-require_once('template/header.tpl');
+require_once __DIR__.'/template/header.html';
 $id = $_GET["id"];
 
 if(isset($_GET['view'])){
@@ -117,11 +117,43 @@ if ($view == "phone") {
 </div>
 <div class="container">
     <div class="row d-flex flex-row align-items-center" style="padding: 0px 0px 0px 0px;">
+    <?php 
+        if ($_GET['video'] == true ) {
+            ?>
+        <div class="col-1 justify-content-end text-uppercase" style="padding: 0px 0px;text-align: center;font-weight: bold;font-size: 50px;"><span id="throwPlayer1"></span></div>
+        <div class="col-3 text-uppercase" style="padding: 0px 0px;text-align: center;font-weight: 800;font-size: 150px;"><span id="requirePlayer1">501</span></div>
+        <div class="col-4">
+        <div id="videoframe">
+        </div>        
+            <!-- Load OvenPlayer via CDN -->
+            <script src="https://cdn.jsdelivr.net/npm/ovenplayer/dist/ovenplayer.js"></script>
+
+            <script>
+            
+                            // Initialize OvenPlayer
+                            const player = OvenPlayer.create('videoframe', {
+                                sources: [
+                        {
+                            label: 'label_for_webrtc',
+                            // Set the type to 'webrtc'
+                            type: 'webrtc',
+                            // Set the file to WebRTC Signaling URL with OvenMediaEngine 
+                            file: 'wss://video.darts28.ru:3334/vidme/' + <?php echo($id);?>
+                        }
+                                ]
+                            });
+            </script>
+        </div>
+        <div class="col-3 text-uppercase" style="padding: 0px 0px;text-align: center;font-weight: 800;font-size: 150px;"><span id="requirePlayer2">501</span></div>
+        <div class="col-1 justify-content-start text-uppercase" style="padding: 0px 0px;text-align: center;font-weight: bold;font-size: 50px;"><span id="throwPlayer2"></span></div>
+        <?php 
+        } else { ?>
         <div class="col-1 justify-content-end text-uppercase" style="padding: 0px 0px;text-align: center;font-weight: bold;font-size: 50px;"><span id="throwPlayer1"></span></div>
         <div class="col-4 text-uppercase" style="padding: 0px 0px;text-align: center;font-weight: 800;font-size: 150px;"><span id="requirePlayer1">501</span></div>
-        <div class="col"></div>
+        <div class="col-"></div>
         <div class="col-4 text-uppercase" style="padding: 0px 0px;text-align: center;font-weight: 800;font-size: 150px;"><span id="requirePlayer2">501</span></div>
         <div class="col-1 justify-content-start text-uppercase" style="padding: 0px 0px;text-align: center;font-weight: bold;font-size: 50px;"><span id="throwPlayer2"></span></div>
+        <?php }?>
     </div>
 </div>
 <div class="container">
@@ -230,10 +262,9 @@ if ($view == "phone") {
   let id = <?php echo $id ?>;
 </script>
 <script src="/js/script.js"></script>
-</body>
-</html>
-
-
+<?php
+require_once __DIR__.'/template/footer.html';
+?>
 
 
 

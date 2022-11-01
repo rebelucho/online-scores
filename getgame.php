@@ -28,10 +28,10 @@ if(isset($_POST['tag'])){
 
 $stmt = pdo()->prepare("SELECT id, gamer1_name, legs1, gamer2_name, legs2, last_update, tag, end_match, code_version FROM games WHERE (gamer1_name LIKE '$name' OR gamer2_name LIKE '$name') AND (tag LIKE '$tag' OR tag IS NULL) AND last_update LIKE '%$dategame%' ORDER BY last_update DESC");
 $stmt->execute();
-
+$empty = $stmt->rowCount() === 0;
 
 echo'<div class="container">';
-if (empty($stmt)) {
+if ($empty) {
     echo '
     <div class="text-center"><h2>Нет игр для отображения</h2></div>
     ';
@@ -46,16 +46,22 @@ foreach ($stmt as $row) {
             <div class="row d-flex align-items-center">
             <div class="col-1 d-flex flex-column align-items-center align-content-center" style="font-size: 25px;">
             ';
-            if ($row['end_match'] == 1){
+            if ($_SESSION["user_role"] == 2) {
                 echo '
-                <div><a href=finalscore.php?id='.$row['id'].'&view=phone><i class="bi bi-phone-fill" style="color:green;"></i></a></div>
-                <div><a href=finalscore.php?id='.$row['id'].'&view=desktop><i class="bi bi-display-fill" style="color:green;"></i></a></div>
+                <div><a href=https://video.darts28.ru/webkit/index.php?id='.$row['id'].'><i class="bi bi-camera-reels" style="color:red;"></i></a></div>
                 ';
-            } else { 
-                echo '
-                <div><a href=score.php?id='.$row['id'].'&view=phone><i class="bi bi-phone"></i></a></div>
-                <div><a href=score.php?id='.$row['id'].'&view=desktop><i class="bi bi-display"></i></a></div>
-                ';
+            } else {
+                if ($row['end_match'] == 1){
+                    echo '
+                    <div><a href=finalscore.php?id='.$row['id'].'&view=phone><i class="bi bi-phone-fill" style="color:green;"></i></a></div>
+                    <div><a href=finalscore.php?id='.$row['id'].'&view=desktop><i class="bi bi-display-fill" style="color:green;"></i></a></div>
+                    ';
+                } else { 
+                    echo '
+                    <div><a href=score.php?id='.$row['id'].'&view=phone><i class="bi bi-phone"></i></a></div>
+                    <div><a href=score.php?id='.$row['id'].'&view=desktop><i class="bi bi-display"></i></a></div>
+                    ';
+                }
             }
             echo '
             </div>

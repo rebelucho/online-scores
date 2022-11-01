@@ -38,3 +38,7 @@ if (check_auth()) {
 </form>
 </div>
 <?php } ?>
+
+<?php
+require_once __DIR__.'/template/footer.html';
+?>
