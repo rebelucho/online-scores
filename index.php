@@ -47,6 +47,15 @@ if (isset($_SESSION["tag"])){
 	$tag = "";
 }
 
+if (isset($_GET['pageno'])) {
+    // Если да то переменной $pageno его присваиваем
+    $pageno = $_GET['pageno'];
+} else { // Иначе
+    // Присваиваем $pageno один
+    $pageno = 1;
+}
+
+
 // echo the date to screen
 ?>
 <div>
@@ -80,6 +89,7 @@ if (isset($_SESSION["tag"])){
 <script type="text/javascript">
 	let tag = ''
 	let name = ''
+	let pageno = '<?php echo $pageno; ?>'
 	let dategame = '<?php echo $dategame; ?>'
 	getgame()
 </script>

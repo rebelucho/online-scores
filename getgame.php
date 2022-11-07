@@ -25,8 +25,32 @@ if(isset($_POST['tag'])){
     $tag = "%";
 }
 
+// Рисуем пагинацию, определим пришел ли нам номер страницы
+if (isset($_POST['pageno'])) {
+    // Если да то переменной $pageno его присваиваем
+    $pageno = $_POST['pageno'];
+} else { // Иначе
+    // Присваиваем $pageno один
+    $pageno = 1;
+}
+ 
+// Назначаем количество данных на одной странице
+$size_page = 5;
+// Вычисляем с какого объекта начать выводить
+$offset = ($pageno-1) * $size_page;
 
-$stmt = pdo()->prepare("SELECT id, gamer1_name, legs1, gamer2_name, legs2, last_update, tag, end_match, code_version FROM games WHERE (gamer1_name LIKE '$name' OR gamer2_name LIKE '$name') AND (tag LIKE '$tag' OR tag IS NULL) AND last_update LIKE '%$dategame%' ORDER BY last_update DESC");
+// Посчитаем сколько вообще записей по нашему запросу
+
+$sth = pdo()->prepare("SELECT COUNT(*) as count FROM games WHERE (gamer1_name LIKE '$name' OR gamer2_name LIKE '$name') AND (tag LIKE '$tag' OR tag IS NULL) AND last_update LIKE '%$dategame%' ORDER BY last_update DESC");
+$sth->execute();
+$sth->setFetchMode(PDO::FETCH_ASSOC);
+$row = $sth->fetch();
+$total_rows = $row['count'];
+// Вычисляем количество страниц
+$total_pages = ceil($total_rows / $size_page);
+
+
+$stmt = pdo()->prepare("SELECT id, gamer1_name, legs1, gamer2_name, legs2, last_update, tag, end_match, code_version FROM games WHERE (gamer1_name LIKE '$name' OR gamer2_name LIKE '$name') AND (tag LIKE '$tag' OR tag IS NULL) AND last_update LIKE '%$dategame%' ORDER BY last_update DESC LIMIT $offset, $size_page");
 $stmt->execute();
 $empty = $stmt->rowCount() === 0;
 
@@ -117,4 +141,20 @@ foreach ($stmt as $row) {
 }
 }
 ?>
+<?php if($total_pages > 1){?>
 </div>
+<div class="container py-3">
+    <nav>
+      <ul class="pagination justify-content-center">
+        <li class="page-item"><a class="page-link" href="?pageno=1">Первая</a></li>
+        <li class="<?php if($pageno <= 1){ echo 'disabled'; } else {echo "page-item";} ?>">
+            <a class="page-link" href="<?php if($pageno <= 1){ echo '#'; } else { echo "?pageno=".($pageno - 1); } ?>">Назад</a>
+        </li>
+        <li class="<?php if($pageno >= $total_pages){ echo 'disabled'; } else {echo "page-item";} ?>">
+            <a class="page-link" href="<?php if($pageno >= $total_pages){ echo '#'; } else { echo "?pageno=".($pageno + 1); } ?>">Вперед</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="?pageno=<?php echo $total_pages; ?>">Последняя</a></li>
+    </ul>
+    </nav>
+</div>
+<?php }?>
