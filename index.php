@@ -10,52 +10,22 @@ if (check_auth()) {
     $stmt->execute(['id' => $_SESSION['user_id']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 }
-?>
-<?php 
 
-if (isset($user['role'])) {
-  if ($user['role'] == 1 ) { 
+// if (isset($user['role'])) {
+//   if ($user['role'] == 1 ) { 
 
   // показываем меню для админа
 ?>
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-	<a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="#addpage">Добавить страницу</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#editpage">Редактировать</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#deletepage">Удалить страницу</a>
-        </li>
-      </ul>
-    </div>
-	<form class="d-flex" method="post" action="do_logout.php">
-	<span class="navbar-text">
-      Welcome back, <?=htmlspecialchars($user['username'])?>!  
-	</span>
-      <button type="submit" class="btn btn-outline-success me-2">Выйти</button>
-    </form>
-  </div>
-</nav>
-
-<?php }
-}
+<?php 
+  // }
+// }
 
 
 function curdate() {
     return date('Y-m-d');
 }
 
-require_once __DIR__.'/template/header.html';
+require_once __DIR__.'/template/header.php';
 
 flash();
 
@@ -115,5 +85,5 @@ if (isset($_SESSION["tag"])){
 </script>
 
 <?php
-require_once __DIR__.'/template/footer.html';
+require_once __DIR__.'/template/footer.php';
 ?>

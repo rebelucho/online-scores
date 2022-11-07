@@ -2,7 +2,7 @@
 ini_set('display_errors','On');
 error_reporting('E_ALL');
 require_once __DIR__.'/inc/boot.php';
-require_once __DIR__.'/template/header.html';
+require_once __DIR__.'/template/header.php';
 require_once __DIR__.'/assets/apmail.php';
 require_once __DIR__.'/inc/mailconf.php';
 // Инициализируем функцию отправки писем
@@ -79,6 +79,6 @@ if (isset($_REQUEST['doGo'])) {
     }
 }
 
-require_once __DIR__.'/template/header.html';
+require_once __DIR__.'/template/header.php';
 ?>
 </div>

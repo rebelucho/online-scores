@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__.'/inc/boot.php';
-require_once __DIR__.'/template/header.html';
+require_once __DIR__.'/template/header.php';
 $id = $_GET["id"];
 
 if(isset($_GET['view'])){
@@ -291,7 +291,7 @@ if ($_GET['video'] == true ) {
 </script>
 <script src="/js/script.js"></script>
 <?php
-require_once __DIR__.'/template/footer.html';
+require_once __DIR__.'/template/footer.php';
 ?>
 
 

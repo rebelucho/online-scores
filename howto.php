@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__.'/inc/boot.php';
-require_once __DIR__.'header.html';
+require_once __DIR__.'/template/header.php';
 
 
-$addpage = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'On' ? "https" : "http") 
+$addpage = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' || isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'On') ? "https" : "http") 
     . "://$_SERVER[HTTP_HOST]"."/add.php";
 
 ?>
@@ -43,5 +43,5 @@ $addpage = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'On' ? "https" : "
 </div>
 
 <?php
-require_once __DIR__.'/template/footer.html';
+require_once __DIR__.'/template/footer.php';
 ?>

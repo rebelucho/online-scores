@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__.'/inc/boot.php';
-require_once __DIR__.'/template/header.html';
+require_once __DIR__.'/template/header.php';
 
 if (check_auth()) {
     header('Location: /');
@@ -53,5 +53,5 @@ if (check_auth()) {
 </div>
 
 <?php
-require_once __DIR__.'/template/footer.html';
+require_once __DIR__.'/template/footer.php';
 ?>

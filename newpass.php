@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__.'/inc/boot.php';
-require_once __DIR__.'/template/header.html';
+require_once __DIR__.'/template/header.php';
 ?>
 <div class="container">
 
@@ -53,5 +53,5 @@ if ($_REQUEST['hash']) {
 </div>
 
 <?php
-require_once __DIR__.'/template/footer.html';
+require_once __DIR__.'/template/footer.php';
 ?>
