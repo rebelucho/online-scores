@@ -46,6 +46,34 @@ if ($view == "phone") {
     </div>
 </div>
 
+<?php
+if ($_GET['video'] == true ) {
+?>
+<div class="container">
+    <div id="videoframe"></div>
+        <!-- Load OvenPlayer via CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/ovenplayer/dist/ovenplayer.js"></script>
+        <script>
+               // Initialize OvenPlayer
+               const player = OvenPlayer.create('videoframe', {
+                   sources: [
+           {
+               label: 'label_for_webrtc',
+               // Set the type to 'webrtc'
+               type: 'webrtc',
+               // Set the file to WebRTC Signaling URL with OvenMediaEngine
+               file: 'wss://video.darts28.ru:3334/vidme/' + <?php echo($id);?>
+           }
+                   ]
+               });
+        </script>
+</div>
+<?php
+}
+?>
+
+
+
 <div class="container" style="font-weight: bold;font-size: 20px;">
     <div class="row d-flex align-items-center border-bottom" >
         <div class="col-4 col-md-5 d-flex flex-column text-end justify-content-end"><span id="setsPlayer1"></span><span id="legsPlayer1"></span></div>
