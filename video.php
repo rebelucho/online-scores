@@ -668,7 +668,7 @@ phoneLinkBtn.onclick = function() {
         streamingButton.removeClass('btn-primary').addClass('btn-danger');
         streamingButton.text('STOP');
         gameVideoState = true;
-        setVideoEnable()
+        
 
         if (input) {
 
@@ -689,7 +689,7 @@ phoneLinkBtn.onclick = function() {
         streamingButton.removeClass('btn-danger').addClass('btn-primary');
         streamingButton.text('START');
         gameVideoState = false;
-        setVideoEnable()
+       
 
         if (input) {
             createInput();
