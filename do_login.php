@@ -16,7 +16,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 if (password_verify($_POST['password'], $user['password'])) {
     // Проверяем, не нужно ли использовать более новый алгоритм
     // или другую алгоритмическую стоимость
-    // Например, если вы поменяете опции хеширования
+    // Например, если поменяются опции хеширования
     if (password_needs_rehash($user['password'], PASSWORD_DEFAULT)) {
         $newHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $stmt = pdo()->prepare('UPDATE `users` SET `password` = :password WHERE `username` = :username');
@@ -26,7 +26,12 @@ if (password_verify($_POST['password'], $user['password'])) {
         ]);
     }
     $_SESSION['user_id'] = $user['id'];
-    $_SESSION['user_role'] = $user['role'];
+    if (isset($user['role'])) {
+        $_SESSION['user_role'] = $user['role'];
+    } else { 
+        $_SESSION['user_role'] = 0;
+    }
+    // flash('Пользователь роль '.$_SESSION['user_role']);
     header('Location: /');
     die;
 }

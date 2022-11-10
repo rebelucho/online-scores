@@ -7,6 +7,9 @@
 // Инициализируем сессию
 session_start();
 
+$_SESSION['user_role'] ?? $_SESSION['user_role'] = 0;
+
+
 // Подключение в БД
 function pdo(): PDO
 {

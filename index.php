@@ -11,16 +11,6 @@ if (check_auth()) {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-// if (isset($user['role'])) {
-//   if ($user['role'] == 1 ) { 
-
-  // показываем меню для админа
-?>
-<?php 
-  // }
-// }
-
-
 function curdate() {
     return date('Y-m-d');
 }
@@ -46,6 +36,22 @@ if (isset($_SESSION["tag"])){
 } else {
 	$tag = "";
 }
+
+if (isset($_GET['admGame'])){
+	$admGames = $_GET['admGames'];
+} else {
+	$admGames = false;
+} 
+	
+
+if (isset($_GET['pageno'])) {
+    // Если да то переменной $pageno его присваиваем
+    $pageno = $_GET['pageno'];
+} else { // Иначе
+    // Присваиваем $pageno один
+    $pageno = 1;
+}
+
 
 // echo the date to screen
 ?>
@@ -80,6 +86,8 @@ if (isset($_SESSION["tag"])){
 <script type="text/javascript">
 	let tag = ''
 	let name = ''
+	let admGames = '<?php echo $admGames; ?>'
+	let pageno = '<?php echo $pageno; ?>'
 	let dategame = '<?php echo $dategame; ?>'
 	getgame()
 </script>

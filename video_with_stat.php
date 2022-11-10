@@ -1,13 +1,26 @@
 <?php
 require_once __DIR__.'/inc/boot.php';
 // require_once __DIR__.'/template/header.php';
-if (isset($_GET['id']))
+if (isset($_GET[id]))
 $id = $_GET['id'];
 else
 $id = 6666;
-$link = "https://".$_SERVER['HTTP_HOST']."/score.php?id=".$id."&video=true&view=";
+
 
 ?>
+<!-- <div class="container">
+
+    <p>Всё что видно здесь, видно и трансляции игры</p>
+    <video id="localVideo" controls src="" style="width: 480px; height: 270px;"></video>
+    <p>Отсылаем видео на сервер</p>
+
+    <p>Посмотреть результат игры с видео можно
+        <a href="http://online-scores.darts28.ru/score.php?id=<?php echo $id; ?>&view=desktop&video=true"
+            target="_blank">
+            вот тут
+        </a>
+    </p>
+</div> -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,18 +30,20 @@ $link = "https://".$_SERVER['HTTP_HOST']."/score.php?id=".$id."&video=true&view=
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 
-    <title>Трансляция игры</title>
-    
+    <title>OvenPlayer</title>
+    <link rel="icon" href="./assets/images/00_OvenPlayer_Favicon.svg">
+
     <!-- Font Awesome -->
-    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet"/> -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet"/>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
     <!-- MDB -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.0/mdb.min.css" rel="stylesheet"/>
     <!-- highlightjs -->
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.3.1/styles/github.css"> -->
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.3.1/styles/github.css">
+
     <style>
+
         .navbar-toggler-icon {
             background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(0, 0, 0, 0.55)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
         }
@@ -66,7 +81,7 @@ $link = "https://".$_SERVER['HTTP_HOST']."/score.php?id=".$id."&video=true&view=
         }
 
     </style>
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+
     <script>
         if (window.location.href.indexOf('localhost') < 0 && window.location.protocol !== 'https:') {
             location.href = location.href.replace('http://', 'https://');
@@ -75,49 +90,26 @@ $link = "https://".$_SERVER['HTTP_HOST']."/score.php?id=".$id."&video=true&view=
 
 
 </head>
-<?php
-require_once __DIR__.'/template/menu.php';
-
-if ($_SESSION['user_role'] < 1) {
-?>
-<body>
-<div class="container-lg mt-4">
-<h1 class="text-center">У ВАС НЕ ХВАТАЕТ ПРАВ ДЛЯ ТРАНСЛЯЦИИ</h1>
-</div>
-<?php
-} else {
-?>
 <body>
 <div class="container-lg mt-4">
     <div class="row g-3 mb-3">
         <div class="col-12">
-            <div class="input-group g-3 mb-3">    
-                <div class="form-outline flex-grow-1">
-                    <!—- текстовое поле -->
-                    <textarea id="phoneLink" type="text" class="form-control bg-white" readonly>Для телефона: <?php echo ($link);?>phone
-Для компьютера: <?php echo ($link);?>desktop</textarea>
-                    <label class="form-label" for="phoneLink">Ссылки для соцсетей</label>
-                </div>
-                <!-- кнопка -->
-                <button id="copyPhoneLink" class="btn btn-primary px-2 px-md-4" type="button">Копировать</button>
-            </div>
-            <!-- <div class="input-group">
+            <div class="input-group">
                 <div class="form-outline flex-grow-1">
                     <input type="text" id="webRtcUrlInput" class="form-control bg-white" value="wss://video.darts28.ru:3334/vidme/<?php echo $id; ?>?direction=send&transport=tcp" />
                     <label class="form-label" for="webRtcUrlInput">WebRTC input URL</label>
                 </div>
-            </div> -->
-            <button id="streamingButton" class="btn btn-primary px-2 px-md-4" type="button">
+                <button id="streamingButton" class="btn btn-primary px-2 px-md-4" type="button">
                     Start
-            </button>
+                </button>
+            </div>
         </div>
-
         <div class="col-lg-6">
             <div class="playerWrapper rounded overflow-hidden">
                 <video controls id="previewPlayer" class="previewPlayer"></video>
             </div>
         </div>
-        <div class="col-lg-6" style="display: none;>
+        <div class="col-lg-6">
             <ul class="list-group">
                 <li class="list-group-item bg-light hstack">
                     <h5 class="mb-0 fs-6">Информаия о трансляции</h5>
@@ -213,9 +205,7 @@ if ($_SESSION['user_role'] < 1) {
     </div>
 
 </div>
-<?php
-}
-?>
+
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.0/mdb.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/underscore@1.12.0/underscore-min.js"></script>
@@ -223,21 +213,9 @@ if ($_SESSION['user_role'] < 1) {
 <script src="https://cdn.jsdelivr.net/npm/ovenlivekit/dist/OvenLiveKit.min.js"></script>
 
 <script>
-// копируем ссылки на игру одной кнопкой
-var phoneLink = document.getElementById("phoneLink");
-var phoneLinkBtn = document.getElementById("copyPhoneLink");
-phoneLinkBtn.onclick = function() {
-  phoneLink.select();    
-  document.execCommand("copy");
-}
 
-</script>
-
-
-<script>
-    let gameVideoState = false;
-    let gameId = <?php echo $id;?>;
     let allDevices = null;
+
     let input = null;
 
     const userResolutions = {
@@ -278,8 +256,7 @@ phoneLinkBtn.onclick = function() {
 
     let errorTextSpan = $('#errorText');
 
-    // let webRtcUrlInput = $('#webRtcUrlInput');
-    let webRtcUrlInput = 'wss://video.darts28.ru:3334/vidme/<?php echo $id; ?>?direction=send&transport=tcp';
+    let webRtcUrlInput = $('#webRtcUrlInput');
     let videoSourceSelect = $('#videoSourceSelect');
     let videoResolutionSelect = $('#videoResolutionSelect');
     let videoBitrateInput = $('#videoBitrateInput');
@@ -296,21 +273,19 @@ phoneLinkBtn.onclick = function() {
     let playStreamButton = $('#playStreamButton');
 
     let savedWebRtcUrl = localStorage.getItem('savedWebRtcUrl');
-    // let savedWebRtcUrl = 'wss://video.darts28.ru:3334/vidme/<?php echo $id; ?>?direction=send&transport=tcp';
-    let savedWebTrcUrl = webRtcUrlInput;
     let savedVideoSource = localStorage.getItem('savedVideoSource');
     let savedVideoResolution = localStorage.getItem('savedVideoResolution');
     let savedVideoBitrate = localStorage.getItem('savedVideoBitrate');
     let savedVideoFrame = localStorage.getItem('savedVideoFrame');
     let savedAudioSource = localStorage.getItem('savedAudioSource');
 
-    // if (savedWebRtcUrl) {
-    //     webRtcUrlInput.val(savedWebRtcUrl);
-    // }
+    if (savedWebRtcUrl) {
+        webRtcUrlInput.val(savedWebRtcUrl);
+    }
 
-    // webRtcUrlInput.on('change', function () {
-    //     localStorage.setItem('savedWebRtcUrl', $(this).val());
-    // });
+    webRtcUrlInput.on('change', function () {
+        localStorage.setItem('savedWebRtcUrl', $(this).val());
+    });
 
     videoSourceSelect.on('change', function () {
         localStorage.setItem('savedVideoSource', $(this).val());
@@ -488,6 +463,23 @@ phoneLinkBtn.onclick = function() {
 
                 select.append(option);
             });
+
+            // if (type === 'video') {
+            //
+            //     let option = $('<option></option>');
+            //
+            //     option.text('Display capture');
+            //     option.val('displayCapture');
+            //
+            //     if (!navigator.mediaDevices.getDisplayMedia) {
+            //
+            //         option.text('Display capture (Not supported)');
+            //         option.attr('disabled', 'disabled');
+            //     }
+            //
+            //
+            //     select.append(option);
+            // }
         }
 
         if (type === 'video') {
@@ -652,23 +644,12 @@ phoneLinkBtn.onclick = function() {
             }
         }
     }
-    function setVideoEnable(){
-        $.post('do_video.php', { id: gameId, enable: gameVideoState });
-        // $.ajax({
-        //     url: 'do_video.php',
-        //     type: "POST",
-        //     data: { id: gameId, enable: gameVideoState },
-        //     // success: success,
-        //     dataType: 'html'
-        // });
-    }   
+
     function startStreaming() {
 
         streamingStarted = true;
         streamingButton.removeClass('btn-primary').addClass('btn-danger');
         streamingButton.text('STOP');
-        gameVideoState = true;
-        setVideoEnable()
 
         if (input) {
 
@@ -678,8 +659,7 @@ phoneLinkBtn.onclick = function() {
                 connectionConfig.maxVideoBitrate = parseInt(videoBitrateInput.val());
             }
 
-            // input.startStreaming(webRtcUrlInput.val(), connectionConfig);
-            input.startStreaming(webRtcUrlInput, connectionConfig);
+            input.startStreaming(webRtcUrlInput.val(), connectionConfig);
         }
     }
 
@@ -688,8 +668,6 @@ phoneLinkBtn.onclick = function() {
         streamingStarted = false;
         streamingButton.removeClass('btn-danger').addClass('btn-primary');
         streamingButton.text('START');
-        gameVideoState = false;
-        setVideoEnable()
 
         if (input) {
             createInput();
@@ -709,8 +687,7 @@ phoneLinkBtn.onclick = function() {
     playStreamButton.on('click', function () {
         const link = {};
 
-        // const inputUrl = webRtcUrlInput.val();
-        const inputUrl = webRtcUrlInput;
+        const inputUrl = webRtcUrlInput.val();
 
         const url = new URL(inputUrl);
 
@@ -733,6 +710,38 @@ phoneLinkBtn.onclick = function() {
         console.log('ссылка: ' + link);
         window.open('https://video.darts28.ru/demo.html#' + encodeURIComponent(JSON.stringify(link)));
     });
+    
+    // videoBitrateInput.on('change', function () {
+    //
+    //     if (!input || !input.peerConnection) {
+    //         return;
+    //     }
+    //
+    //     const bandwidth = videoBitrateInput.val();
+    //
+    //     const senders = input.peerConnection.getSenders();
+    //
+    //     _.each(senders, function (sender) {
+    //
+    //         if (sender.track.kind === 'video') {
+    //
+    //             const parameters = sender.getParameters();
+    //             if (!parameters.encodings) {
+    //                 parameters.encodings = [{}];
+    //             }
+    //             if (bandwidth === '') {
+    //                 delete parameters.encodings[0].maxBitrate;
+    //             } else {
+    //                 parameters.encodings[0].maxBitrate = bandwidth * 1000;
+    //             }
+    //             sender.setParameters(parameters)
+    //                 .then(() => {
+    //
+    //                 })
+    //                 .catch(e => console.error(e));
+    //         }
+    //     });
+    // });
 
     let lastResult;
 
