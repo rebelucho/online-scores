@@ -21,6 +21,18 @@
 
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
   <!-- JS -->
+   
+  <script src="https://cdn.ckeditor.com/ckeditor5/35.3.0/classic/ckeditor.js"></script>
+
+
+  <!-- <script src="https://cdn.tiny.cloud/1/be8m05lrmqgy9gw50d83n8d8ikqod6y75k26rgdz3jikq2rj/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+      tinymce.init({
+        selector: "#mytextarea"
+      });
+   
+    </script> -->
+
     <script src="/assets/js/NoSleep.min.js"></script> 
     <script src="/js/functions.js"></script>
   
@@ -55,9 +67,9 @@ if (isset($user['role'])) { // проверяем переменную на на
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Admin</a>
         <ul class="dropdown-menu">
-          <li><a class="nav-link" href="#amdPage">Редактировать страницу</a></li>
-          <li><a class="nav-link" href="#admUsers">Редактировать пользователей</a></li>
-          <li><a class="nav-link" href="#admGames">Редактировать игры</a></li>
+          <li><a class="nav-link" href="?admPage=true">Редактировать страницу</a></li>
+          <li><a class="nav-link" href="/admin.php?admUsers=true">Редактировать пользователей</a></li>
+          <li><a class="nav-link" href="/admin.php?admGames=true">Редактировать игры</a></li>
         </ul>
       </li>
 <?php

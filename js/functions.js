@@ -20,3 +20,14 @@ $.post("getgame.php", {date: dategame, name: name , tag: tag, pageno: pageno}, f
      $( "#game_list" ).html( data )
   })
 }
+
+
+// Удаление игр из списка по запросу админа
+function deleteGame(id){
+  console.log(id)
+  let deleteGame = true
+  $.post("getgame.php", { delete: "true", id: id })
+    .done(function(data) {
+      alert("Data Loaded: " + data);
+    });
+}
