@@ -9,6 +9,11 @@ if(isset($_GET['view'])){
     $view = "full";
 }
 
+if (isset($_GET['video']))
+    $video = $_GET['video'];
+else
+    $video = false;
+
 if ($view == "phone") {
 
 ?>
@@ -47,7 +52,7 @@ if ($view == "phone") {
 </div>
 
 <?php
-if ($_GET['video'] == true ) {
+if ($video == true ) {
 ?>
 <div class="container">
     <div id="videoframe"></div>
@@ -58,7 +63,8 @@ if ($_GET['video'] == true ) {
                const player = OvenPlayer.create('videoframe', {
                    sources: [
            {
-               label: 'label_for_webrtc',
+               label: 'Трасляция игры',
+               autoStart: 'true',
                // Set the type to 'webrtc'
                type: 'webrtc',
                // Set the file to WebRTC Signaling URL with OvenMediaEngine
@@ -146,7 +152,7 @@ if ($_GET['video'] == true ) {
 <div class="container">
     <div class="row d-flex flex-row align-items-center" style="padding: 0px 0px 0px 0px;">
     <?php 
-        if ($_GET['video'] == true ) {
+        if ($video == true ) {
             ?>
         <div class="col-1 justify-content-end text-uppercase" style="padding: 0px 0px;text-align: center;font-weight: bold;font-size: 50px;"><span id="throwPlayer1"></span></div>
         <div class="col-3 text-uppercase" style="padding: 0px 0px;text-align: center;font-weight: 800;font-size: 150px;"><span id="requirePlayer1">501</span></div>
@@ -163,6 +169,7 @@ if ($_GET['video'] == true ) {
                                 sources: [
                         {
                             label: 'label_for_webrtc',
+                            autoStart: 'true',
                             // Set the type to 'webrtc'
                             type: 'webrtc',
                             // Set the file to WebRTC Signaling URL with OvenMediaEngine 
@@ -178,7 +185,7 @@ if ($_GET['video'] == true ) {
         } else { ?>
         <div class="col-1 justify-content-end text-uppercase" style="padding: 0px 0px;text-align: center;font-weight: bold;font-size: 50px;"><span id="throwPlayer1"></span></div>
         <div class="col-4 text-uppercase" style="padding: 0px 0px;text-align: center;font-weight: 800;font-size: 150px;"><span id="requirePlayer1">501</span></div>
-        <div class="col-"></div>
+        <div class="col"></div>
         <div class="col-4 text-uppercase" style="padding: 0px 0px;text-align: center;font-weight: 800;font-size: 150px;"><span id="requirePlayer2">501</span></div>
         <div class="col-1 justify-content-start text-uppercase" style="padding: 0px 0px;text-align: center;font-weight: bold;font-size: 50px;"><span id="throwPlayer2"></span></div>
         <?php }?>

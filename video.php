@@ -2,9 +2,10 @@
 require_once __DIR__.'/inc/boot.php';
 // require_once __DIR__.'/template/header.php';
 if (isset($_GET['id']))
-$id = $_GET['id'];
+    $id = $_GET['id'];
 else
-$id = 6666;
+    $id = 6666;
+
 $link = "https://".$_SERVER['HTTP_HOST']."/score.php?id=".$id."&video=true&view=";
 
 ?>
@@ -211,7 +212,7 @@ if ($_SESSION['user_role'] < 1) {
             </ul>
         </div>
     </div>
-
+<div id="response" class="h1 alert"></div>
 </div>
 <?php
 }
@@ -221,6 +222,11 @@ if ($_SESSION['user_role'] < 1) {
 <script src="https://cdn.jsdelivr.net/npm/underscore@1.12.0/underscore-min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/ovenlivekit/dist/OvenLiveKit.min.js"></script>
+
+<script type="text/javascript">
+</script>
+
+
 
 <script>
 // копируем ссылки на игру одной кнопкой
@@ -662,12 +668,49 @@ phoneLinkBtn.onclick = function() {
         //     dataType: 'html'
         // });
     }   
+
+       /* функция создаёт кроссбраузерный объект XMLHTTP */
+    function getXmlHttp() {
+      var xmlhttp;
+      try {
+        xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+      } catch (e) {
+      try {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      } catch (E) {
+        xmlhttp = false;
+      }
+      }
+      if (!xmlhttp && typeof XMLHttpRequest!='undefined') {
+        xmlhttp = new XMLHttpRequest();
+      }
+      return xmlhttp;
+    }
+    function sendToBase() {
+      let xmlhttp = getXmlHttp(); // Создаём объект XMLHTTP
+      xmlhttp.open('POST', 'do_video.php', true); // Открываем асинхронное соединение
+      xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // Отправляем кодировку
+      xmlhttp.send("id=" + (<?php echo ($id);?>) + "&enable=" + (gameVideoState)); // Отправляем POST-запрос
+      xmlhttp.onreadystatechange = function() { // Ждём ответа от сервера
+        if (xmlhttp.readyState == 4) { // Ответ пришёл
+          if(xmlhttp.status == 200) { // Сервер вернул код 200 (что хорошо)
+            document.getElementById("response").innerHTML = xmlhttp.responseText; // Выводим ответ сервера
+            console.log('id: ' + (<?php echo ($id);?>) + ' ответ сервера: ' + xmlhttp.responseText)
+          }
+        }
+      };
+    }
+    
+
+
+
     function startStreaming() {
 
         streamingStarted = true;
         streamingButton.removeClass('btn-primary').addClass('btn-danger');
         streamingButton.text('STOP');
         gameVideoState = true;
+        sendToBase()
         
 
         if (input) {
@@ -689,7 +732,7 @@ phoneLinkBtn.onclick = function() {
         streamingButton.removeClass('btn-danger').addClass('btn-primary');
         streamingButton.text('START');
         gameVideoState = false;
-       
+        sendToBase()
 
         if (input) {
             createInput();

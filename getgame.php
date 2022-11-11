@@ -100,7 +100,7 @@ foreach ($stmt as $row) {
                 ';
             } else if ($_SESSION["user_role"] == 2) {
                 echo '
-                <div><a href=https://'.$_SERVER[HTTP_HOST].'/video.php?id='.$row['id'].'><i class="bi bi-camera-reels" style="color:red;"></i></a></div>
+                <div><a href=https://'.$_SERVER['HTTP_HOST'].'/video.php?id='.$row['id'].'><i class="bi bi-camera-reels" style="color:red;"></i></a></div>
                 ';
             } else {
                 if ($row['end_match'] == 1){

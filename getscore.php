@@ -39,8 +39,8 @@ else {
 	if ($codeVer >= 2) {
 	
 		//Собираем название игры
-		if ($data['gameData']['bestOf'] > '0') {
-			$gameto = 'Лучший из '.$data['gameData']['bestOf'].' легов';
+		if ($data['gameData']['bestOf'] > 0) {
+			$gameTo = 'Лучший из '.$data['gameData']['bestOf'].' легов';
 			$viewSets = false;
 			}
 		elseif ($data['gameData']['firstToSets'] > '1') {
