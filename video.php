@@ -212,7 +212,6 @@ if ($_SESSION['user_role'] < 1) {
             </ul>
         </div>
     </div>
-<div id="response" class="h1 alert"></div>
 </div>
 <?php
 }
