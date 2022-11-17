@@ -74,7 +74,7 @@ $total_rows = $row['count'];
 $total_pages = ceil($total_rows / $size_page);
 
 
-$stmt = pdo()->prepare("SELECT id, gamer1_name, legs1, gamer2_name, legs2, last_update, tag, end_match, video, code_version FROM games WHERE (gamer1_name LIKE '$name' OR gamer2_name LIKE '$name') AND (tag LIKE '$tag' OR tag IS NULL) AND last_update LIKE '%$dategame%' ORDER BY last_update DESC LIMIT $offset, $size_page");
+$stmt = pdo()->prepare("SELECT id, game_type, gamer1_name, legs1, gamer2_name, legs2, last_update, tag, end_match, video, code_version FROM games WHERE (gamer1_name LIKE '$name' OR gamer2_name LIKE '$name') AND (tag LIKE '$tag' OR tag IS NULL) AND last_update LIKE '%$dategame%' ORDER BY last_update DESC LIMIT $offset, $size_page");
 $stmt->execute();
 $empty = $stmt->rowCount() === 0;
 
@@ -122,7 +122,7 @@ foreach ($stmt as $row) {
                 } else { 
                     echo '
                     <div class="d-block d-md-none"><a href=score.php?id='.$row['id'].'&view=phone><i class="bi bi-phone"></i></a></div>
-                    <div class="d-block d-sm-none"><a href=score.php?id='.$row['id'].'&view=desktop><i class="bi bi-display"></i></a></div>
+                    <div class="d-none d-sm-block"><a href=score.php?id='.$row['id'].'&view=desktop><i class="bi bi-display"></i></a></div>
                     ';
                 }
             }
