@@ -23,7 +23,7 @@ if ($view == "phone") {
 
 <div class="container">
     <div class="row bg-dark text-white">
-        <div class="col-md-12"><strong><span id="gameType"></span>&nbsp;<span id="gameName"></span></strong></div>
+        <div class="col-md-12"><strong><span id="gamePlayersCount"></span>&nbsp;<span id="gameName"></span></strong></div>
     </div>
 </div>
 <div class="container">
@@ -140,7 +140,7 @@ if ($video == true ) {
 -->
 <div class="container">
     <div class="row bg-dark text-white" style="font-size:20px;">
-        <div class="col-md-12"><strong><span id="gameType"></span>&nbsp;<span id="gameName"></span></strong></div>
+        <div class="col-md-12"><strong><span id="gamePlayersCount"></span>&nbsp;<span id="gameName"></span></strong></div>
     </div>
 </div>
 <div class="container ">
@@ -268,7 +268,7 @@ if ($video == true ) {
     <div class="container-fluid" style="font-size: 30px;">
     <div class="row bg-dark text-white">
         <div class="col-6">
-            <span id="gameType"></span>&nbsp;<span id="gameName"></span>
+            <span id="gamePlayersCount"></span>&nbsp;<span id="gameName"></span>
         </div>
         <div class="col-2 text-center">PTS</div>
         <div class="col-2 text-center">Score</div>

@@ -56,19 +56,19 @@ else {
 			{
 			$players1 = $data['player1']['name1'];
 			$players2 = $data['player2']['name1'];
-			$gameType = ' 1 vs 1 ';
+			$gamePlayersCount = ' 1 vs 1 ';
 			}
 		if (($data['gameData']['is2vs2Play']) == "1" ) 
 			{
 			$players1 = ''.$data['player1']['name1'].'<br>'.$data['player1']['name2'].'';
 			$players2 = ''.$data['player2']['name1'].'<br>'.$data['player2']['name2'].'';
-			$gameType = ' 2 vs 2 ';
+			$gamePlayersCount = ' 2 vs 2 ';
 			}
 		if (($data['gameData']['is3vs3Play']) == "1" ) 
 			{
 			$players1 = $data['player1']['name1'].'<br>'.$data['player1']['name2'].'<br>'.$data['player1']['name3'];
 			$players2 = $data['player2']['name1'].'<br>'.$data['player2']['name2'].'<br>'.$data['player2']['name3'];
-			$gameType = ' 3 vs 3 ';
+			$gamePlayersCount = ' 3 vs 3 ';
 			}
 		// Обратавыем попытки закрытия. 
 		if(isset($data['player1']['doublesAttempt']) && $data['player1']['doublesSuccess'] > 0){
@@ -87,7 +87,7 @@ else {
 		$arr = [
 			'tournamentName' => $data['gameData']['tournamentName'],
 			'stage' => $data['gameData']['stage'],
-			'gameType' => $gameType,
+			'gamePlayersCount' => $gamePlayersCount,
 			'gameName' => $gameTo,
 			'legBegin' => $data['gameData']['beginLeg'],
 			'throwCurrent' => $data['gameData']['currentThrow'], 
@@ -157,19 +157,19 @@ else {
 		    {
 			$Players1 = $Player11;
 			$Players2 = $Player21;
-			$gametype = ' 1 vs 1 ';
+			$gamePlayersCount = ' 1 vs 1 ';
 		    }
 		if (($data["Is2vs2Play"]) == "1" )
 		    {
 			$Players1 = ''.$Player11.'<br>'.$Player12.'';
 			$Players2 = ''.$Player21.'<br>'.$Player22.'';
-			$gametype = ' 2 vs 2 ';
+			$gamePlayersCount = ' 2 vs 2 ';
 		    }
 		if (($data["Is3vs3Play"]) == "1" )
 		    {
 			$Players1 = $Player11.'<br>'.$Player12.'<br>'.$Player13;
 			$Players2 = $Player21.'<br>'.$Player22.'<br>'.$Player23;
-			$gametype = ' 3 vs 3 ';
+			$gamePlayersCount = ' 3 vs 3 ';
 		    }
 		
 		
@@ -203,7 +203,7 @@ else {
 		$arr = [
 			'tournamentName' => ($data["TournamentName"]),
 			'stage' => ($data["stage"]),
-			'gameType' => $gametype,
+			'gamePlayersCount' => $gamePlayersCount,
 			'gameName' => $gameto,
 			'legBegin' => ($data["BeginLeg"]),
 			'throwCurrent' => ($data["CurrentThrow"]), 
