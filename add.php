@@ -22,15 +22,17 @@ if ($codeVer >= 2) { // Если версия код 2, то действуем 
 
 	$gameType = 'x01';
 	 
-	if ($codeVer = 3) { // если вервия кода 3, то проверяем тип игры, остальное, как в версии 2
+	if ($codeVer = 3) { // если версия кода 3, то проверяем тип игры, остальное, как в версии 2
+		$gameType = $data['gameData']['gameType'];
+		$gameTypeName = 'x01';
 		if (($data['gameData']['gameType']) == "Cricket") {
-			$gameType = 'Крикет';
+			$gameTypeName = 'Крикет';
 			if (($data['gameData']['cricketWithScores']) == true)
-				$gameType = $gameType.' с набором очков';
+				$gameTypeName = $gameTypeName.' с набором очков';
 			else 
-				$gameType = $gameType;
+				$gameTypeName = $gameTypeName;
 		}
-		else $gameType = $data['gameData']['gameType'];
+		else $gameTypeName = $data['gameData']['gameType'];
 	}
 
 
@@ -68,7 +70,7 @@ if ($codeVer >= 2) { // Если версия код 2, то действуем 
 	$endGame = $data['gameData']['gameEnd'];
 
 // Формируем запрос к БД
-$stmt = pdo()->prepare("INSERT INTO games (guid, game_type, gamer1_name, sets1, legs1, gamer2_name, sets2, legs2, json, last_update, tag, code_version) VALUES ('$guid', '$gameType', '$players1', '$sets1', '$legs1', '$players2', '$sets2', '$legs2', '$json', '$curtime' , '$tag', '$codeVer') ON DUPLICATE KEY UPDATE game_type = '$gameType', gamer1_name = '$players1', sets1 = '$sets1', legs1 = '$legs1', gamer2_name= '$players2', sets2 = '$sets2', legs2 = '$legs2', json = '$json', end_match = '$endGame';");
+$stmt = pdo()->prepare("INSERT INTO games (guid, game_type, game_type_name gamer1_name, sets1, legs1, gamer2_name, sets2, legs2, json, last_update, tag, code_version) VALUES ('$guid', '$gameType', '$gameTypeName', '$players1', '$sets1', '$legs1', '$players2', '$sets2', '$legs2', '$json', '$curtime' , '$tag', '$codeVer') ON DUPLICATE KEY UPDATE game_type = '$gameType', game_type_name = '$gameTypeName', gamer1_name = '$players1', sets1 = '$sets1', legs1 = '$legs1', gamer2_name= '$players2', sets2 = '$sets2', legs2 = '$legs2', json = '$json', end_match = '$endGame';");
 // $stmt = pdo()->prepare("INSERT INTO games (guid, gamer1_name, sets1, legs1, gamer2_name, sets2, legs2, json, last_update, tag, code_version) VALUES (:guid, :players1, :sets1, :legs1, :players2, :sets2, :legs2, :json, :curtime, :tag, :codeVer) ON DUPLICATE KEY UPDATE gamer1_name = :players1, sets1 = :sets1, legs1 = :legs1, gamer2_name= :players2, sets2 = :sets2, legs2 = :legs2, json = :json, end_match = :endGame ;");
 	// $sql = "INSERT INTO games (guid, gamer1_name, sets1, legs1, gamer2_name, sets2, legs2, json, last_update, tag, code_version) VALUES ('$guid', '$players1', '$sets1', '$legs1', '$players2', '$sets2', '$legs2', '$json', '$curtime' , '$tag', '$codeVer') ON DUPLICATE KEY UPDATE gamer1_name = '$players1', sets1 = '$sets1', legs1 = '$legs1', gamer2_name= '$players2', sets2 = '$sets2', legs2 = '$legs2', json = '$json', end_match = '$endGame';";
 

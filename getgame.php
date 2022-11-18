@@ -74,7 +74,8 @@ $total_rows = $row['count'];
 $total_pages = ceil($total_rows / $size_page);
 
 
-$stmt = pdo()->prepare("SELECT id, game_type, gamer1_name, legs1, gamer2_name, legs2, last_update, tag, end_match, video, code_version FROM games WHERE (gamer1_name LIKE '$name' OR gamer2_name LIKE '$name') AND (tag LIKE '$tag' OR tag IS NULL) AND last_update LIKE '%$dategame%' ORDER BY last_update DESC LIMIT $offset, $size_page");
+// $stmt = pdo()->prepare("SELECT id, game_type, game_type_name gamer1_name, legs1, gamer2_name, legs2, last_update, tag, end_match, video, code_version FROM games WHERE (gamer1_name LIKE '$name' OR gamer2_name LIKE '$name') AND (tag LIKE '$tag' OR tag IS NULL) AND last_update LIKE '%$dategame%' ORDER BY last_update DESC LIMIT $offset, $size_page");
+$stmt = pdo()->prepare("SELECT * FROM games WHERE (gamer1_name LIKE '$name' OR gamer2_name LIKE '$name') AND (tag LIKE '$tag' OR tag IS NULL) AND last_update LIKE '%$dategame%' ORDER BY last_update DESC LIMIT $offset, $size_page");
 $stmt->execute();
 $empty = $stmt->rowCount() === 0;
 
@@ -93,38 +94,75 @@ foreach ($stmt as $row) {
             <div class="row d-flex align-items-center">
             <div class="col-1 d-flex flex-column align-items-center align-content-center" style="font-size: 25px;">
             ';
-            if ($_SESSION['user_role'] == 1) {
-                echo '
-                <div class=""><a href="#'.$row["id"].'" onclick=deleteGame('.$row["id"].') <i class="bi bi-trash" style="color:red;"></i></a></div>
-                <div class=""><a href="#" onclick=editGame(id='.$row["id"].') <i class="bi bi-pencil-square" style="color:green;"></i></a></div>
-                <div class="d-block d-md-none"><a href=score.php?id='.$row['id'].'&view=phone><i class="bi bi-phone"></i></a></div>
-                <div class="d-none d-sm-block"><a href=score.php?id='.$row['id'].'&view=desktop><i class="bi bi-display"></i></a></div>
-                ';
-            
-            } else if ($_SESSION["user_role"] == 2 && $row['end_match'] != 1) {
-                 echo '               
-                <div class=""><a href=https://'.$_SERVER['HTTP_HOST'].'/video.php?id='.$row['id'].'><i class="bi bi-camera-reels" style="color:green;"></i></a></div>
-                <div class="d-block d-md-none" ><a href=score.php?id='.$row['id'].'&view=phone><i class="bi bi-phone"></i></a></div>
-                <div class="d-none d-sm-block" ><a href=score.php?id='.$row['id'].'&view=desktop><i class="bi bi-display"></i></a></div>
-                ';
-            } else if ($_SESSION["user_role"] == 2 && $row['end_match'] == 1) {
-                echo '               
-               <div class=""><a href="#"><i class="bi bi-camera-reels" style="color:red;"></i></a></div>
-               <div class="d-block d-md-none" ><a href=finalscore.php?id='.$row['id'].'&view=phone><i class="bi bi-phone"></i></a></div>
-               <div class="d-none d-sm-block" ><a href=finalscore.php?id='.$row['id'].'&view=desktop><i class="bi bi-display"></i></a></div>
-               ';
-            } else {
-                if ($row['end_match'] == 1){
+            if ($row['game_type'] == 'Cricket') {
+                if ($_SESSION['user_role'] == 1) {
                     echo '
-                    <div class="d-block d-md-none" ><a href=finalscore.php?id='.$row['id'].'&view=phone><i class="bi bi-phone-fill" style="color:green;"></i></a></div>
-                    <div class="d-none d-sm-block" ><a href=finalscore.php?id='.$row['id'].'&view=desktop><i class="bi bi-display-fill" style="color:green;"></i></a></div>
+                    <div class=""><a href="#'.$row["id"].'" onclick=deleteGame('.$row["id"].') <i class="bi bi-trash" style="color:red;"></i></a></div>
+                    <div class=""><a href="#" onclick=editGame(id='.$row["id"].') <i class="bi bi-pencil-square" style="color:green;"></i></a></div>
+                    <div class="d-block d-md-none"><a href=cricket.php?id='.$row['id'].'&view=phone><i class="bi bi-phone"></i></a></div>
+                    <div class="d-none d-sm-block"><a href=cricket.php?id='.$row['id'].'&view=desktop><i class="bi bi-display"></i></a></div>
                     ';
-                } else { 
+                
+                } else if ($_SESSION["user_role"] == 2 && $row['end_match'] != 1) {
+                     echo '               
+                    <div class=""><a href=https://'.$_SERVER['HTTP_HOST'].'/video.php?id='.$row['id'].'><i class="bi bi-camera-reels" style="color:green;"></i></a></div>
+                    <div class="d-block d-md-none" ><a href=cricket.php?id='.$row['id'].'&view=phone><i class="bi bi-phone"></i></a></div>
+                    <div class="d-none d-sm-block" ><a href=cricket.php?id='.$row['id'].'&view=desktop><i class="bi bi-display"></i></a></div>
+                    ';
+                } else if ($_SESSION["user_role"] == 2 && $row['end_match'] == 1) {
+                    echo '               
+                   <div class=""><a href="#"><i class="bi bi-camera-reels" style="color:red;"></i></a></div>
+                   <div class="d-block d-md-none" ><a href=finalcricket.php?id='.$row['id'].'&view=phone><i class="bi bi-phone"></i></a></div>
+                   <div class="d-none d-sm-block" ><a href=finalcricket.php?id='.$row['id'].'&view=desktop><i class="bi bi-display"></i></a></div>
+                   ';
+                } else {
+                    if ($row['end_match'] == 1){
+                        echo '
+                        <div class="d-block d-md-none" ><a href=finalcricket.php?id='.$row['id'].'&view=phone><i class="bi bi-phone-fill" style="color:green;"></i></a></div>
+                        <div class="d-none d-sm-block" ><a href=finalcricket.php?id='.$row['id'].'&view=desktop><i class="bi bi-display-fill" style="color:green;"></i></a></div>
+                        ';
+                    } else { 
+                        echo '
+                        <div class="d-block d-md-none"><a href=cricket.php?id='.$row['id'].'&view=phone><i class="bi bi-phone"></i></a></div>
+                        <div class="d-none d-sm-block"><a href=cricket.php?id='.$row['id'].'&view=desktop><i class="bi bi-display"></i></a></div>
+                        ';
+                    }
+                }
+            } else {
+                if ($_SESSION['user_role'] == 1) {
                     echo '
+                    <div class=""><a href="#'.$row["id"].'" onclick=deleteGame('.$row["id"].') <i class="bi bi-trash" style="color:red;"></i></a></div>
+                    <div class=""><a href="#" onclick=editGame(id='.$row["id"].') <i class="bi bi-pencil-square" style="color:green;"></i></a></div>
                     <div class="d-block d-md-none"><a href=score.php?id='.$row['id'].'&view=phone><i class="bi bi-phone"></i></a></div>
                     <div class="d-none d-sm-block"><a href=score.php?id='.$row['id'].'&view=desktop><i class="bi bi-display"></i></a></div>
                     ';
+                
+                } else if ($_SESSION["user_role"] == 2 && $row['end_match'] != 1) {
+                     echo '               
+                    <div class=""><a href=https://'.$_SERVER['HTTP_HOST'].'/video.php?id='.$row['id'].'><i class="bi bi-camera-reels" style="color:green;"></i></a></div>
+                    <div class="d-block d-md-none" ><a href=score.php?id='.$row['id'].'&view=phone><i class="bi bi-phone"></i></a></div>
+                    <div class="d-none d-sm-block" ><a href=score.php?id='.$row['id'].'&view=desktop><i class="bi bi-display"></i></a></div>
+                    ';
+                } else if ($_SESSION["user_role"] == 2 && $row['end_match'] == 1) {
+                    echo '               
+                   <div class=""><a href="#"><i class="bi bi-camera-reels" style="color:red;"></i></a></div>
+                   <div class="d-block d-md-none" ><a href=finalscore.php?id='.$row['id'].'&view=phone><i class="bi bi-phone"></i></a></div>
+                   <div class="d-none d-sm-block" ><a href=finalscore.php?id='.$row['id'].'&view=desktop><i class="bi bi-display"></i></a></div>
+                   ';
+                } else {
+                    if ($row['end_match'] == 1){
+                        echo '
+                        <div class="d-block d-md-none" ><a href=finalscore.php?id='.$row['id'].'&view=phone><i class="bi bi-phone-fill" style="color:green;"></i></a></div>
+                        <div class="d-none d-sm-block" ><a href=finalscore.php?id='.$row['id'].'&view=desktop><i class="bi bi-display-fill" style="color:green;"></i></a></div>
+                        ';
+                    } else { 
+                        echo '
+                        <div class="d-block d-md-none"><a href=score.php?id='.$row['id'].'&view=phone><i class="bi bi-phone"></i></a></div>
+                        <div class="d-none d-sm-block"><a href=score.php?id='.$row['id'].'&view=desktop><i class="bi bi-display"></i></a></div>
+                        ';
+                    }
                 }
+
             }
             echo '
             </div>
