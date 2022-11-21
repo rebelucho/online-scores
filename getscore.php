@@ -100,6 +100,7 @@ else {
 				'gameName' => $gameTo,
 				'legBegin' => $data['gameData']['beginLeg'],
 				'throwCurrent' => $data['gameData']['currentThrow'], 
+				'cricketWithScores' => $data['gameData']['cricketWithScores'],
 				'player1Name' => $players1,
 				'player1Name1' => $data['player1']['name1'],
 				'player1Name2' => $data['player1']['name2'],

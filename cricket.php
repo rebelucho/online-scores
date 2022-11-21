@@ -28,7 +28,7 @@ if (isset($_GET['video']))
 else
     $video = false;
 
-if ($view == "phone") {
+// if ($view == "phone") {
 
 ?>
 <!--
@@ -41,10 +41,10 @@ if ($view == "phone") {
         <div id="scoresId" class="col-2 col-md-1">VS</div>
         <div id="player2Name" class="col-5 col-md-2">Player2</div>
     </div>
-    <div class="row justify-content-center align-items-center text-center" style="height: 75px;">
-        <div id="player1PTS" class="col-5 col-md-2">0</div>
-        <div class="col-2 col-md-1">Scores</div>
-        <div id="player2PTS" class="col-5 col-md-2">0</div>
+    <div class="row justify-content-center align-items-center text-center">
+        <div id="player1PTS" class="col-5 col-md-2"></div>
+        <div id="rowPts" class="col-2 col-md-1"></div>
+        <div id="player2PTS" class="col-5 col-md-2"></div>
     </div>
     <div class="row justify-content-center align-items-center text-center" style="height: 75px;">
         <div id="player1s20Score" class="col-2 col-md-1">0</div>
@@ -97,7 +97,8 @@ if ($view == "phone") {
     </div>
 </div>
 
-<?php }
+<?php 
+// }
 
 
 ?>

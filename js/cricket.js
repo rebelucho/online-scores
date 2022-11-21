@@ -39,6 +39,7 @@ let player2s17ScoreId = document.getElementById("player2s17Score")
 let player2s16ScoreId = document.getElementById("player2s16Score")
 let player2s15ScoreId = document.getElementById("player2s15Score")
 let player2sBullScoreId = document.getElementById("player2sBullScore")
+let rowPointsId = document.getElementById("rowPts")
 let scoresId = document.getElementById("scoresId")
 let s20 = document.getElementById("s20")
 let s19 = document.getElementById("s19")
@@ -105,6 +106,7 @@ function getScore() {
             gamePlayersCount = data.gamePlayersCount
             gameName = data.gameName
             legBegin = data.legBegin
+            cricketWithScores = data.cricketWithScores
             throwCurrent = data.throwCurrent
             player1Name = data.player1Name
             player1Name1 = data.player1Name1
@@ -232,34 +234,39 @@ function replaceGameData() {
     player2s15ScoreId.innerHTML = sectorScoreCounter(15, player2s15)
     player2sBullId.innerHTML = sectorScore(2, 25, player2sBull)
     player2sBullScoreId.innerHTML = sectorScoreCounter(25, player2sBull)
-    scoresId.innerHTML = '<span class="fs-2 fw-bold">' + player1Legs + ' : ' + player2Legs + '</span>'
-    if (player1s20 >= 3 && player2s20 >= 3) { s20.innerHTML = '<span class="line-through fs-1 fw-bold"> 20 </span>' } else { s20.innerHTML = '<span class="fs-1 fw-bold">20</span >' }
-    if (player1s19 >= 3 && player2s19 >= 3) { s19.innerHTML = '<span class="line-through fs-1 fw-bold"> 19 </span>' } else { s19.innerHTML = '<span class="fs-1 fw-bold">19</span >' }
-    if (player1s18 >= 3 && player2s18 >= 3) { s18.innerHTML = '<span class="line-through fs-1 fw-bold"> 18 </span>' } else { s18.innerHTML = '<span class="fs-1 fw-bold">18</span >' }
-    if (player1s17 >= 3 && player2s17 >= 3) { s17.innerHTML = '<span class="line-through fs-1 fw-bold"> 17 </span>' } else { s17.innerHTML = '<span class="fs-1 fw-bold">17</span >' }
-    if (player1s16 >= 3 && player2s16 >= 3) { s16.innerHTML = '<span class="line-through fs-1 fw-bold"> 16 </span>' } else { s16.innerHTML = '<span class="fs-1 fw-bold">16</span >' }
-    if (player1s15 >= 3 && player2s15 >= 3) { s15.innerHTML = '<span class="line-through fs-1 fw-bold"> 15 </span>' } else { s15.innerHTML = '<span class="fs-1 fw-bold">15</span >' }
-    if (player1sBull >= 3 && player2sBull >= 3) { sBull.innerHTML = '<span class="line-through fs-1 fw-bold"> Bull </span>' } else { sBull.innerHTML = '<span class="fs-1 fw-bold">Bull</span >' }
-
+    scoresId.innerHTML = '<span class="fs-2 fw-bold">' + player1Legs + ':' + player2Legs + '</span>'
+    if (player1s20 >= 3 && player2s20 >= 3) { s20.innerHTML = '<span class="line-through fs-1 fw-bold text-muted"> 20 </span>' } else { s20.innerHTML = '<span class="fs-1 fw-bold">20</span >' }
+    if (player1s19 >= 3 && player2s19 >= 3) { s19.innerHTML = '<span class="line-through fs-1 fw-bold text-muted"> 19 </span>' } else { s19.innerHTML = '<span class="fs-1 fw-bold">19</span >' }
+    if (player1s18 >= 3 && player2s18 >= 3) { s18.innerHTML = '<span class="line-through fs-1 fw-bold text-muted"> 18 </span>' } else { s18.innerHTML = '<span class="fs-1 fw-bold">18</span >' }
+    if (player1s17 >= 3 && player2s17 >= 3) { s17.innerHTML = '<span class="line-through fs-1 fw-bold text-muted"> 17 </span>' } else { s17.innerHTML = '<span class="fs-1 fw-bold">17</span >' }
+    if (player1s16 >= 3 && player2s16 >= 3) { s16.innerHTML = '<span class="line-through fs-1 fw-bold text-muted"> 16 </span>' } else { s16.innerHTML = '<span class="fs-1 fw-bold">16</span >' }
+    if (player1s15 >= 3 && player2s15 >= 3) { s15.innerHTML = '<span class="line-through fs-1 fw-bold text-muted"> 15 </span>' } else { s15.innerHTML = '<span class="fs-1 fw-bold">15</span >' }
+    if (player1sBull >= 3 && player2sBull >= 3) { sBull.innerHTML = '<span class="line-through fs-1 fw-bold text-muted"> Bull </span>' } else { sBull.innerHTML = '<span class="fs-1 fw-bold">Bull</span >' }
+    console.log(cricketWithScores)
+    if (cricketWithScores == true) {
+        rowPointsId.innerHTML = '<span class="fs-2">Score</span>'
+    } else {
+        rowPointsId.innerHTML = ''
+    }
     if (throwCurrent = 1) {
         player1NameId.innerHTML = '<span class="h2 text-success">' + player1Name + '</span>'
         player2NameId.innerHTML = '<span class="h2">' + player2Name + '</span>'
         if ((player1Pts - player2Pts) > 0) {
             player1PTSId.innerHTML = '<span class="text-success fw-bolder fs-2"> +' + (player1Pts - player2Pts) + '</span><br><span>' + player1Pts + '</span>'
-            player2PTSId.innerHTML = '<span class="text-danger">' + player2Pts + '</span>'
+            player2PTSId.innerHTML = '<span class="text-danger fw-bolder fs-2">' + player2Pts + '</span>'
         } else if ((player1Pts - player2Pts) < 0) {
             player1PTSId.innerHTML = '<span class="text-danger fw-bolder fs-2" >' + (player1Pts - player2Pts) + '</span><br><span>' + player1Pts + '</span>'
-            player2PTSId.innerHTML = '<span class="text-success">' + player2Pts + '</span>'
+            player2PTSId.innerHTML = '<span class="text-success fw-bolder fs-2">' + player2Pts + '</span>'
         }
     } else if (throwCurrent = 2) {
         player1NameId.innerHTML = '<span class="h2">' + player1Name + '</span>'
-        player2NameId.innerHTML = '<span class="h2 text-success fw-bolder fs-2">' + player2Name + '</span>'
+        player2NameId.innerHTML = '<span class="h2 text-success">' + player2Name + '</span>'
         if ((player2Pts - player1Pts) > 0) {
-            player1PTSId.innerHTML = '<span class="text-danger">' + player1Pts + '</span>'
+            player1PTSId.innerHTML = '<span class="text-danger fw-bolder fs-2">' + player1Pts + '</span>'
             player2PTSId.innerHTML = '<span class="text-success fw-bolder fs-2"> +' + (player2Pts - player1Pts) + '</span><br><span>' + player2Pts + '</span>'
         } else if ((player2Pts - player1Pts) < 0) {
-            player1PTSId.innerHTML = '<span class="text-success ">' + player1Pts + '</span>'
-            player2PTSId.innerHTML = '<span class="text-danger">' + (player2Pts - player1Pts) + '</span> <span>' + player2Pts + '</span>'
+            player1PTSId.innerHTML = '<span class="text-success fw-bolder fs-2">' + player1Pts + '</span>'
+            player2PTSId.innerHTML = '<span class="text-danger fw-bolder fs-2">' + (player2Pts - player1Pts) + '</span> <span>' + player2Pts + '</span>'
         }
     } else {
         player1NameId.innerHTML = '<span class="h2">' + player1Name + '</span>'
