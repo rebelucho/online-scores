@@ -12,7 +12,7 @@ if(isset($_POST['last_update'])){
 $codeVer = '1';
 
 // формируем запрос к БД
-$stmt = pdo()->prepare("SELECT last_update, game_type, json FROM games WHERE id = ?");
+$stmt = pdo()->prepare("SELECT last_update, game_type, game_type_name, json FROM games WHERE id = ?");
 $stmt->execute([$_POST['id']]);
 
 // Разбираем полученные данные
@@ -72,6 +72,26 @@ else {
 			}
 
 		if ($gameType == 'Cricket') {
+
+			// Посчитаем количество очков
+			if ($data['player1']['s20'] > 3) $player1S20Pts = ($data['player1']['s20'] - 3) * 20; else $player1S20Pts = 0;
+			if ($data['player1']['s19'] > 3) $player1S19Pts = ($data['player1']['s19'] - 3) * 19; else $player1S19Pts = 0;
+			if ($data['player1']['s18'] > 3) $player1S18Pts = ($data['player1']['s18'] - 3) * 18; else $player1S18Pts = 0;
+			if ($data['player1']['s17'] > 3) $player1S17Pts = ($data['player1']['s17'] - 3) * 17; else $player1S17Pts = 0;
+			if ($data['player1']['s16'] > 3) $player1S16Pts = ($data['player1']['s16'] - 3) * 16; else $player1S16Pts = 0;
+			if ($data['player1']['s15'] > 3) $player1S15Pts = ($data['player1']['s15'] - 3) * 15; else $player1S15Pts = 0;
+			if ($data['player1']['sBull'] > 3) $player1SBullPts = ($data['player1']['sBull'] - 3) * 25; else $player1SBullPts = 0;
+			$player1Pts = $player1S20Pts + $player1S19Pts + $player1S18Pts + $player1S17Pts + $player1S16Pts + $player1S15Pts + $player1SBullPts;
+
+			if ($data['player2']['s20'] > 3) $player2S20Pts = ($data['player2']['s20'] - 3) * 20; else $player2S20Pts = 0;
+			if ($data['player2']['s19'] > 3) $player2S19Pts = ($data['player2']['s19'] - 3) * 19; else $player2S19Pts = 0;
+			if ($data['player2']['s18'] > 3) $player2S18Pts = ($data['player2']['s18'] - 3) * 18; else $player2S18Pts = 0;
+			if ($data['player2']['s17'] > 3) $player2S17Pts = ($data['player2']['s17'] - 3) * 17; else $player2S17Pts = 0;
+			if ($data['player2']['s16'] > 3) $player2S16Pts = ($data['player2']['s16'] - 3) * 16; else $player2S16Pts = 0;
+			if ($data['player2']['s15'] > 3) $player2S15Pts = ($data['player2']['s15'] - 3) * 15; else $player2S15Pts = 0;
+			if ($data['player2']['sBull'] > 3) $player2SBullPts = ($data['player2']['sBull'] - 3) * 25; else $player2SBullPts = 0;
+			$player2Pts = $player2S20Pts + $player2S19Pts + $player2S18Pts + $player2S17Pts + $player2S16Pts + $player2S15Pts + $player2SBullPts;
+
 			// Собираем json для передачи в js
 			$arr = [
 				'tournamentName' => $data['gameData']['tournamentName'],
@@ -88,6 +108,7 @@ else {
 				'player1Legs' => $data['player1']['legs'],
 				'player1Sets' => $data['player1']['sets'],
 				'player1DartsThrown' => $data['player1']['dartsThrown'],
+				'player1Pts' => $player1Pts,
 				'player1s20' => $data['player1']['s20'],
 				'player1s19' => $data['player1']['s19'],
 				'player1s18' => $data['player1']['s18'],
@@ -105,6 +126,7 @@ else {
 				'player2Legs' => $data['player2']['legs'],
 				'player2Sets' => $data['player2']['sets'],
 				'player2DartsThrown' => $data['player2']['dartsThrown'],
+				'player2Pts' => $player2Pts,
 				'player2s20' => $data['player2']['s20'],
 				'player2s19' => $data['player2']['s19'],
 				'player2s18' => $data['player2']['s18'],

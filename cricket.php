@@ -36,50 +36,64 @@ if ($view == "phone") {
 -->
 
 <div class="container">
-    <div class="row justify-content-center align-items-center g-2 text-center">
-        <div id="player1Name" class="col-5">Player1</div>
-        <div class="col-2">PTS</div>
-        <div id="player2Name" class="col-5">Player2</div>
+    <div class="row justify-content-center align-items-center text-center" style="height: 75px;">
+        <div id="player1Name" class="col-5 col-md-2">Player1</div>
+        <div id="scoresId" class="col-2 col-md-1">VS</div>
+        <div id="player2Name" class="col-5 col-md-2">Player2</div>
     </div>
-    <div class="row justify-content-center align-items-center g-2 text-center">
-        <div id="player1PTS" class="col-5">+40</div>
-        <div class="col-2">Scores</div>
-        <div id="player2PTS" class="col-5">100</div>
+    <div class="row justify-content-center align-items-center text-center" style="height: 75px;">
+        <div id="player1PTS" class="col-5 col-md-2">0</div>
+        <div class="col-2 col-md-1">Scores</div>
+        <div id="player2PTS" class="col-5 col-md-2">0</div>
     </div>
-    <div class="row justify-content-center align-items-center g-2 text-center">
-        <div id="player1s20" class="col-5">-</div>
-        <div class="col-2">20</div>
-        <div id="player2s20" class="col-5">-</div>
+    <div class="row justify-content-center align-items-center text-center" style="height: 75px;">
+        <div id="player1s20Score" class="col-2 col-md-1">0</div>
+        <div id="player1s20" class="col-3 col-md-1">-</div>
+        <div id="s20" class="col-2 col-md-1">20</div>
+        <div id="player2s20" class="col-3 col-md-1">-</div>
+        <div id="player2s20Score" class="col-2 col-md-1">0</div>
     </div>
-    <div class="row justify-content-center align-items-center g-2 text-center">
-        <div id="player1s19" class="col-5">-</div>
-        <div class="col-2">19</div>
-        <div id="player2s19" class="col-5">-</div>
+    <div class="row justify-content-center align-items-center text-center" style="height: 75px;">
+        <div id="player1s19Score" class="col-2 col-md-1">0</div>
+        <div id="player1s19" class="col-3 col-md-1">-</div>
+        <div id="s19"class="col-2 col-md-1">19</div>
+        <div id="player2s19" class="col-3 col-md-1">-</div>
+        <div id="player2s19Score" class="col-2 col-md-1">0</div>
     </div>
-    <div class="row justify-content-center align-items-center g-2 text-center">
-        <div id="player1s18" class="col-5">-</div>
-        <div class="col-2">18</div>
-        <div id="player2s18" class="col-5">-</div>
+    <div class="row justify-content-center align-items-center text-center" style="height: 75px;">
+        <div id="player1s18Score" class="col-2 col-md-1">0</div>
+        <div id="player1s18" class="col-3 col-md-1">-</div>
+        <div id="s18" class="col-2 col-md-1">18</div>
+        <div id="player2s18" class="col-3 col-md-1">-</div>
+        <div id="player2s18Score" class="col-2 col-md-1">0</div>
     </div>
-    <div class="row justify-content-center align-items-center g-2 text-center">
-        <div id="player1s17"  class="col-5">-</div>
-        <div class="col-2">17</div>
-        <div id="player2s17" class="col-5">-</div>
+    <div class="row justify-content-center align-items-center text-center" style="height: 75px;">
+        <div id="player1s17Score" class="col-2 col-md-1">0</div>
+        <div id="player1s17"  class="col-3 col-md-1">-</div>
+        <div id="s17" class="col-2 col-md-1">17</div>
+        <div id="player2s17" class="col-3 col-md-1">-</div>
+        <div id="player2s17Score" class="col-2 col-md-1">0</div>
     </div>
-    <div class="row justify-content-center align-items-center g-2 text-center">
-        <div id="player1s16" class="col-5">-</div>
-        <div class="col-2">16</div>
-        <div id="player2s16" class="col-5">-</div>
+    <div class="row justify-content-center align-items-center text-center" style="height: 75px;">
+        <div id="player1s16Score" class="col-2 col-md-1">0</div>
+        <div id="player1s16" class="col-3 col-md-1">-</div>
+        <div id="s16" class="col-2 col-md-1">16</div>
+        <div id="player2s16" class="col-3 col-md-1">-</div>
+        <div id="player2s16Score" class="col-2 col-md-1">0</div>
     </div>
-    <div class="row justify-content-center align-items-center g-2 text-center">
-        <div id="player1s15" class="col-5">-</div>
-        <div class="col-2">15</div>
-        <div id="player2s15" class="col-5">-</div>
+    <div class="row justify-content-center align-items-center text-center" style="height: 75px;">
+        <div id="player1s15Score" class="col-2 col-md-1">0</div>
+        <div id="player1s15" class="col-3 col-md-1">-</div>
+        <div id="s15" class="col-2 col-md-1">15</div>
+        <div id="player2s15" class="col-3 col-md-1">-</div>
+        <div id="player2s15Score" class="col-2 col-md-1">0</div>
     </div>
-    <div class="row justify-content-center align-items-center g-2 text-center">
-        <div id="player1sBull" class="col-5">-</div>
-        <div class="col-2">Bull</div>
-        <div id="player2sBull" class="col-5">-</div>
+    <div class="row justify-content-center align-items-center text-center" style="height: 75px;">
+        <div id="player1sBullScore" class="col-2 col-md-1">0</div>
+        <div id="player1sBull" class="col-3 col-md-1">-</div>
+        <div id="sBull" class="col-2 col-md-1">Bull</div>
+        <div id="player2sBull" class="col-3 col-md-1">-</div>
+        <div id="player2sBullScore" class="col-2 col-md-1">0</div>
     </div>
 </div>
 
