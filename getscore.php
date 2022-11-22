@@ -45,7 +45,7 @@ else {
 			$viewSets = false;
 			}
 		elseif ($data['gameData']['firstToSets'] > '1') {
-			$gameTo = 'До '.$data['gameData']['firstToSets'].' сетов из '.$data['gameData']['firstToLegs'].'';
+			$gameTo = 'До '.$data['gameData']['firstToSets'].' сетов из '.$data['gameData']['firstToLegs'].' легов';
 			$viewSets = true;
 			}
 		else {
@@ -94,10 +94,12 @@ else {
 
 			// Собираем json для передачи в js
 			$arr = [
+				'gameTypeName' => $gameTypeName,
 				'tournamentName' => $data['gameData']['tournamentName'],
 				'stage' => $data['gameData']['stage'],
 				'gamePlayersCount' => $gamePlayersCount,
 				'gameName' => $gameTo,
+				'viewSets' => $viewSets,
 				'legBegin' => $data['gameData']['beginLeg'],
 				'throwCurrent' => $data['gameData']['currentThrow'], 
 				'cricketWithScores' => $data['gameData']['cricketWithScores'],

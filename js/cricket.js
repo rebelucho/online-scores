@@ -6,11 +6,13 @@ let last_update
     // let tournamentNameId = document.getElementById("tournamentName")
     // let stageId = document.getElementById("stage")
     // let gamePlayersCountId = document.getElementById("gamePlayersCount")
-    // let gameNameId = document.getElementById("gameName")
+let gameNameId = document.getElementById("gameName")
 let player1NameId = document.getElementById("player1Name")
 let player2NameId = document.getElementById("player2Name")
 let player1PTSId = document.getElementById("player1PTS")
 let player2PTSId = document.getElementById("player2PTS")
+let player1PtsCurrentId = document.getElementById("player1PTSCurrent")
+let player2PtsCurrentId = document.getElementById("player2PTSCurrent")
 let player1s20Id = document.getElementById("player1s20")
 let player1s19Id = document.getElementById("player1s19")
 let player1s18Id = document.getElementById("player1s18")
@@ -101,10 +103,12 @@ function getScore() {
         // console.log(data)
         if (data == 'no data') {}
         if (data != 'no data') {
-            tournamentName
+            gameTypeName = data.gameTypeName
+            tournamentName = data.tournamentName
             stage = data.stage
             gamePlayersCount = data.gamePlayersCount
             gameName = data.gameName
+            viewSets = data.viewSets
             legBegin = data.legBegin
             cricketWithScores = data.cricketWithScores
             throwCurrent = data.throwCurrent
@@ -154,7 +158,20 @@ function getScore() {
 
 }
 
+function gameNamePrint() {
+    // let result
+    // if (!tournamentName) {
+    //     result = tournamentName
+    // }
+    // if (!stage) {
+    //     result = result + ' - ' + stage
+    // }
+    // if (!gameName) {
+    let result = gameTypeName + ' | ' + gameName
+        // }
+    return result
 
+}
 
 function sectorScore(player, sector, countDart) {
     if (countDart == 0) {
@@ -205,7 +222,7 @@ function sectorScoreCounter(sector, countDart) {
 
 function replaceGameData() {
 
-
+    gameNameId.innerHTML = gameNamePrint()
     player1s20Id.innerHTML = sectorScore(1, 20, player1s20)
     player1s20ScoreId.innerHTML = sectorScoreCounter(20, player1s20)
     player1s19Id.innerHTML = sectorScore(1, 19, player1s19)
@@ -234,39 +251,66 @@ function replaceGameData() {
     player2s15ScoreId.innerHTML = sectorScoreCounter(15, player2s15)
     player2sBullId.innerHTML = sectorScore(2, 25, player2sBull)
     player2sBullScoreId.innerHTML = sectorScoreCounter(25, player2sBull)
-    scoresId.innerHTML = '<span class="fs-2 fw-bold">' + player1Legs + ':' + player2Legs + '</span>'
-    if (player1s20 >= 3 && player2s20 >= 3) { s20.innerHTML = '<span class="line-through fs-1 fw-bold text-muted"> 20 </span>' } else { s20.innerHTML = '<span class="fs-1 fw-bold">20</span >' }
-    if (player1s19 >= 3 && player2s19 >= 3) { s19.innerHTML = '<span class="line-through fs-1 fw-bold text-muted"> 19 </span>' } else { s19.innerHTML = '<span class="fs-1 fw-bold">19</span >' }
-    if (player1s18 >= 3 && player2s18 >= 3) { s18.innerHTML = '<span class="line-through fs-1 fw-bold text-muted"> 18 </span>' } else { s18.innerHTML = '<span class="fs-1 fw-bold">18</span >' }
-    if (player1s17 >= 3 && player2s17 >= 3) { s17.innerHTML = '<span class="line-through fs-1 fw-bold text-muted"> 17 </span>' } else { s17.innerHTML = '<span class="fs-1 fw-bold">17</span >' }
-    if (player1s16 >= 3 && player2s16 >= 3) { s16.innerHTML = '<span class="line-through fs-1 fw-bold text-muted"> 16 </span>' } else { s16.innerHTML = '<span class="fs-1 fw-bold">16</span >' }
-    if (player1s15 >= 3 && player2s15 >= 3) { s15.innerHTML = '<span class="line-through fs-1 fw-bold text-muted"> 15 </span>' } else { s15.innerHTML = '<span class="fs-1 fw-bold">15</span >' }
-    if (player1sBull >= 3 && player2sBull >= 3) { sBull.innerHTML = '<span class="line-through fs-1 fw-bold text-muted"> Bull </span>' } else { sBull.innerHTML = '<span class="fs-1 fw-bold">Bull</span >' }
-    console.log(cricketWithScores)
-    if (cricketWithScores == true) {
-        rowPointsId.innerHTML = '<span class="fs-2">Score</span>'
+
+    if (viewSets == true) {
+        scoresId.innerHTML = '<span class="fs-2 fw-bold">' + player1Sets + ':' + player2Sets + '</span>'
     } else {
-        rowPointsId.innerHTML = ''
+        scoresId.innerHTML = '<span class="fs-2 fw-bold">' + player1Legs + ':' + player2Legs + '</span>'
     }
-    if (throwCurrent = 1) {
-        player1NameId.innerHTML = '<span class="h2 text-success">' + player1Name + '</span>'
-        player2NameId.innerHTML = '<span class="h2">' + player2Name + '</span>'
-        if ((player1Pts - player2Pts) > 0) {
-            player1PTSId.innerHTML = '<span class="text-success fw-bolder fs-2"> +' + (player1Pts - player2Pts) + '</span><br><span>' + player1Pts + '</span>'
-            player2PTSId.innerHTML = '<span class="text-danger fw-bolder fs-2">' + player2Pts + '</span>'
-        } else if ((player1Pts - player2Pts) < 0) {
-            player1PTSId.innerHTML = '<span class="text-danger fw-bolder fs-2" >' + (player1Pts - player2Pts) + '</span><br><span>' + player1Pts + '</span>'
-            player2PTSId.innerHTML = '<span class="text-success fw-bolder fs-2">' + player2Pts + '</span>'
+
+    if (player1s20 >= 3 && player2s20 >= 3) { s20.innerHTML = '<span class="text-decoration-line-through fs-1 fw-bold text-muted"> 20 </span>' } else { s20.innerHTML = '<span class="fs-1 fw-bold"> 20 </span >' }
+    if (player1s19 >= 3 && player2s19 >= 3) { s19.innerHTML = '<span class="text-decoration-line-through fs-1 fw-bold text-muted"> 19 </span>' } else { s19.innerHTML = '<span class="fs-1 fw-bold"> 19 </span >' }
+    if (player1s18 >= 3 && player2s18 >= 3) { s18.innerHTML = '<span class="text-decoration-line-through fs-1 fw-bold text-muted"> 18 </span>' } else { s18.innerHTML = '<span class="fs-1 fw-bold"> 18 </span >' }
+    if (player1s17 >= 3 && player2s17 >= 3) { s17.innerHTML = '<span class="text-decoration-line-through fs-1 fw-bold text-muted"> 17 </span>' } else { s17.innerHTML = '<span class="fs-1 fw-bold"> 17 </span >' }
+    if (player1s16 >= 3 && player2s16 >= 3) { s16.innerHTML = '<span class="text-decoration-line-through fs-1 fw-bold text-muted"> 16 </span>' } else { s16.innerHTML = '<span class="fs-1 fw-bold"> 16 </span >' }
+    if (player1s15 >= 3 && player2s15 >= 3) { s15.innerHTML = '<span class="text-decoration-line-through fs-1 fw-bold text-muted"> 15 </span>' } else { s15.innerHTML = '<span class="fs-1 fw-bold "> 15 </span >' }
+    if (player1sBull >= 3 && player2sBull >= 3) { sBull.innerHTML = '<span class="text-decoration-line-through fs-1 fw-bold text-muted"> Bull </span>' } else { sBull.innerHTML = '<span class="fs-1 fw-bold "> Bull </span >' }
+    // console.log(cricketWithScores)
+    if (viewSets == true) {
+        rowPointsId.innerHTML = '<span class="fs-2 fw-bold">' + player1Legs + ':' + player2Legs + '</span>'
+    } else {
+        if (cricketWithScores == true) {
+            rowPointsId.innerHTML = '<span class="fs-5">Score</span>'
+        } else {
+            rowPointsId.innerHTML = ''
         }
-    } else if (throwCurrent = 2) {
-        player1NameId.innerHTML = '<span class="h2">' + player1Name + '</span>'
-        player2NameId.innerHTML = '<span class="h2 text-success">' + player2Name + '</span>'
+    }
+    // console.log(throwCurrent)
+    if (throwCurrent == 1) {
+        player1NameId.innerHTML = '<span class="text-success">' + player1Name + '</span>'
+        player2NameId.innerHTML = player2Name
+        if ((player1Pts - player2Pts) > 0) {
+            player1PtsCurrentId.innerHTML = player1Pts
+            player1PTSId.innerHTML = '<span class="text-success fw-bolder fs-2"> +' + (player1Pts - player2Pts) + '</span>'
+            player2PTSId.innerHTML = '<span class="text-danger fw-bolder fs-2">' + player2Pts + '</span>'
+            player2PtsCurrentId.innerHTML = ''
+        } else if ((player1Pts - player2Pts) < 0) {
+            player1PtsCurrentId.innerHTML = player1Pts
+            player1PTSId.innerHTML = '<span class="text-danger fw-bolder fs-2" >' + (player1Pts - player2Pts) + '</span><br>'
+            player2PTSId.innerHTML = '<span class="text-success fw-bolder fs-2">' + player2Pts + '</span>'
+            player2PtsCurrentId.innerHTML = ''
+        } else {
+            player1PtsCurrentId.innerHTML = ''
+            player1PTSId.innerHTML = '<span class="fw-bolder fs-2">' + player1Pts + '</span>'
+            player2PTSId.innerHTML = '<span class="fw-bolder fs-2">' + player2Pts + '</span>'
+            player2PtsCurrentId.innerHTML = ''
+        }
+    } else if (throwCurrent == 2) {
+        player1NameId.innerHTML = player1Name
+        player2NameId.innerHTML = '<span class="text-success">' + player2Name + '</span>'
         if ((player2Pts - player1Pts) > 0) {
             player1PTSId.innerHTML = '<span class="text-danger fw-bolder fs-2">' + player1Pts + '</span>'
-            player2PTSId.innerHTML = '<span class="text-success fw-bolder fs-2"> +' + (player2Pts - player1Pts) + '</span><br><span>' + player2Pts + '</span>'
+            player2PTSId.innerHTML = '<span class="text-success fw-bolder fs-2"> +' + (player2Pts - player1Pts) + '</span>'
+            player2PtsCurrentId.innerHTML = player2Pts
         } else if ((player2Pts - player1Pts) < 0) {
             player1PTSId.innerHTML = '<span class="text-success fw-bolder fs-2">' + player1Pts + '</span>'
-            player2PTSId.innerHTML = '<span class="text-danger fw-bolder fs-2">' + (player2Pts - player1Pts) + '</span> <span>' + player2Pts + '</span>'
+            player2PTSId.innerHTML = '<span class="text-danger fw-bolder fs-2">' + (player2Pts - player1Pts) + '</span>'
+            player2PtsCurrentId.innerHTML = player2Pts
+        } else {
+            player1PtsCurrentId.innerHTML = ''
+            player1PTSId.innerHTML = '<span class="fw-bolder fs-2">' + player1Pts + '</span>'
+            player2PTSId.innerHTML = '<span class="fw-bolder fs-2">' + player2Pts + '</span>'
+            player2PtsCurrentId.innerHTML = ''
         }
     } else {
         player1NameId.innerHTML = '<span class="h2">' + player1Name + '</span>'
@@ -280,3 +324,18 @@ function replaceGameData() {
 
 getScore()
 setInterval(getScore, 2000)
+
+var noSleep = new NoSleep();
+var wakeLockEnabled = false;
+var toggleEl = document.querySelector("#toggle");
+toggleEl.addEventListener('click', function() {
+    if (!wakeLockEnabled) {
+        noSleep.enable(); // keep the screen on!
+        wakeLockEnabled = true;
+        toggleEl.value = "Переход в спящий режим: отключен!";
+    } else {
+        noSleep.disable(); // let the screen turn off.
+        wakeLockEnabled = false;
+        toggleEl.value = "Переходить в спящий режим: включено";
+    }
+}, false);
