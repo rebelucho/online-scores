@@ -36,3 +36,25 @@ if (array_key_exists('codeVer', $data)) {
 } else {
 	$codeVer = "1";	
 }
+
+if ($codeVer < 3) {
+    echo '<div class="h1 text-center">Тут не до крикета</div>';
+} else {
+
+    // Название игры
+    $gameType = $data['gameData']['gameType'];
+    $gameTypeName = 'x01';
+    if (($data['gameData']['gameType']) == "Cricket") {
+        $gameTypeName = 'Крикет';
+        if (($data['gameData']['cricketWithScores']) == true)
+            $gameTypeName = $gameTypeName.' с набором очков';
+        else 
+            $gameTypeName = $gameTypeName;
+    }
+    else $gameTypeName = $data['gameData']['gameType'];
+
+    // echo '<div class="h1 text-center">'.$gameTypeName.'</div>';
+
+
+    
+}

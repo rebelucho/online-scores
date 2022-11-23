@@ -5,18 +5,15 @@ require_once __DIR__.'/inc/boot.php';
 
 $json = file_get_contents("php://input");
 
-// разбираем JSON-строку на составляющие встроенной командой
+// разбираем JSON-строку на составляющие
 $data = json_decode($json,true);
 
 // Узнаем версию кода экспорта из ДАРТС базы.
-if (array_key_exists('codeVer', $data)) {
+if (!empty($data) && array_key_exists('codeVer', $data)) {
     $codeVer = $data['codeVer'];
 } else {
 	$codeVer = "1";	
 }
-
-
-
 
 if ($codeVer >= 2) { // Если версия код 2, то действуем по сценарию.
 

@@ -49,37 +49,8 @@ $stmt->execute(['scriptName' => $scriptName]);
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 $content = sprintf($result['content'], $addpage);
 
-// echo $result['content'];
-
-if ($_REQUEST['admPage'] == true && $_SESSION["user_role"] == 1) { 
-    ?>
-    <div class="container">
-
-    <div id="editor"><?php echo $content; ?></div>
-    <script>
-            ClassicEditor
-                    .create( document.querySelector( '#editor' ) )
-                    .then( editor => {
-                            console.log( editor );
-                    } )
-                    .catch( error => {
-                            console.error( error );
-                    } );
-    </script>
-
-    <!-- <form method="post">
-      <textarea id="mytextarea"><?php echo $content; ?></textarea>
-    </form>
-    </div> -->
-<?php
-} else 
-
-// echo sprintf($result['content'], $addpage);
 echo $content;
 
-?>
 
-
-<?php
 require_once __DIR__.'/template/footer.php';
 ?>
