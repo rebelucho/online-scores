@@ -53,11 +53,11 @@ else
         <div id="player2PTSCurrent" class="col-2 col-lg-1"></div>
     </div>
     <div class="row justify-content-center align-items-center text-center" style="height: 75px;">
-        <div id="player1s20Score" class="col-2 col-lg-1">0</div>
+        <div id="player1s20Score" class="col-2 col-lg-1"></div>
         <div id="player1s20" class="col-3 col-lg-1">-</div>
         <div id="s20" class="col-2 col-lg-1 border-start border-end d-flex align-items-center  justify-content-center" style="height: 75px;">20</div>
         <div id="player2s20" class="col-3 col-lg-1">-</div>
-        <div id="player2s20Score" class="col-2 col-lg-1">0</div>
+        <div id="player2s20Score" class="col-2 col-lg-1"></div>
     </div>
     <div class="row justify-content-center align-items-center text-center" style="height: 75px;">
         <div id="player1s19Score" class="col-2 col-lg-1">0</div>

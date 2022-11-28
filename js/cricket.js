@@ -281,35 +281,35 @@ function replaceGameData() {
         player2NameId.innerHTML = player2Name
         if ((player1Pts - player2Pts) > 0) {
             player1PtsCurrentId.innerHTML = player1Pts
-            player1PTSId.innerHTML = '<span class="text-success fw-bolder fs-2"> +' + (player1Pts - player2Pts) + '</span>'
-            player2PTSId.innerHTML = '<span class="text-danger fw-bolder fs-2">' + player2Pts + '</span>'
+            player1PTSId.innerHTML = '<span class="text-success fw-bold fs-1"> +' + (player1Pts - player2Pts) + '</span>'
+            player2PTSId.innerHTML = '<span class="text-danger fw-bold fs-1">' + player2Pts + '</span>'
             player2PtsCurrentId.innerHTML = ''
         } else if ((player1Pts - player2Pts) < 0) {
             player1PtsCurrentId.innerHTML = player1Pts
-            player1PTSId.innerHTML = '<span class="text-danger fw-bolder fs-2" >' + (player1Pts - player2Pts) + '</span><br>'
-            player2PTSId.innerHTML = '<span class="text-success fw-bolder fs-2">' + player2Pts + '</span>'
+            player1PTSId.innerHTML = '<span class="text-danger fw-bold fs-1" >' + (player1Pts - player2Pts) + '</span><br>'
+            player2PTSId.innerHTML = '<span class="text-success fw-bold fs-1">' + player2Pts + '</span>'
             player2PtsCurrentId.innerHTML = ''
         } else {
             player1PtsCurrentId.innerHTML = ''
-            player1PTSId.innerHTML = '<span class="fw-bolder fs-2">' + player1Pts + '</span>'
-            player2PTSId.innerHTML = '<span class="fw-bolder fs-2">' + player2Pts + '</span>'
+            player1PTSId.innerHTML = '<span class="fw-bold fs-1">' + player1Pts + '</span>'
+            player2PTSId.innerHTML = '<span class="fw-bold fs-1">' + player2Pts + '</span>'
             player2PtsCurrentId.innerHTML = ''
         }
     } else if (throwCurrent == 2) {
         player1NameId.innerHTML = player1Name
         player2NameId.innerHTML = '<span class="text-success">' + player2Name + '</span>'
         if ((player2Pts - player1Pts) > 0) {
-            player1PTSId.innerHTML = '<span class="text-danger fw-bolder fs-2">' + player1Pts + '</span>'
-            player2PTSId.innerHTML = '<span class="text-success fw-bolder fs-2"> +' + (player2Pts - player1Pts) + '</span>'
+            player1PTSId.innerHTML = '<span class="text-danger fw-bold fs-1">' + player1Pts + '</span>'
+            player2PTSId.innerHTML = '<span class="text-success fw-bold fs-1"> +' + (player2Pts - player1Pts) + '</span>'
             player2PtsCurrentId.innerHTML = player2Pts
         } else if ((player2Pts - player1Pts) < 0) {
-            player1PTSId.innerHTML = '<span class="text-success fw-bolder fs-2">' + player1Pts + '</span>'
-            player2PTSId.innerHTML = '<span class="text-danger fw-bolder fs-2">' + (player2Pts - player1Pts) + '</span>'
+            player1PTSId.innerHTML = '<span class="text-success fw-bold fs-1">' + player1Pts + '</span>'
+            player2PTSId.innerHTML = '<span class="text-danger fw-bold fs-21>' + (player2Pts - player1Pts) + '</span>'
             player2PtsCurrentId.innerHTML = player2Pts
         } else {
             player1PtsCurrentId.innerHTML = ''
-            player1PTSId.innerHTML = '<span class="fw-bolder fs-2">' + player1Pts + '</span>'
-            player2PTSId.innerHTML = '<span class="fw-bolder fs-2">' + player2Pts + '</span>'
+            player1PTSId.innerHTML = '<span class="fw-bold fs-1">' + player1Pts + '</span>'
+            player2PTSId.innerHTML = '<span class="fw-bold fs-1">' + player2Pts + '</span>'
             player2PtsCurrentId.innerHTML = ''
         }
     } else {
