@@ -1,9 +1,18 @@
 <?php
-
+###########################################################
+# Функции используемые в фукнционале
+# Подключение к БД настраивается в файле config.php
+# Настройка почты в файле mailconf.php
+#
 // Инициализируем сессию
 session_start();
 
-// Делаем доступным подключение к БД
+
+$_SESSION['user_role'] ?? $_SESSION['user_role'] = 0;
+
+
+// Подключение в БД
+
 function pdo(): PDO
 {
     static $pdo;
@@ -19,7 +28,8 @@ function pdo(): PDO
     return $pdo;
 }
 
-// Функция показа сообщений через сессии. 
+
+// Функция передачи сообщений через Сессии
 
 function flash(?string $message = null)
 {
@@ -35,9 +45,24 @@ function flash(?string $message = null)
     }
 }
 
-// Функция проверки пользователя
+
+// Функция проверки авторизации
 
 function check_auth(): bool
 {
     return !!($_SESSION['user_id'] ?? false);
 }
+
+// Функция генератора пароля
+
+function gen_password($length = 6)
+{				
+	$chars = 'qazxswedcvfrtgbnhyujmkiolp1234567890QAZXSWEDCVFRTGBNHYUJMKIOLP'; 
+	$size = strlen($chars) - 1; 
+	$password = ''; 
+	while($length--) {
+		$password .= $chars[random_int(0, $size)]; 
+	}
+	return $password;
+}
+  

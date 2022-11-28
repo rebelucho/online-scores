@@ -12,13 +12,15 @@ if(isset($_POST['last_update'])){
 $codeVer = '1';
 
 // формируем запрос к БД
-$stmt = pdo()->prepare("SELECT last_update, json FROM games WHERE id = ?");
+$stmt = pdo()->prepare("SELECT last_update, game_type, game_type_name, json FROM games WHERE id = ?");
 $stmt->execute([$_POST['id']]);
 
 // Разбираем полученные данные
 foreach ($stmt as $row) {
     $json=$row["json"];
     $timestamp=$row["last_update"];
+	$gameType=$row["game_type"];
+	$gameTypeName=$row["game_type_name"];
   }
 
 $data = json_decode($json, true);
@@ -37,94 +39,165 @@ if ($last_update == $timestamp){
 else {
 
 	if ($codeVer >= 2) {
-	
-		//Собираем название игры
-		if ($data['gameData']['bestOf'] > '0') {
-			$gameto = 'Лучший из '.$data['gameData']['bestOf'].' легов';
+		// название игры
+		if ($data['gameData']['bestOf'] > 0) {
+			$gameTo = 'Лучший из '.$data['gameData']['bestOf'].' легов';
 			$viewSets = false;
 			}
 		elseif ($data['gameData']['firstToSets'] > '1') {
-			$gameTo = 'До '.$data['gameData']['firstToSets'].' сетов из '.$data['gameData']['firstToLegs'].'';
+			$gameTo = 'До '.$data['gameData']['firstToSets'].' сетов из '.$data['gameData']['firstToLegs'].' легов';
 			$viewSets = true;
 			}
 		else {
 			$gameTo = 'До '.$data['gameData']['firstToLegs'].' побед';
 			$viewSets = false;
 			}
-		
 		if (($data['gameData']['is1vs1Play']) == "1" ) 
 			{
 			$players1 = $data['player1']['name1'];
 			$players2 = $data['player2']['name1'];
-			$gameType = ' 1 vs 1 ';
+			$gamePlayersCount = ' 1 vs 1 ';
 			}
 		if (($data['gameData']['is2vs2Play']) == "1" ) 
 			{
 			$players1 = ''.$data['player1']['name1'].'<br>'.$data['player1']['name2'].'';
 			$players2 = ''.$data['player2']['name1'].'<br>'.$data['player2']['name2'].'';
-			$gameType = ' 2 vs 2 ';
+			$gamePlayersCount = ' 2 vs 2 ';
 			}
 		if (($data['gameData']['is3vs3Play']) == "1" ) 
 			{
 			$players1 = $data['player1']['name1'].'<br>'.$data['player1']['name2'].'<br>'.$data['player1']['name3'];
 			$players2 = $data['player2']['name1'].'<br>'.$data['player2']['name2'].'<br>'.$data['player2']['name3'];
-			$gameType = ' 3 vs 3 ';
+			$gamePlayersCount = ' 3 vs 3 ';
 			}
-		// Обратавыем попытки закрытия. 
-		if(isset($data['player1']['doublesAttempt']) && $data['player1']['doublesSuccess'] > 0){
-			$player1DoublesPercent = round(($data['player1']['doublesSuccess']/$data['player1']['doublesAttempt'])*100);
-		}else{
-			$player1DoublesPercent = 0;
-		}
-		
-		if(isset($data['player2']['doublesAttempt']) && $data['player2']['doublesSuccess'] > 0){
-			$player2DoublesPercent = round(($data['player2']['doublesSuccess']/$data['player2']['doublesAttempt'])*100);
-		}else{
-			$player2DoublesPercent = 0;
-		}
-	
-		// собираем json для передачи в js
-		$arr = [
-			'tournamentName' => $data['gameData']['tournamentName'],
-			'stage' => $data['gameData']['stage'],
-			'gameType' => $gameType,
-			'gameName' => $gameTo,
-			'legBegin' => $data['gameData']['beginLeg'],
-			'throwCurrent' => $data['gameData']['currentThrow'], 
-			'doublesCount' => $data['gameData']['doublesCount'],
-			'player1Name' => $players1,
-			'player1Require' => $data['player1']["require"],
-			'player1Score' => $data['player1']['score'],
-			'player1Avg' => $data['player1']['avg'],
-			'player1Legs' => $data['player1']['legs'],
-			'player1Sets' => $data['player1']['sets'],
-			'player1Score180' => $data['player1']['score180Count'],
-			'player1Score140' => $data['player1']['score140Count'],
-			'player1Score100' => $data['player1']['score100Count'],
-			'player1First9Avg' => $data['player1']['avg'],
-			'player1DoublesPercent' => $player1DoublesPercent,
-			'player1AllCheck' => $data['player1']['allCheck'],
-			'player1AllDartsLegs' => $data['player1']['allDartsLegs'],
-			'player1DartsThrown' => $data['player1']['dartsThrown'],
-			'player1HowToCheck' => $data['player1']['howToCheck'],
-			'player2Name' => $players2,
-			'player2Require' => $data['player2']["require"],
-			'player2Score' => $data['player2']['score'],
-			'player2Avg' => $data['player2']['avg'],
-			'player2Legs' => $data['player2']['legs'],
-			'player2Sets' => $data['player2']['sets'],
-			'player2Score180' => $data['player2']['score180Count'],
-			'player2Score140' => $data['player2']['score140Count'],
-			'player2Score100' => $data['player2']['score100Count'],
-			'player2First9Avg' => $data['player2']['avg'],
-			'player2DoublesPercent' => $player2DoublesPercent,
-			'player2AllCheck' => $data['player2']['allCheck'],
-			'player2AllDartsLegs' => $data['player2']['allDartsLegs'],
-			'player2DartsThrown' => $data['player2']['dartsThrown'],
-			'player2HowToCheck' => $data['player2']['howToCheck'],
-			'last_update' => $timestamp,
-		];
+
+		if ($gameType == 'Cricket') {
+
+			// Посчитаем количество очков
+			if ($data['player1']['s20'] > 3) $player1S20Pts = ($data['player1']['s20'] - 3) * 20; else $player1S20Pts = 0;
+			if ($data['player1']['s19'] > 3) $player1S19Pts = ($data['player1']['s19'] - 3) * 19; else $player1S19Pts = 0;
+			if ($data['player1']['s18'] > 3) $player1S18Pts = ($data['player1']['s18'] - 3) * 18; else $player1S18Pts = 0;
+			if ($data['player1']['s17'] > 3) $player1S17Pts = ($data['player1']['s17'] - 3) * 17; else $player1S17Pts = 0;
+			if ($data['player1']['s16'] > 3) $player1S16Pts = ($data['player1']['s16'] - 3) * 16; else $player1S16Pts = 0;
+			if ($data['player1']['s15'] > 3) $player1S15Pts = ($data['player1']['s15'] - 3) * 15; else $player1S15Pts = 0;
+			if ($data['player1']['sBull'] > 3) $player1SBullPts = ($data['player1']['sBull'] - 3) * 25; else $player1SBullPts = 0;
+			$player1Pts = $player1S20Pts + $player1S19Pts + $player1S18Pts + $player1S17Pts + $player1S16Pts + $player1S15Pts + $player1SBullPts;
+
+			if ($data['player2']['s20'] > 3) $player2S20Pts = ($data['player2']['s20'] - 3) * 20; else $player2S20Pts = 0;
+			if ($data['player2']['s19'] > 3) $player2S19Pts = ($data['player2']['s19'] - 3) * 19; else $player2S19Pts = 0;
+			if ($data['player2']['s18'] > 3) $player2S18Pts = ($data['player2']['s18'] - 3) * 18; else $player2S18Pts = 0;
+			if ($data['player2']['s17'] > 3) $player2S17Pts = ($data['player2']['s17'] - 3) * 17; else $player2S17Pts = 0;
+			if ($data['player2']['s16'] > 3) $player2S16Pts = ($data['player2']['s16'] - 3) * 16; else $player2S16Pts = 0;
+			if ($data['player2']['s15'] > 3) $player2S15Pts = ($data['player2']['s15'] - 3) * 15; else $player2S15Pts = 0;
+			if ($data['player2']['sBull'] > 3) $player2SBullPts = ($data['player2']['sBull'] - 3) * 25; else $player2SBullPts = 0;
+			$player2Pts = $player2S20Pts + $player2S19Pts + $player2S18Pts + $player2S17Pts + $player2S16Pts + $player2S15Pts + $player2SBullPts;
+
+			// Собираем json для передачи в js
+			$arr = [
+				'gameTypeName' => $gameTypeName,
+				'tournamentName' => $data['gameData']['tournamentName'],
+				'stage' => $data['gameData']['stage'],
+				'gamePlayersCount' => $gamePlayersCount,
+				'gameName' => $gameTo,
+				'viewSets' => $viewSets,
+				'legBegin' => $data['gameData']['beginLeg'],
+				'throwCurrent' => $data['gameData']['currentThrow'], 
+				'cricketWithScores' => $data['gameData']['cricketWithScores'],
+				'player1Name' => $players1,
+				'player1Name1' => $data['player1']['name1'],
+				'player1Name2' => $data['player1']['name2'],
+				'player1Name3' => $data['player1']['name3'],
+				'player1Avg' => $data['player1']['avg'],
+				'player1Legs' => $data['player1']['legs'],
+				'player1Sets' => $data['player1']['sets'],
+				'player1DartsThrown' => $data['player1']['dartsThrown'],
+				'player1Pts' => $player1Pts,
+				'player1s20' => $data['player1']['s20'],
+				'player1s19' => $data['player1']['s19'],
+				'player1s18' => $data['player1']['s18'],
+				'player1s17' => $data['player1']['s17'],
+				'player1s16' => $data['player1']['s16'],
+				'player1s15' => $data['player1']['s15'],
+				'player1sBull' => $data['player1']['sBull'],
+				'player1AllDarts' => $data['player1']['allDarts'],
+				'player1AllScores' => $data['player1']['allScores'],
+				'player2Name' => $players2,
+				'player2Name1' => $data['player2']['name1'],
+				'player2Name2' => $data['player2']['name2'],
+				'player2Name3' => $data['player2']['name3'],
+				'player2Avg' => $data['player2']['avg'],
+				'player2Legs' => $data['player2']['legs'],
+				'player2Sets' => $data['player2']['sets'],
+				'player2DartsThrown' => $data['player2']['dartsThrown'],
+				'player2Pts' => $player2Pts,
+				'player2s20' => $data['player2']['s20'],
+				'player2s19' => $data['player2']['s19'],
+				'player2s18' => $data['player2']['s18'],
+				'player2s17' => $data['player2']['s17'],
+				'player2s16' => $data['player2']['s16'],
+				'player2s15' => $data['player2']['s15'],
+				'player2sBull' => $data['player2']['sBull'],
+				'player2AllDarts' => $data['player2']['allDarts'],
+				'player2AllScores' => $data['player2']['allScores'],
+			];
+
+		} else {
 			
+			// Обратавыем попытки закрытия. 
+			if(isset($data['player1']['doublesAttempt']) && $data['player1']['doublesSuccess'] > 0){
+				$player1DoublesPercent = round(($data['player1']['doublesSuccess']/$data['player1']['doublesAttempt'])*100);
+			}else{
+				$player1DoublesPercent = 0;
+			}
+
+			if(isset($data['player2']['doublesAttempt']) && $data['player2']['doublesSuccess'] > 0){
+				$player2DoublesPercent = round(($data['player2']['doublesSuccess']/$data['player2']['doublesAttempt'])*100);
+			}else{
+				$player2DoublesPercent = 0;
+			}
+		
+			// собираем json для передачи в js
+			$arr = [
+				'tournamentName' => $data['gameData']['tournamentName'],
+				'stage' => $data['gameData']['stage'],
+				'gamePlayersCount' => $gamePlayersCount,
+				'gameName' => $gameTo,
+				'legBegin' => $data['gameData']['beginLeg'],
+				'throwCurrent' => $data['gameData']['currentThrow'], 
+				'doublesCount' => $data['gameData']['doublesCount'],
+				'player1Name' => $players1,
+				'player1Require' => $data['player1']["require"],
+				'player1Score' => $data['player1']['score'],
+				'player1Avg' => $data['player1']['avg'],
+				'player1Legs' => $data['player1']['legs'],
+				'player1Sets' => $data['player1']['sets'],
+				'player1Score180' => $data['player1']['score180Count'],
+				'player1Score140' => $data['player1']['score140Count'],
+				'player1Score100' => $data['player1']['score100Count'],
+				'player1First9Avg' => $data['player1']['avg'],
+				'player1DoublesPercent' => $player1DoublesPercent,
+				'player1AllCheck' => $data['player1']['allCheck'],
+				'player1AllDartsLegs' => $data['player1']['allDartsLegs'],
+				'player1DartsThrown' => $data['player1']['dartsThrown'],
+				'player1HowToCheck' => $data['player1']['howToCheck'],
+				'player2Name' => $players2,
+				'player2Require' => $data['player2']["require"],
+				'player2Score' => $data['player2']['score'],
+				'player2Avg' => $data['player2']['avg'],
+				'player2Legs' => $data['player2']['legs'],
+				'player2Sets' => $data['player2']['sets'],
+				'player2Score180' => $data['player2']['score180Count'],
+				'player2Score140' => $data['player2']['score140Count'],
+				'player2Score100' => $data['player2']['score100Count'],
+				'player2First9Avg' => $data['player2']['avg'],
+				'player2DoublesPercent' => $player2DoublesPercent,
+				'player2AllCheck' => $data['player2']['allCheck'],
+				'player2AllDartsLegs' => $data['player2']['allDartsLegs'],
+				'player2DartsThrown' => $data['player2']['dartsThrown'],
+				'player2HowToCheck' => $data['player2']['howToCheck'],
+				'last_update' => $timestamp,
+			];
+		}	
 		echo json_encode($arr);
 		
 		
@@ -157,19 +230,19 @@ else {
 		    {
 			$Players1 = $Player11;
 			$Players2 = $Player21;
-			$gametype = ' 1 vs 1 ';
+			$gamePlayersCount = ' 1 vs 1 ';
 		    }
 		if (($data["Is2vs2Play"]) == "1" )
 		    {
 			$Players1 = ''.$Player11.'<br>'.$Player12.'';
 			$Players2 = ''.$Player21.'<br>'.$Player22.'';
-			$gametype = ' 2 vs 2 ';
+			$gamePlayersCount = ' 2 vs 2 ';
 		    }
 		if (($data["Is3vs3Play"]) == "1" )
 		    {
 			$Players1 = $Player11.'<br>'.$Player12.'<br>'.$Player13;
 			$Players2 = $Player21.'<br>'.$Player22.'<br>'.$Player23;
-			$gametype = ' 3 vs 3 ';
+			$gamePlayersCount = ' 3 vs 3 ';
 		    }
 		
 		
@@ -203,7 +276,7 @@ else {
 		$arr = [
 			'tournamentName' => ($data["TournamentName"]),
 			'stage' => ($data["stage"]),
-			'gameType' => $gametype,
+			'gamePlayersCount' => $gamePlayersCount,
 			'gameName' => $gameto,
 			'legBegin' => ($data["BeginLeg"]),
 			'throwCurrent' => ($data["CurrentThrow"]), 

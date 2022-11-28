@@ -1,5 +1,39 @@
-.who-move{
+.who-move {
     text-decoration-line: underline;
     text-decoration-color: red;
-  }
-    
+}
+
+.cricket-text-green {
+    color: green;
+}
+
+.cricket-text-red {
+    color: red;
+}
+
+.cricket-3dart {
+    height: 50px;
+    background-image: url("/img/cricketall100x100.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center, center;
+    background-size: 50px 50px;
+}
+
+.cricket-2dart {
+    height: 50px;
+    background-image: url("/img/cricket2dart100x100.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center, center;
+    background-size: 50px 50px;
+}
+
+.cricket-1dart {
+    height: 50px;
+    background-image: url("/img/cricket1dart100x100.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center, center;
+    background-size: 50px 50px;
+}

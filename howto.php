@@ -1,15 +1,18 @@
 <?php
 require_once __DIR__.'/inc/boot.php';
-require_once('template/header.tpl');
+
+require_once __DIR__.'/template/header.php';
 
 
-$addpage = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") 
+$addpage = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' || isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'On') ? "https" : "http") 
     . "://$_SERVER[HTTP_HOST]"."/add.php";
 
 ?>
 
-<div class="container">
-<h1>Как подключить приложение к сервису</h1>
+
+<!-- <div class="container">
+<h1>Список трансляций</h1>
+
 </div>
 <div class="container">
     <p>Для подключения вашего устрйства с установленным ПО "Дартс база" необходимо:</p>
@@ -40,8 +43,17 @@ $addpage = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "
             <img class="img-fluid" src="/img/qr.jpg">
         </div>
     </div>
-</div>
+</div> -->
 
 <?php
-require_once('template/footer.tpl');
+$scriptName = trim($_SERVER["SCRIPT_NAME"], "/");
+$stmt = pdo()->prepare("SELECT * FROM `articles` WHERE `page` = :scriptName");
+$stmt->execute(['scriptName' => $scriptName]);
+$result = $stmt->fetch(PDO::FETCH_ASSOC);
+$content = sprintf($result['content'], $addpage);
+
+echo $content;
+
+
+require_once __DIR__.'/template/footer.php';
 ?>

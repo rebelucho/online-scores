@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__.'/inc/boot.php';
-require_once __DIR__.'/template/header.tpl';
+require_once __DIR__.'/template/header.php';
 
 $id = $_GET["id"];
 
@@ -394,9 +394,6 @@ if ($endGame == 1) {
 
 </div>
 </div>
-<script src="/js/functions.js"></script>
-  </body>
-</html>
-
 <?php
+require_once __DIR__.'/template/footer.php';
 ?>
