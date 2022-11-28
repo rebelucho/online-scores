@@ -54,7 +54,6 @@ function check_auth(): bool
 }
 
 // Функция генератора пароля
-
 function gen_password($length = 6)
 {				
 	$chars = 'qazxswedcvfrtgbnhyujmkiolp1234567890QAZXSWEDCVFRTGBNHYUJMKIOLP'; 
