@@ -44,6 +44,7 @@ if (check_auth()) {
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-link" href="/">Текущие игры</a>
+        <a class="nav-link" href="/p2p.php">P2P режим</a>
         <a class="nav-link" href="/howto.php">Как добавить устройство</a>  
         <a class="nav-link" href="https://darts28.ru" target="_blank">darts28.ru</a>
       
