@@ -45,10 +45,12 @@ if (check_auth()) {
 <div class="container p-3" style="width:390px">
 
 
+
 </div>
 <div class="container">
     <div class="row justify-content-center align-items-center g-2">
     
+
     </div>
 </div>
 

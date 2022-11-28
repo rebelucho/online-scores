@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__.'/inc/boot.php';
+
 require_once __DIR__.'/template/header.php';
+
 
 $user = null;
 
@@ -12,12 +14,15 @@ if (check_auth()) {
 }
 ?>
 <?php if ($user) { ?>
+
   <div class="container">
+
     <h1>Привет, <?=htmlspecialchars($user['username'])?>!</h1>
 
     <form class="mt-5" method="post" action="do_logout.php">
         <button type="submit" class="btn btn-primary">Выйти</button>
     </form>
+
   </div>
 <?php } else { ?>
 <div class="container">
@@ -53,3 +58,4 @@ if (check_auth()) {
 <?php
 require_once __DIR__.'/template/footer.php';
 ?>
+

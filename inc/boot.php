@@ -7,10 +7,12 @@
 // Инициализируем сессию
 session_start();
 
+
 $_SESSION['user_role'] ?? $_SESSION['user_role'] = 0;
 
 
 // Подключение в БД
+
 function pdo(): PDO
 {
     static $pdo;
@@ -26,7 +28,9 @@ function pdo(): PDO
     return $pdo;
 }
 
+
 // Функция передачи сообщений через Сессии
+
 function flash(?string $message = null)
 {
     if ($message) {
@@ -41,7 +45,9 @@ function flash(?string $message = null)
     }
 }
 
+
 // Функция проверки авторизации
+
 function check_auth(): bool
 {
     return !!($_SESSION['user_id'] ?? false);
