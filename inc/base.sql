@@ -7,9 +7,11 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
 SET NAMES utf8mb4;
 
-CREATE DATABASE `_ИМЯ_БД_` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `_ИМЯ_БД_`;
+DROP DATABASE IF EXISTS `games_darts28`;
+CREATE DATABASE `games_darts28` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `games_darts28`;
 
+DROP TABLE IF EXISTS `articles`;
 CREATE TABLE `articles` (
   `id` int NOT NULL AUTO_INCREMENT,
   `page` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
@@ -19,6 +21,7 @@ CREATE TABLE `articles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
+DROP TABLE IF EXISTS `games`;
 CREATE TABLE `games` (
   `id` int NOT NULL AUTO_INCREMENT,
   `guid` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -36,11 +39,13 @@ CREATE TABLE `games` (
   `tag` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `video` binary(1) DEFAULT NULL,
   `code_version` int DEFAULT NULL,
+  `game_delete` binary(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `guid` (`guid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
+DROP TABLE IF EXISTS `roles`;
 CREATE TABLE `roles` (
   `role` int NOT NULL,
   `name` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
@@ -48,6 +53,7 @@ CREATE TABLE `roles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `username` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
@@ -61,3 +67,4 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
+-- 2022-11-28 02:25:07
