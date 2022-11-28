@@ -75,7 +75,7 @@ $total_pages = ceil($total_rows / $size_page);
 
 
 // $stmt = pdo()->prepare("SELECT id, game_type, game_type_name gamer1_name, legs1, gamer2_name, legs2, last_update, tag, end_match, video, code_version FROM games WHERE (gamer1_name LIKE '$name' OR gamer2_name LIKE '$name') AND (tag LIKE '$tag' OR tag IS NULL) AND last_update LIKE '%$dategame%' ORDER BY last_update DESC LIMIT $offset, $size_page");
-$stmt = pdo()->prepare("SELECT * FROM games WHERE (gamer1_name LIKE '$name' OR gamer2_name LIKE '$name') AND (tag LIKE '$tag' OR tag IS NULL) AND last_update LIKE '%$dategame%' ORDER BY last_update DESC LIMIT $offset, $size_page");
+$stmt = pdo()->prepare("SELECT * FROM games WHERE (gamer1_name LIKE '$name' OR gamer2_name LIKE '$name') AND game_delete!=1 AND (tag LIKE '$tag' OR tag IS NULL) AND last_update LIKE '%$dategame%' ORDER BY last_update DESC LIMIT $offset, $size_page");
 $stmt->execute();
 $empty = $stmt->rowCount() === 0;
 
