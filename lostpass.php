@@ -10,6 +10,10 @@ Mailer()->init($mailConfig);
 
 
 ?>
+<div class="container">
+<?php flash() ?>
+</div>
+<div class="container">
 
 <div class="container">
     <h1>Восстановление пароля</h1>
@@ -46,6 +50,14 @@ if (isset($_REQUEST['doGo'])) {
         $message->addContent($messageText);
         $message->addContent(file_get_contents('/template/mail/mail-footer.html')); 
         
+        // Проверим наличия такого email в базе
+        $stmt = pdo()->prepare("SELECT * FROM `users` WHERE `email` = :email");
+        $stmt->execute(['email' => $email]);
+        if (!$stmt->rowCount()) {
+            flash('Пользователь с таким email не зарегистрирован');
+            header('Location: lostpass.php');
+            die;
+        }
 
         // Меняем хеш в БД
         $stmt = pdo()->prepare("UPDATE `users` SET hash=:hash, `not_confirm`=true WHERE email=:email");
@@ -53,6 +65,7 @@ if (isset($_REQUEST['doGo'])) {
             'hash' => $hash,
             'email' => $email,
         ]);
+        // print_r($stmt);
         // Проверяем отправилась ли почта
         if (Mailer()->sendMessage($message)) {
 
