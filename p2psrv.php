@@ -133,18 +133,22 @@ if ($stage == 'game') {
         }
         $game = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($game['guid_gamer1'] == $data['guid']){
-            $stmt = pdo()->prepare('UPDATE p2p_games SET `require1`=:require, `score1`=:score, `current_throw` = :currentThrow WHERE `key`=:key');
+            $stmt = pdo()->prepare('UPDATE p2p_games SET `require1`=:require, `score1`=:score, `darts1`=:darts, `doubleAttempts1`=:doubleAttempts, `current_throw` = :currentThrow WHERE `key`=:key');
             $stmt->execute([
               'require' => $data['require'],
               'score' => $data['score'],
+              'darts' => $data['darts'],
+              'doubleAttempts' => $data['doubleAttempts'],
               'currentThrow' => 2,
               'key' => $data['key'],
             ]);   
         } else {
-            $stmt = pdo()->prepare('UPDATE p2p_games SET `require2`=:require, `score2`=:score, `current_throw` = :currentThrow WHERE `key`=:key');
+            $stmt = pdo()->prepare('UPDATE p2p_games SET `require2`=:require, `score2`=:score, `darts2`=:darts, `doubleAttempts2`=:doubleAttempts, `current_throw` = :currentThrow WHERE `key`=:key');
             $stmt->execute([
               'require' => $data['require'],
               'score' => $data['score'],
+              'darts' => $data['darts'],
+              'doubleAttempts' => $data['doubleAttempts'],
               'currentThrow' => 1,
               'key' => $data['key'],
             ]);   
@@ -164,11 +168,15 @@ if ($stage == 'game') {
             $arr = [
                 'require' => $game['require2'],
                 'score' => $game['score2'],
+                'darts' => $game['darts2'],
+                'doubleAttempts' => $game['doubleAttempts2']
             ];
         } elseif ($game['guid_gamer2'] == $data['guid']){
             $arr = [
                 'require' => $game['require1'],
                 'score' => $game['score1'],
+                'darts' => $game['darts1'],
+                'doubleAttempts' => $game['doubleAttempts1']
             ];
         }
         echo $arr;
