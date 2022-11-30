@@ -166,14 +166,12 @@ if ($stage == 'game') {
         $game = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($game['guid_gamer1'] == $data['guid']){
             $arr = [
-                'require' => $game['require2'],
                 'score' => $game['score2'],
                 'darts' => $game['darts2'],
                 'doubleAttempts' => $game['doubleAttempts2']
             ];
         } elseif ($game['guid_gamer2'] == $data['guid']){
             $arr = [
-                'require' => $game['require1'],
                 'score' => $game['score1'],
                 'darts' => $game['darts1'],
                 'doubleAttempts' => $game['doubleAttempts1']
