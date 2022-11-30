@@ -20,7 +20,11 @@ if (isset($_SESSION["stage"])){
 //  $stage = 'register';
 ?>
 
+
 <div class="container">
+<div class="currentThrowIcon"></div>
+<div class="startPlayerIcon"></div>
+
 <?php flash() ?>
 </div>
 <div class="container">

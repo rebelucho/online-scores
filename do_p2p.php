@@ -37,7 +37,7 @@ if ($_SESSION["stage"] == 'answer') {
     $stmt = pdo()->prepare("SELECT * FROM `p2p_games` WHERE `key` = :key");
     $stmt->execute(['key' => $_POST['key']]);
     if (!$stmt->rowCount()) {
-        flash('Игры с таким ключём не найдено!');
+        flash('Игры с таким ключом не найдено!');
         header('Location: p2p.php');
         die;
     }

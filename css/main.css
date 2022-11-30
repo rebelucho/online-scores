@@ -37,3 +37,21 @@
     background-position: center, center;
     background-size: 50px 50px;
 }
+
+.currentThrowIcon {
+    height: 50px;
+    background-image: url("data:image/svg+xml;utf8,<svg width='38' height='44' viewBox='0 0 38 44' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M0 22L37.5 0.349365V43.6506L0 22Z' fill='%233A760A'/></svg>");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right, center;
+    background-size: 50px 50px;
+}
+
+.startPlayerIcon {
+    height: 12px;
+    background-image: url("data:image/svg+xml;utf8,<svg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='6' cy='6' r='6' fill='%23FF0000'/></svg>");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: 12px 12px;
+}
