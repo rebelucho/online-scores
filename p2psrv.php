@@ -140,9 +140,9 @@ if ($stage == 'game') {
         }
         $game = $stmt->fetch(PDO::FETCH_ASSOC);
         if (!isset($data['setGame'])) { // если в дате нет установок игры, то передаем:
-            if ($game['guid_gamer1'] == $data['guid'] && $game['current_throw'] != 0) {
-                if ($data['require'] > 0) $cuthrow = 2;
-                else $cuthrow = 0;
+            if ($game['guid_gamer1'] == $data['guid'] && $game['current_throw'] != 0) { // Узнаём кто прислал и проверяем на окончание лега
+                if ($data['require'] > 0) $cuthrow = 2; // если остаток не равен нулю, то передади ход
+                else $cuthrow = 0; // если равен, то никому ход не передаём
                 $stmt = pdo()->prepare('UPDATE p2p_games SET `require1`=:require, `score1`=:score, `darts1`=:darts, `doubleAttempts1`=:doubleAttempts, `current_throw` = :currentThrow WHERE `key`=:key');
                 $stmt->execute([
                     'require' => $data['require'],
@@ -154,7 +154,7 @@ if ($stage == 'game') {
                 ]);
                 echo 'OK';
                 die;
-            } else {
+            } elseif ($game['guid_gamer2'] == $data['guid'] && $game['current_throw'] != 0) {
                 if ($data['require'] > 0) $cuthrow = 1;
                 else $cuthrow = 0;
                 $stmt = pdo()->prepare('UPDATE p2p_games SET `require2`=:require, `score2`=:score, `darts2`=:darts, `doubleAttempts2`=:doubleAttempts, `current_throw` = :currentThrow WHERE `key`=:key');
@@ -168,11 +168,39 @@ if ($stage == 'game') {
                 ]);
                 echo 'OK';
                 die;
+            } elseif ($game['guid_gamer1'] == $data['guid'] && $game['current_throw'] = 9 && $data['require'] > 0 ){
+                if ($data['require'] > 0) $cuthrow = 2; // если остаток не равен нулю, то передади ход
+                else $cuthrow = 0; // если равен, то никому ход не передаём
+                $stmt = pdo()->prepare('UPDATE p2p_games SET `require1`=:require, `score1`=:score, `darts1`=:darts, `doubleAttempts1`=:doubleAttempts, `current_throw` = :currentThrow WHERE `key`=:key');
+                $stmt->execute([
+                    'require' => $data['require'],
+                    'score' => $data['score'],
+                    'darts' => $data['darts'],
+                    'doubleAttempts' => $data['doubleAttempts'],
+                    'currentThrow' => $cuthrow,
+                    'key' => $data['key'],
+                ]);
+                echo 'OK';
+                die;
+            } elseif ($game['guid_gamer2'] == $data['guid'] && $game['current_throw'] = 9 && $data['require'] > 0 ){
+                if ($data['require'] > 0) $cuthrow = 1;
+                else $cuthrow = 0;
+                $stmt = pdo()->prepare('UPDATE p2p_games SET `require2`=:require, `score2`=:score, `darts2`=:darts, `doubleAttempts2`=:doubleAttempts, `current_throw` = :currentThrow WHERE `key`=:key');
+                $stmt->execute([
+                    'require' => $data['require'],
+                    'score' => $data['score'],
+                    'darts' => $data['darts'],
+                    'doubleAttempts' => $data['doubleAttempts'],
+                    'currentThrow' => $cuthrow,
+                    'key' => $data['key'],
+                ]);
+                echo 'OK';
+                die; 
             }
-        } else if ($game['guid_gamer2'] == $data['guid'] && $game['current_throw'] != 0) {
+        } else if (isset($data['setGame']) && $game['guid_gamer2'] == $data['guid'] && $game['current_throw'] != 0) {
             echo 'error_Настройки может изменить только игрок начинающий игру';
             die;
-        } else if ($game['guid_gamer1'] == $data['guid'] && $game['current_throw'] != 0) {
+        } else if (isset($data['setGame']) && $game['guid_gamer1'] == $data['guid'] && $game['current_throw'] != 0) {
             if ($data['require'] > 0) $cuthrow = 2;
             else $cuthrow = 0;
             $stmt = pdo()->prepare('UPDATE p2p_games SET `gameData`=:gameData, `setGame`=1,`require1`=:require, `score1`=:score, `darts1`=:darts, `doubleAttempts1`=:doubleAttempts, `current_throw` = :currentThrow WHERE `key`=:key');
@@ -187,7 +215,7 @@ if ($stage == 'game') {
             ]);
             echo 'OK';
             die;
-        }
+        } 
     }
 
     if (!isset($data['score'])) { // Если запрос пришел с пустым 'score'
@@ -210,6 +238,8 @@ if ($stage == 'game') {
                 'doubleAttempts' => $game['doubleAttempts2']
             ];
             echo json_encode($arr);
+            die;
+
         } elseif ($game['guid_gamer2'] == $data['guid'] && $game['current_throw'] == 2) {
             if ($game['setGame'] != 1) {
                 $arr = [
@@ -226,7 +256,10 @@ if ($stage == 'game') {
                 ];
             }
             echo json_encode($arr);
-
+            $stmt = pdo()->prepare("UPDATE p2p_games SET `setGame` = ? WHERE `key`= ?");
+            $stmt->execute([0, $data['key']]);
+            
+            die;
         // Если перехода хода нет, то надо закончить Лег и сообщить об этом второму игроку
 
         } elseif ($game['require2'] == 0 && $game['guid_gamer1'] == $data['guid'] && $game['current_throw'] == 0) { // закончил второй игрок
@@ -237,6 +270,10 @@ if ($stage == 'game') {
                 'endLeg' => true, // посылаем флаг окончания лега первому игроку
             ];
             echo json_encode($arr);
+            $stmt = pdo()->prepare("UPDATE p2p_games SET `current_throw` = ? WHERE `key`= ?");
+            $stmt->execute([9, $data['key']]);
+            die;
+
         } elseif ($game['require1'] == 0 && $game['guid_gamer2'] == $data['guid'] && $game['current_throw'] == 0) { // закончил первый игрок
             if ($game['setGame'] != 1) {
                 $arr = [
@@ -255,6 +292,9 @@ if ($stage == 'game') {
                 ];
             }
             echo json_encode($arr);
+            $stmt = pdo()->prepare("UPDATE p2p_games SET `current_throw` = ? WHERE `key`= ?");
+            $stmt->execute([9, $data['key']]);
+            die;
         }
     }
 }
