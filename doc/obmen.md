@@ -61,7 +61,7 @@ playerName - имя игрока 2
 Стадия согласования данных и начала игры
 ```json
 { 
-    "stage": "answer", 
+    "stage": "wait", 
     "key": "Dj4mE", 
     "guid": ""
 }
