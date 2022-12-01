@@ -129,7 +129,7 @@ if ($stage == 'setGame') {
 // РАБОТАЕМ с запросами game с обоими участникам
 
 if ($stage == 'game') {
-    if (isset($data['score']) && !isset($data['setGame'])) { // Если в дате пришёл набор, то запишем этот набор в базу и передадим ход второму игроку
+    if (isset($data['score'])) { // Если в дате пришёл набор, то запишем этот набор в базу и передадим ход второму игроку
         $stmt = pdo()->prepare("SELECT * FROM `p2p_games` WHERE `key` = :key");
         $stmt->execute([
             'key' => $data['key']
@@ -168,7 +168,7 @@ if ($stage == 'game') {
                 ]);
                 echo 'OK';
                 die;
-            } elseif ($game['guid_gamer1'] == $data['guid'] && $game['current_throw'] = 9 && $data['require'] > 0 ){
+            } elseif ($game['guid_gamer1'] == $data['guid'] && $game['current_throw'] == 9 && $data['require'] > 0 ){
                 if ($data['require'] > 0) $cuthrow = 2; // если остаток не равен нулю, то передади ход
                 else $cuthrow = 0; // если равен, то никому ход не передаём
                 $stmt = pdo()->prepare('UPDATE p2p_games SET `require1`=:require, `score1`=:score, `darts1`=:darts, `doubleAttempts1`=:doubleAttempts, `current_throw` = :currentThrow WHERE `key`=:key');
@@ -182,7 +182,7 @@ if ($stage == 'game') {
                 ]);
                 echo 'OK';
                 die;
-            } elseif ($game['guid_gamer2'] == $data['guid'] && $game['current_throw'] = 9 && $data['require'] > 0 ){
+            } elseif ($game['guid_gamer2'] == $data['guid'] && $game['current_throw'] == 9 && $data['require'] > 0 ){
                 if ($data['require'] > 0) $cuthrow = 1;
                 else $cuthrow = 0;
                 $stmt = pdo()->prepare('UPDATE p2p_games SET `require2`=:require, `score2`=:score, `darts2`=:darts, `doubleAttempts2`=:doubleAttempts, `current_throw` = :currentThrow WHERE `key`=:key');
@@ -197,15 +197,23 @@ if ($stage == 'game') {
                 echo 'OK';
                 die; 
             }
-        } else if (isset($data['setGame']) && $game['guid_gamer2'] == $data['guid'] && $game['current_throw'] != 0) {
+        } elseif (isset($data['setGame']) && $game['guid_gamer2'] == $data['guid'] && $game['current_throw'] != 0) {
             echo 'error_Настройки может изменить только игрок начинающий игру';
             die;
-        } else if (isset($data['setGame']) && $game['guid_gamer1'] == $data['guid'] && $game['current_throw'] != 0) {
+        } elseif (isset($data['setGame']) && $game['guid_gamer1'] == $data['guid'] && $game['current_throw'] != 0) {
             if ($data['require'] > 0) $cuthrow = 2;
             else $cuthrow = 0;
-            $stmt = pdo()->prepare('UPDATE p2p_games SET `gameData`=:gameData, `setGame`=1,`require1`=:require, `score1`=:score, `darts1`=:darts, `doubleAttempts1`=:doubleAttempts, `current_throw` = :currentThrow WHERE `key`=:key');
+
+            $arr = [
+                'firstToSets' => $data['setGame']['firstToSets'],
+                'firstToLegs' => $data['setGame']['firstToLegs'],
+                'bestOf' => $data['setGame']['bestOf'],
+                'doublesCount' => $data['setGame']['doublesCount']
+            ];
+            $stmt = pdo()->prepare('UPDATE p2p_games SET `gameData`=:gameData, `setGame`=:setting, `require1`=:require, `score1`=:score, `darts1`=:darts, `doubleAttempts1`=:doubleAttempts, `current_throw` = :currentThrow WHERE `key`=:key');
             $stmt->execute([
-                'gameData' => $data['setGame'],
+                'gameData' => json_encode($arr),
+                'setting' => true,
                 'require' => $data['require'],
                 'score' => $data['score'],
                 'darts' => $data['darts'],
@@ -215,7 +223,29 @@ if ($stage == 'game') {
             ]);
             echo 'OK';
             die;
-        } 
+        } elseif (isset($data['setGame']) && $game['guid_gamer1'] == $data['guid'] && $game['current_throw'] == 9 && $data['require'] > 0 ){
+            if ($data['require'] > 0) $cuthrow = 2; // если остаток не равен нулю, то передади ход
+            else $cuthrow = 0; // если равен, то никому ход не передаём
+            $arr = [
+                'firstToSets' => $data['setGame']['firstToSets'],
+                'firstToLegs' => $data['setGame']['firstToLegs'],
+                'bestOf' => $data['setGame']['bestOf'],
+                'doublesCount' => $data['setGame']['doublesCount']
+            ];
+            $stmt = pdo()->prepare('UPDATE p2p_games SET `gameData`=:gameData, `setGame`=:setting, `require1`=:require, `score1`=:score, `darts1`=:darts, `doubleAttempts1`=:doubleAttempts, `current_throw` = :currentThrow WHERE `key`=:key');
+            $stmt->execute([
+                'gameData' => json_encode($arr),
+                'setting' => true,
+                'require' => $data['require'],
+                'score' => $data['score'],
+                'darts' => $data['darts'],
+                'doubleAttempts' => $data['doubleAttempts'],
+                'currentThrow' => $cuthrow,
+                'key' => $data['key'],
+            ]);
+            echo 'OK';
+            die;
+        }
     }
 
     if (!isset($data['score'])) { // Если запрос пришел с пустым 'score'
@@ -252,7 +282,7 @@ if ($stage == 'game') {
                     'score' => $game['score1'],
                     'darts' => $game['darts1'],
                     'doubleAttempts' => $game['doubleAttempts1'],
-                    'setGame' => $game['gemeData']
+                    'setGame' => json_decode($game['gameData'])
                 ];
             }
             echo json_encode($arr);
@@ -267,7 +297,7 @@ if ($stage == 'game') {
                 'score' => $game['score2'],
                 'darts' => $game['darts2'],
                 'doubleAttempts' => $game['doubleAttempts2'],
-                'endLeg' => true, // посылаем флаг окончания лега первому игроку
+                // 'endLeg' => true, // посылаем флаг окончания лега первому игроку
             ];
             echo json_encode($arr);
             $stmt = pdo()->prepare("UPDATE p2p_games SET `current_throw` = ? WHERE `key`= ?");
@@ -280,15 +310,15 @@ if ($stage == 'game') {
                     'score' => $game['score1'],
                     'darts' => $game['darts1'],
                     'doubleAttempts' => $game['doubleAttempts1'],
-                    'endLeg' => true, // посылаем флаг окончания лега второму игроку
+                    // 'endLeg' => true, // посылаем флаг окончания лега второму игроку
                 ];
             } else {
                 $arr = [
                     'score' => $game['score1'],
                     'darts' => $game['darts1'],
                     'doubleAttempts' => $game['doubleAttempts1'],
-                    'endLeg' => true,
-                    'setGame' => $game['gemeData']
+                    // 'endLeg' => true,
+                    'setGame' => json_decode($game['gameData'])
                 ];
             }
             echo json_encode($arr);
