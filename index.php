@@ -89,7 +89,7 @@ if (isset($_GET['pageno'])) {
 	let admGames = '<?php echo $admGames; ?>'
 	let pageno = '<?php echo $pageno; ?>'
 	let dategame = '<?php echo $dategame; ?>'
-	
+	let listSet = 'standart'
 	getgame()
 
 </script>

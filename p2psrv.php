@@ -31,13 +31,14 @@ if ($stage == 'register') {
     // Запоминаем GUID, выдаём ключ игры 
     $curtime = date("Y-m-d H:i:s");
     $key = gen_password(5);
-    $stmt = pdo()->prepare("INSERT INTO `p2p_games` (`gamer1_name`, `guid_gamer1`, `game_type`, `last_update`, `key`) VALUES (:playerName, :guid, :game_type, :curtime, :key)");
+    $stmt = pdo()->prepare("INSERT INTO `p2p_games` (`gamer1_name`, `guid_gamer1`, `game_type`, `last_update`, `key`, `privateStartGame`) VALUES (:playerName, :guid, :game_type, :curtime, :key, :privateStartGame)");
     $stmt->execute([
         'playerName' => $data['playerName'],
         'guid' => $data['guid'],
         'game_type' => $data['game'],
         'curtime' => $curtime,
         'key' => $key,
+        'privateStartGame' => $data['privateStartGame'],
     ]);
     echo $key;
     die;
@@ -309,14 +310,7 @@ if ($stage == 'game') {
                 'bestOf' => $data['setGame']['bestOf'],
                 'doublesCount' => $data['setGame']['doublesCount']
             ];
-            // Проверяем, что необходимые данные переданы
-            // if (!$data['setsPlayer1'] && !$data['legsPlayer1'] && $data['setsPlayer2'] && !$data['legsPlayer2']){
-            //     echo 'error_Нет данных о счете между игроками';
-            //     die;
-            // }
-            // подготовленный запрос для нового лега с данными о сетах/легах
-            // $stmt = pdo()->prepare('UPDATE p2p_games SET `gameData`=:gameData, `setGame`=:setting, `require1`=:require, `score1`=:score, `darts1`=:darts, `doubleAttempts1`=:doubleAttempts, `current_throw` = :currentThrow, `sets1`=:sets1, `legs1`=:legs1, `sets2`=:sets2, `legs2`=:legs2 WHERE `key`=:key');
-            // пока действующий запрос
+        
 
             $stmt = pdo()->prepare('UPDATE p2p_games SET `gameData`=:gameData, `setGame`=:setting, `require1`=:require, `score1`=:score, `darts1`=:darts, `doubleAttempts1`=:doubleAttempts, `current_throw` = :currentThrow WHERE `key`=:key');
             $stmt->execute([
@@ -327,10 +321,6 @@ if ($stage == 'game') {
                 'darts' => $data['darts'],
                 'doubleAttempts' => $data['doubleAttempts'],
                 'currentThrow' => $cuthrow,
-                // 'sets1' => $data['setsPlayer1'],
-                // 'legs1' => $data['legsPlayer1'],
-                // 'sets2' => $data['setsPlayer2'],
-                // 'legs2' => $data['legsPlayer2'],
                 'key' => $data['key'],
             ]);
             echo 'OK';
@@ -344,14 +334,7 @@ if ($stage == 'game') {
                 'bestOf' => $data['setGame']['bestOf'],
                 'doublesCount' => $data['setGame']['doublesCount']
             ];
-            // Проверяем, что необходимые данные переданы
-            // if (!$data['setsPlayer1'] && !$data['legsPlayer1'] && $data['setsPlayer2'] && !$data['legsPlayer2']){
-            //     echo 'error_Нет данных о счете между игроками';
-            //     die;
-            // }
-            // подготовленный запрос для нового лега с данными о сетах/легах
-            // $stmt = pdo()->prepare('UPDATE p2p_games SET `gameData`=:gameData, `setGame`=:setting, `require2`=:require, `score2`=:score, `darts2`=:darts, `doubleAttempts2`=:doubleAttempts, `current_throw` = :currentThrow, `sets1`=:sets1, `legs1`=:legs1, `sets2`=:sets2, `legs2`=:legs2 WHERE `key`=:key');
-            // пока действующий запрос
+           
             $stmt = pdo()->prepare('UPDATE p2p_games SET `gameData`=:gameData, `setGame`=:setting, `require1`=:require, `score1`=:score, `darts1`=:darts, `doubleAttempts1`=:doubleAttempts, `current_throw` = :currentThrow WHERE `key`=:key');
             $stmt->execute([
                 'gameData' => json_encode($arr),
@@ -361,10 +344,6 @@ if ($stage == 'game') {
                 'darts' => $data['darts'],
                 'doubleAttempts' => $data['doubleAttempts'],
                 'currentThrow' => $cuthrow,
-                // 'sets1' => $data['setsPlayer1'],
-                // 'legs1' => $data['legsPlayer1'],
-                // 'sets2' => $data['setsPlayer2'],
-                // 'legs2' => $data['legsPlayer2'],
                 'key' => $data['key'],
             ]);
             echo 'OK';
@@ -383,6 +362,7 @@ if ($stage == 'game') {
         }
         $game = $stmt->fetch(PDO::FETCH_ASSOC);
         
+        
         // То что мы делаем пока ход переходит между игроками
         
         if ($game['current_throw'] == 9 && isset($data['endGame']) == true ){
@@ -400,16 +380,50 @@ if ($stage == 'game') {
         die;
         }
 
+        // удаляем игру если второй игрок еще не зарегистрирован
+        if (isset($data['deleteGame']) === true && is_null($game['gamer2_name'])){
+            $stmt = pdo()->prepare("DELETE FROM p2p_games WHERE `key`= ?");
+            $stmt->execute([$data['key']]);
+            $stmt = pdo()->prepare("DELETE FROM games WHERE `guid`=?")->execute([$data['guid']]);
+            echo 'OK';
+            die;
+        }
+
+
         if ($game['guid_gamer1'] == $data['guid'] && $game['current_throw'] == 1) {
-          
+            // Удаляем игру 
+            if ($game['deleteGame'] == 1){
+                $arr = [
+                    'deleteGame' => $game['deleteGame']
+                ];
+                echo json_encode($arr);
+                $stmt = pdo()->prepare("DELETE FROM p2p_games WHERE `key`= ?");
+                $stmt->execute([$data['key']]);
+                // $stmt = pdo()->prepare("DELETE FROM games WHERE `guid`=?")->execute([$data['guid_gamer1']]);
+                die;
+            }
+
+            if (isset($data['deleteGame']) === true){
+                if ($game['deleteGame'] == 1) {
+                echo 'error_Удаление игры уже активировано другим игроком';
+                die;
+                }
+                if (is_null($game['gamer2_name'])){
+                    $stmt = pdo()->prepare("DELETE FROM p2p_games WHERE `key`= ?");
+                    $stmt->execute([$data['key']]);
+                }
+                $stmt = pdo()->prepare("UPDATE p2p_games SET `current_throw` = ?, `deleteGame` = ? WHERE `key`= ?");
+                $stmt->execute([2, 1, $data['key']]);
+                echo 'OK';
+                die;
+            }
+
+            // Возврат хода
             if ($game['remove'] == true){
                 $arr = [
                     'remove' => $game['remove']
                 ];
                 echo json_encode($arr);
-
-                // $stmt = pdo()->prepare("UPDATE p2p_games SET `remove` = ? WHERE `key`= ?");
-                // $stmt->execute([0, $data['key']]);
                 die;
             }
 
@@ -433,13 +447,35 @@ if ($stage == 'game') {
             die;
 
         } elseif ($game['guid_gamer2'] == $data['guid'] && $game['current_throw'] == 2) {
+            // Удаляем игру 
+            if ($game['deleteGame'] == 1){
+                $arr = [
+                    'deleteGame' => $game['deleteGame']
+                ];
+                echo json_encode($arr);
+                $stmt = pdo()->prepare("DELETE FROM p2p_games WHERE `key`= ?");
+                $stmt->execute([$data['key']]);
+                // $stmt = pdo()->prepare("DELETE FROM games WHERE `guid`=?")->execute([$data['guid_gamer1']]);
+                die;
+            }
+
+            if (isset($data['deleteGame']) === true){
+                if ($game['deleteGame'] == 1) {
+                echo 'error_Удаление игры уже активировано другим игроком';
+                die;
+                }
+                $stmt = pdo()->prepare("UPDATE p2p_games SET `current_throw` = ?, `deleteGame` = ? WHERE `key`= ?");
+                $stmt->execute([1, 1, $data['key']]);
+                echo 'OK';
+                die;
+            }
+
+            // Возврат хода
             if ($game['remove'] == true){
                 $arr = [
                     'remove' => $game['remove']
                 ];
                 echo json_encode($arr);
-                // $stmt = pdo()->prepare("UPDATE p2p_games SET `remove` = ? WHERE `key`= ?");
-                // $stmt->execute([0, $data['key']]);
                 die;
             }
             if (isset($data['remove']) == true) {
