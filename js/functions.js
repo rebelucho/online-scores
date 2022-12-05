@@ -35,3 +35,8 @@ function deleteGame(id) {
     // });
     getgame()
 }
+
+// Функция ответа на вызов в p2p играх
+// function answerP2P(name, guid, key){
+//     $.post("p2p.php", {name: name, guid: guid, key: key});
+// }

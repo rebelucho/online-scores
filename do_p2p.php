@@ -58,7 +58,8 @@ if ($_SESSION["stage"] == 'answer') {
     $game = $stmt->fetch(PDO::FETCH_ASSOC);
     flash('Да начнется игра! Между '. $game['gamer1_name'] .' и '. $game['gamer2_name']);
     $_SESSION["key"] = $_POST['key'];
-    $_SESSION["stage"] = 'throw1Player';
+    $_SESSION['guid_gamer2'] = $_POST['guid'];
+    $_SESSION["stage"] = 'wait';
     header('Location: p2p.php');
     die;
 }
@@ -83,10 +84,19 @@ if ($_SESSION["stage"] == 'throw2Player') {
     $stmt = pdo()->prepare("SELECT * FROM `p2p_games` WHERE `key` = :key");
     $stmt->execute(['key' => $_SESSION['key']]);
     $game = $stmt->fetch(PDO::FETCH_ASSOC);
+    $scores = $_POST['scores'];
     $require = $game['require2'] - $_POST['scores'];
-    $stmt = pdo()->prepare('UPDATE p2p_games SET `require2`=:require2 WHERE `key`=:key');
+    if ($require < 0) {
+        $require = $game['require2'];
+        $scores = 0;
+    }
+    $stmt = pdo()->prepare('UPDATE p2p_games SET `require2`=:require2, `score2`=:score2, `darts2`=:darts2, `doubleAttempts2`=:doubleAttempts, `current_throw`=:current_throw WHERE `key`=:key');
     $stmt->execute([
+        'score2' => $scores,
         'require2' => $require,
+        'darts2' => $_POST['darts'],
+        'doubleAttempts' => $_POST['doubleAttempts'],
+        'current_throw' => '1',
         'key' => $_SESSION['key'],
       ]);
       $_SESSION["stage"] = 'throw1Player';

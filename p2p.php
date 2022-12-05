@@ -14,6 +14,15 @@ function curdate() {
     return date('Y-m-d');
 }
 
+if (isset($_GET['stage']))
+$_SESSION['stage'] = $_GET['stage'];
+
+if (isset($_GET['key']))
+$key = $_GET['key'];
+else
+$key = 0;
+
+
 if (isset($_SESSION["stage"])){
     $stage = $_SESSION["stage"];
 } else {
@@ -87,18 +96,18 @@ if ($stage == 'list') {
 </div>
 <div class="container">
 <div class="row row-cols-1 row-cols-md-auto align-items-end justify-content-center">
-	<div class="col" hidden>
+	<!-- <div class="col" hidden>
 		<label for="dateValue" class="form-label">Дата игры</label>
 		<input class="form-control" id="dateValue" type="date" value="<?php echo $dategame; ?>" />
-	</div>
+	</div> -->
 	<div class="col">
 		<label for="nameValue" class="form-label">Имя игрока</label>
 		<input class="form-control" id="nameValue" type="text" value="<?php echo $name; ?>" />
 	</div>
-	<div class="col">
+	<!-- <div class="col">
 		<label for="tagValue" class="form-label">Тэг игры</label>
 		<input class="form-control" id="tagValue" type="text" value="<?php echo $tag; ?>" />
-	</div>
+	</div> -->
     <div class="col align-bottom justify-items-end">
         <input type="button" class="btn btn-primary btn_click_attr" value="Найти" onclick=setVar()>
     </div>
@@ -168,16 +177,16 @@ if ($stage == 'answer') {
         <div class="col-12 col-md-6">
             <form method="post" action="do_p2p.php">
                 <div class="mb-3">
-                    <label for="username" class="form-label">PLAYER 2 NAME</label>
+                    <label for="username" class="form-label">Ваше имя</label>
                     <input type="text" class="form-control" id="username" name="username" required>
                 </div>
                 <div class="mb-3">
-                    <label for="guid" class="form-label">GUID 2 NAME</label>
-                    <input type="text" class="form-control" id="guid" name="guid" required>
+                    <label for="guid" class="form-label">GUID устройства</label>
+                    <input type="text" class="form-control" id="guid" name="guid" value="<?php echo gen_password(14);?>" required>
                 </div>
                 <div class="mb-3">
-                    <label for="key" class="form-label">key of game</label>
-                    <input type="text" class="form-control" id="key" name="key" required>
+                    <label for="key" class="form-label">Ключ игры</label>
+                    <input type="text" class="form-control" id="key" name="key" value="<?php echo $key;?>" required>
                 </div>
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary">Ответить на вызов</button>
@@ -223,6 +232,14 @@ if ($stage == 'throw1Player') {
 <?php
 }
 if ($stage == 'throw2Player') {
+
+    if (is_null($_SESSION['key'])){
+        flash('Не выбран ключ игры, или сессия протухла');
+        $_SESSION['stage'] = 'list';
+        header('Location: /p2p.php');
+        die;
+    }
+
     $stmt = pdo()->prepare("SELECT * FROM `p2p_games` WHERE `key` = :key");
     $stmt->execute(['key' => $_SESSION['key']]);
     $game = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -240,6 +257,14 @@ if ($stage == 'throw2Player') {
                 <div class="mb-3">
                     <label for="scores" class="form-label">Набор игрок 2</label>
                     <input type="text" class="form-control" id="scores" name="scores" required>
+                </div>
+                <div class="mb-3">
+                    <label for="darts" class="form-label">Кол-во дротиков</label>
+                    <input type="text" class="form-control" id="darts" name="darts" value="3" required>
+                </div>
+                <div class="mb-3">
+                    <label for="doubleAttempts" class="form-label">Попыток удвоения</label>
+                    <input type="text" class="form-control" id="doubleAttempts" name="doubleAttempts" value="0">
                 </div>
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary">Отправить</button>

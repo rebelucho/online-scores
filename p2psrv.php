@@ -137,6 +137,69 @@ if ($stage == 'setGame') {
 }
 
 // РАБОТАЕМ с запросами game с обоими участникам
+if ($stage == 'game1111') {
+    $stmt = pdo()->prepare("SELECT *, COALESCE(player1, '') AS pl1, COALESCE(player2, '') AS pl2 FROM `p2p_games` WHERE `key` = :key AND last_update >= now() - interval 1 day");
+    $stmt->execute([
+        'key' => $data['key']
+    ]);
+    // Если игры не найдено, выдадим ошибку и прекратим работу скрипта
+    if (!$stmt->rowCount()) {
+        echo 'error_Не найдено игры с таким ключом за последние сутки';
+        die;
+    }
+    $game = $stmt->fetch(PDO::FETCH_ASSOC);
+    // Проверяем очередность хода, если ход другого игрока - отправляем ошибку. 
+    if ($game['guid_gamer1'] == $data['guid'] && $game['current_throw'] == 2) {
+        echo 'error_Сейчас ход игрока 2';
+        die;
+    } else if ($game['guid_gamer2'] == $data['guid'] && $game['current_throw'] == 1) {
+        echo 'error_Сейчас ход игрока 1';
+        die;
+    }
+    
+    // Ход первого игрока
+    if ($game['guid_gamer1'] == $data['guid'] && $game['current_throw'] == 1) {
+        // х01 Набор очков
+        if (isset($data['score'])) {
+            // Если пришли настройки игры
+            if (isset($data['setGame'])) {
+                if ($data['require'] > 0) // Если в остатке больше чем 0 очков, то передадим ход дальше
+                    $cuthrow = 2;
+                else $cuthrow = 0; // Иначе переведем в фазу окончания хода
+                $arr = [
+                    'firstToSets' => $data['setGame']['firstToSets'],
+                    'firstToLegs' => $data['setGame']['firstToLegs'],
+                    'bestOf' => $data['setGame']['bestOf'],
+                    'doublesCount' => $data['setGame']['doublesCount']
+                ];
+                $stmt = pdo()->prepare('UPDATE p2p_games SET `gameData`=:gameData, `setGame`=:setting, `require1`=:require, `score1`=:score, `darts1`=:darts, `doubleAttempts1`=:doubleAttempts, `current_throw` = :currentThrow WHERE `key`=:key');
+                $stmt->execute([
+                    'gameData' => json_encode($arr),
+                    'setting' => true,
+                    'require' => $data['require'],
+                    'score' => $data['score'],
+                    'darts' => $data['darts'],
+                    'doubleAttempts' => $data['doubleAttempts'],
+                    'currentThrow' => $cuthrow,
+                    'key' => $data['key'],
+                ]);
+                echo 'OK';
+                die;
+            }
+            // Если пришли очки без настроек игры
+
+        die;
+        }
+    }
+
+    // Ход второго игрока
+    if ($game['guid_gamer2'] == $data['guid'] && $game['current_throw'] == 2) {
+        die;
+    }
+
+}
+
+
 
 if ($stage == 'game') {
     if (isset($data['score'])) { // Если в дате пришёл набор, то запишем этот набор в базу и передадим ход второму игроку

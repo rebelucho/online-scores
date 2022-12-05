@@ -1,8 +1,15 @@
 <?php
+$db_name = 'имя базы данных';
+$db_host = 'расположение базы данных'
+$db_user_name = 'пользователь базы данных'
+$db_user_password = 'пароль пользователя базы данных'
+$page_on_list = '20' //колличество записей на странице вывода игр
+
 return [
-    'db_name' => 'db_name',
-    'db_host' => 'db_host',
-    'db_user' => 'db_user_name',
-    'db_pass' => 'db_user_password',
+    'db_name' => $db_name,
+    'db_host' => $db_host,
+    'db_user' => $db_user_name,
+    'db_pass' => $db_user_password,
+    'page_on_list' => $page_on_list,
 ];
 

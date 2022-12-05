@@ -10,6 +10,9 @@ session_start();
 
 $_SESSION['user_role'] ?? $_SESSION['user_role'] = 0;
 
+// Переменные
+$config = include __DIR__.'/config.php';
+$page_on_list = $config['page_on_list'];
 
 // Подключение в БД
 
