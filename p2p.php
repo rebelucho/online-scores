@@ -17,8 +17,8 @@ function curdate() {
 if (isset($_GET['stage']))
 $_SESSION['stage'] = $_GET['stage'];
 
-if (isset($_GET['key']))
-$key = $_GET['key'];
+if (isset($_SESSION['key']))
+$key = $_SESSION['key'];
 else
 $key = 0;
 
@@ -307,12 +307,36 @@ if ($stage == 'throw2Player') {
 // echo $room;
 ?>
     <div class="container">
+
+
+    <div class="row text-center wrapper-sm" ng-show="allLoading">          
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 bg-black dker" ng-hide="gameLoading" ng-switch="game.CurrentStatus" ng-cloak>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-6 bg-black dker">
+                    <div class="w-full h-full wrapper-sm">
+                        <div ng-hide="avLoading">
+                            <video id="localVideo"  autoplay="true" muted="muted" style="width:100%;"></video>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 bg-black dker max text-center" ng-show="avLoading">
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 bg-black dker max ng-hide" ng-hide="avLoading">
+            <div class="max">
+                <video id="remoteVideo" autoplay="true"  class="w-full h-full h"></video>
+            </div>
+        </div>
+    </div>
+
+
+
         <div class="row justify-content-center align-items-center g-2">
             <div class="col-4">Контент игры</video></div>
-            <div class="col-8"><video id="remoteVideo" autoplay="true" style="display:none"></video></div>
+            <!-- <div class="col-8"><video id="remoteVideo" autoplay="true" style="display:none"></video></div> -->
         </div>
         <div class="row justify-content-center align-items-center g-2">
-            <div class="col-4"><video id="localVideo" autoplay="true" muted="muted" style="width: 480px; height: 270px;"></video></div>
+            <!-- <div class="col-4"><video id="localVideo" autoplay="true" muted="muted" style="width: 640px; height: 480px;"></video></div> -->
             <div class="col">
                 <div class="select">
                     <label for="audioSource">Audio input source: </label><select id="audioSource"></select>
@@ -323,9 +347,9 @@ if ($stage == 'throw2Player') {
                 <div class="select">
                     <label for="videoSource">Video source: </label><select id="videoSource"></select>
                 </div>
-                <!-- <div class="d-flex justify-content-end">
+                <div class="d-flex justify-content-end">
                     <button onclick="start()" class="btn btn-primary">Рестартовать видео</button>
-                </div> -->
+                </div>
             </div>
             <!-- <div class="col-4"></div> -->
         </div>

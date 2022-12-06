@@ -44,7 +44,17 @@ if (check_auth()) {
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-link" href="/">Текущие игры</a>
-        <a class="nav-link" href="/p2p.php">P2P режим</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            P2P
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="p2p.php?stage=list">Список игр</a></li>
+            <li><a class="dropdown-item" href="p2p.php?stage=answer">Ответить на вызов</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="p2p.php?stage=videoReg">Видео P2P</a></li>
+          </ul>
+        </li>
         <a class="nav-link" href="/howto.php">Как добавить устройство</a>  
         <a class="nav-link" href="https://darts28.ru" target="_blank">darts28.ru</a>
       
