@@ -118,7 +118,7 @@ if ($_SESSION['user_role'] < 1) {
                 <video controls id="previewPlayer" class="previewPlayer"></video>
             </div>
         </div>
-        <div class="col-lg-6" style="display: none;>
+        <div class="col-lg-6" style="display: none;">
             <ul class="list-group">
                 <li class="list-group-item bg-light hstack">
                     <h5 class="mb-0 fs-6">Информаия о трансляции</h5>

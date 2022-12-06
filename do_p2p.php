@@ -104,3 +104,11 @@ if ($_SESSION["stage"] == 'throw2Player') {
       header('Location: p2p.php');
       die;
 }
+
+if ($_SESSION['stage'] == 'videoReg') {
+    $_SESSION['key'] = $_POST['key'];
+    $_SESSION['videoEnable'] = true;
+    $_SESSION['stage'] = 'videoP2P';
+    // flash('Видео активировано, ждём видео от второго игрока');
+    header('Location: p2p.php');
+}
