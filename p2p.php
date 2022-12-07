@@ -384,6 +384,20 @@ if ($stage == 'throw2Player') {
         ]
     };
     
+    // let savedVideoSource = localStorage.getItem('savedVideoSource');
+    // let savedAudioOutput = localStorage.getItem('savedAudioOutput');
+    // let savedAudioSource = localStorage.getItem('savedAudioSource');
+
+    // videoSelect.val('change', function () {
+    //     localStorage.setItem('savedVideoSource', $(this).val());
+    // });
+    // audioOutputSelect.on('change', function () {
+    //     localStorage.setItem('savedAudioOutput', $(this).val());
+    // });
+    // audioInputSelect.on('change', function () {
+    //     localStorage.setItem('savedAudioSource', $(this).val());
+    // });
+
     audioOutputSelect.disabled = !('sinkId' in HTMLMediaElement.prototype);
 
     function gotDevices(deviceInfos) {
@@ -515,6 +529,9 @@ if ($stage == 'throw2Player') {
       }
       const audioSource = audioInputSelect.value;
       const videoSource = videoSelect.value;
+        // const audioSource = savedAudioSource.value;
+        // const videoSource = savedVideoSource.value;
+    
       const constraints = {
         audio: {deviceId: audioSource ? {exact: audioSource} : undefined},
         video: {deviceId: videoSource ? {exact: videoSource} : undefined}

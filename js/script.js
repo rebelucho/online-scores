@@ -14,6 +14,12 @@ const counterAnim = (qSelector, start = 0, end, duration = 1000) => {
 };
 //#end of Анимация цифр
 
+function implode( glue, pieces ) {
+	return ( ( pieces instanceof Array ) ? pieces.join ( glue ) : pieces );
+}
+
+
+
 let dataGame
 let last_update
 let p1lr = 501
@@ -173,34 +179,18 @@ function replaceGameData() {
     c1401.innerHTML = player1GameData.c140
     c1001.innerHTML = player1GameData.c100
 
-    let strAdl1 = '';
-    for (let i = 0; i < player1GameData.adl.length; i++) {
-        if (player1GameData.adl[i] !== undefined) strAdl1 += '<span> ' + player1GameData.adl[i] + '</span>';
-    }
-    adl1.innerHTML = strAdl1
+    adl1.innerHTML = implode(', ', player1GameData.adl)
+    acheck1.innerHTML = implode(', ', player1GameData.acheck)
 
-    let strAcheck1 = '';
-    for (let i = 0; i < player1GameData.acheck.length; i++) {
-        if (player1GameData.acheck[i] !== undefined) strAcheck1 += '<span> ' + player1GameData.acheck[i] + '</span>';
-    }
-    acheck1.innerHTML = strAcheck1
     ap2.innerHTML = player2GameData.avg
     a9p2.innerHTML = player2GameData.avg9
     c1802.innerHTML = player2GameData.c180
     c1402.innerHTML = player2GameData.c140
     c1002.innerHTML = player2GameData.c100
 
-    let strAdl2 = '';
-    for (let i = 0; i < player2GameData.adl.length; i++) {
-        strAdl2 += '<span>' + player2GameData.adl[i] + ' </span>';
-    }
-    adl2.innerHTML = strAdl2
+    adl2.innerHTML = implode(', ', player2GameData.adl)
 
-    let strAcheck2 = '';
-    for (let i = 0; i < player2GameData.acheck.length; i++) {
-        if (player2GameData.acheck[i] !== undefined) strAcheck2 += '<span>' + player2GameData.acheck[i] + ' </span>';
-    }
-    acheck2.innerHTML = strAcheck2
+    acheck2.innerHTML = implode(', ', player2GameData.acheck)
 }
 
 getScore()

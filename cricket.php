@@ -108,7 +108,7 @@ else
       <input class="form-check-input" type="checkbox" role="switch" id="toggle">
       <label class="form-check-label" for="toggle">Не отключать экран</label>
     </div>
-    <div class="flex-fill justify-content-end text-end">
+    <div class="flex-fill justify-content-end text-end" hidden>
         <div class="d-block d-md-none"><a href="/finalcricket.php?id=<?php echo $id; ?>&view=phone" target="_blank">Финальная статистика</a></div>
         <div class="d-none d-lg-block"><a href="/finalcricket.php?id=<?php echo $id; ?>" target="_blank">Финальная статистика</a>
     </div>

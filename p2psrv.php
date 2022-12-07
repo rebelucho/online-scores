@@ -112,8 +112,8 @@ if ($stage == 'setGame') {
         echo 'error_Не найдено игры с таким ключом за последние сутки';
         die;
     }
-    // $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($game['game_type'] == 'x01') {
+    $setGame = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($setGame['game_type'] == 'x01') {
         $arr = [
             "beginGame" => $data['beginGame'],
             "firstToSets" => $data['firstToSets'],
@@ -132,7 +132,7 @@ if ($stage == 'setGame') {
             'key' => $data['key']
         ]);
     }
-    if ($game['game_type'] == 'Cricket') {
+    if ($setGame['game_type'] == 'Cricket') {
         $arr = [
             "beginGame" => $data['beginGame'],
             "firstToSets" => $data['firstToSets'],
@@ -204,16 +204,16 @@ if ($stage == 'game') {
     }
     
     // Удаляем игру, если удаление активировано. 
-    if ($game['deleteGame'] == 1){
-        $arr = [
-            'deleteGame' => $game['deleteGame']
-        ];
-        echo json_encode($arr); // Отправляем команду на удаление игроку
+    // if ($game['deleteGame'] == 1){
+        // $arr = [
+            // 'deleteGame' => $game['deleteGame']
+        // ];
+        // echo json_encode($arr); // Отправляем команду на удаление игроку
         // Удаляем игру из БД
-        $stmt = pdo()->prepare("DELETE FROM p2p_games WHERE `key`= ?");
-        $stmt->execute([$data['key']]);
-        die;
-    }
+        // $stmt = pdo()->prepare("DELETE FROM p2p_games WHERE `key`= ?");
+        // $stmt->execute([$data['key']]);
+        // die;
+    // }
     
     // Ход первого игрока
     if ($game['guid_gamer1'] == $data['guid']) {
@@ -256,7 +256,7 @@ if ($stage == 'game') {
                     $stmt->execute([
                         'gameData' => json_encode($arr),
                         'setting' => true,
-                        'score' => $data['score'],
+                        'score' => json_encode($data['score']),
                         'darts' => $data['darts'],
                         'currentThrow' => $cuthrow,
                         'remove' => 0,
@@ -286,7 +286,7 @@ if ($stage == 'game') {
                     if ($game['game_type'] == 'Cricket') {
                         $stmt = pdo()->prepare('UPDATE p2p_games SET  `player1`=:score, `darts1`=:darts,`current_throw` = :currentThrow, `remove` = :remove WHERE `key`=:key');
                         $stmt->execute([
-                            'score' => $data['score'],
+                            'score' => json_encode($data['score']),
                             'darts' => $data['darts'],
                             'currentThrow' => $cuthrow,
                             'remove' => 0,
@@ -323,7 +323,7 @@ if ($stage == 'game') {
                     if ($game['game_type'] == 'Cricket') {
                         $stmt = pdo()->prepare('UPDATE p2p_games SET `player1`=:score, `darts1`=:darts, `current_throw` = :currentThrow, `sets1`=:sets1, `legs1`=:legs1, `sets2`=:sets2, `legs2`=:legs2, `remove`=:remove WHERE `key`=:key');
                         $stmt->execute([
-                            'score' => $data['score'],
+                            'score' => json_encode($data['score']),
                             'darts' => $data['darts'],
                             'currentThrow' => $cuthrow,
                             'sets1' => $data['setsPlayer1'],
@@ -354,7 +354,18 @@ if ($stage == 'game') {
                 echo 'OK';
                 die;
             }
-
+            // Удаляем игру, если удаление активировано. 
+            if ($game['deleteGame'] == 1){
+                $arr = [
+                    'deleteGame' => $game['deleteGame']
+                ];
+                echo json_encode($arr); // Отправляем команду на удаление игроку
+                // Удаляем игру из БД
+                $stmt = pdo()->prepare("DELETE FROM p2p_games WHERE `key`= ?");
+                $stmt->execute([$data['key']]);
+                die;
+            }
+            
             // Переводим в новый лег, если соперник закрылся
             if ($game['require2'] == 0 && $game['current_throw'] == 0) { 
                 if ($game['game_type'] == 'x01') {
@@ -366,7 +377,7 @@ if ($stage == 'game') {
                 }
                 if ($game['game_type'] == 'Cricket') {
                     $arr = [
-                        'score' => $game['player2'],
+                        'score' => json_decode($game['player2']),
                         'darts' => $game['darts2'],
                     ];
                 }
@@ -407,7 +418,7 @@ if ($stage == 'game') {
                 }
                 if ($game['game_type'] == 'Cricket') {
                     $arr = [
-                        'score' => $game['player2'],
+                        'score' => json_decode($game['player2']),
                         'darts' => $game['darts2'],
                     ];
                 }
@@ -446,7 +457,7 @@ if ($stage == 'game') {
                     if ($game['game_type'] == 'Cricket') {
                         $stmt = pdo()->prepare('UPDATE p2p_games SET `player2`=:score, `darts2`=:darts, `current_throw` = :currentThrow, `remove` = :remove WHERE `key`=:key');
                         $stmt->execute([
-                            'score' => $data['score'],
+                            'score' => json_encode($data['score']),
                             'darts' => $data['darts'],
                             'currentThrow' => $cuthrow,
                             'remove' => 0,
@@ -483,7 +494,7 @@ if ($stage == 'game') {
                     if ($game['game_type'] == 'Cricket') {
                         $stmt = pdo()->prepare('UPDATE p2p_games SET `player2`=:score, `darts2`=:darts, `current_throw` = :currentThrow, `sets1`=:sets1, `legs1`=:legs1, `sets2`=:sets2, `legs2`=:legs2, `remove`=:remove WHERE `key`=:key');
                         $stmt->execute([
-                            'score' => $data['score'],
+                            'score' => json_encode($data['score']),
                             'darts' => $data['darts'],
                             'currentThrow' => $cuthrow,
                             'sets1' => $data['setsPlayer1'],
@@ -536,7 +547,7 @@ if ($stage == 'game') {
                 }
                 if ($game['game_type'] == 'Cricket') {
                     $arr = [
-                        'score' => $game['player1'],
+                        'score' => json_decode($game['player1']),
                         'darts' => $game['darts1'],
                     ];
                 }
@@ -576,7 +587,7 @@ if ($stage == 'game') {
                     }
                     if ($game['game_type'] == 'Cricket') {
                         $arr = [
-                             'score' => $game['player1'],
+                             'score' => json_decode($game['player1']),
                              'darts' => $game['darts1'],
                         ];
                     }
@@ -591,7 +602,7 @@ if ($stage == 'game') {
                     }
                     if ($game['game_type'] == 'Cricket') {
                         $arr = [
-                            'score' => $game['player1'],
+                            'score' => json_decode($game['player1']),
                             'darts' => $game['darts1'],
                             'setGame' => json_decode($game['gameData'])
                         ];
