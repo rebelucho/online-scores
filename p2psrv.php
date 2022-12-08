@@ -154,6 +154,7 @@ if ($stage == 'setGame') {
 
 // РАБОТАЕМ с запросами game 
 if ($stage == 'game') {
+    // die('OK');
     $stmt = pdo()->prepare("SELECT *, COALESCE(player1, '') AS pl1, COALESCE(player2, '') AS pl2 FROM `p2p_games` WHERE `key` = :key AND last_update >= now() - interval 1 day");
     $stmt->execute([
         'key' => $data['key']
@@ -204,16 +205,16 @@ if ($stage == 'game') {
     }
     
     // Удаляем игру, если удаление активировано. 
-    // if ($game['deleteGame'] == 1){
-        // $arr = [
-            // 'deleteGame' => $game['deleteGame']
-        // ];
-        // echo json_encode($arr); // Отправляем команду на удаление игроку
+    if ($game['deleteGame'] == 1){
+        $arr = [
+            'deleteGame' => $game['deleteGame']
+        ];
+        echo json_encode($arr); // Отправляем команду на удаление игроку
         // Удаляем игру из БД
-        // $stmt = pdo()->prepare("DELETE FROM p2p_games WHERE `key`= ?");
-        // $stmt->execute([$data['key']]);
-        // die;
-    // }
+        $stmt = pdo()->prepare("DELETE FROM p2p_games WHERE `key`= ?");
+        $stmt->execute([$data['key']]);
+        die;
+    }
     
     // Ход первого игрока
     if ($game['guid_gamer1'] == $data['guid']) {
@@ -250,9 +251,9 @@ if ($stage == 'game') {
                         'firstToSets' => $data['setGame']['firstToSets'],
                         'firstToLegs' => $data['setGame']['firstToLegs'],
                         'bestOf' => $data['setGame']['bestOf'],
-                        'cricketWithScores' => $data['setGame']['cricketWithScores']
+                        // 'cricketWithScores' => $data['setGame']['cricketWithScores']
                     ];
-                    $stmt = pdo()->prepare('UPDATE p2p_games SET `gameData`=:gameData, `setGame`=:setting, `require1`=:require, `player1`=:score, `darts1`=:darts, `doubleAttempts1`=:doubleAttempts, `current_throw` = :currentThrow, `remove`= :remove WHERE `key`=:key');
+                    $stmt = pdo()->prepare('UPDATE p2p_games SET `gameData`=:gameData, `setGame`=:setting, `player1`=:score, `darts1`=:darts, `current_throw` = :currentThrow, `remove`= :remove WHERE `key`=:key');
                     $stmt->execute([
                         'gameData' => json_encode($arr),
                         'setting' => true,
@@ -342,6 +343,9 @@ if ($stage == 'game') {
             
             // Помечаем игру на удаление, если пришел запрос, и удаляем сразу из БД, если нет второго игрока. 
             if (isset($data['deleteGame']) == true){
+                if ($game['current_throw'] != 1) {
+                    die('error_Невозможно удалить игру в ход соперника.');
+                }
                 if ($game['deleteGame'] == 1) {
                 echo 'error_Удаление игры уже активировано другим игроком';
                 die;
@@ -354,17 +358,7 @@ if ($stage == 'game') {
                 echo 'OK';
                 die;
             }
-            // Удаляем игру, если удаление активировано. 
-            if ($game['deleteGame'] == 1){
-                $arr = [
-                    'deleteGame' => $game['deleteGame']
-                ];
-                echo json_encode($arr); // Отправляем команду на удаление игроку
-                // Удаляем игру из БД
-                $stmt = pdo()->prepare("DELETE FROM p2p_games WHERE `key`= ?");
-                $stmt->execute([$data['key']]);
-                die;
-            }
+            
             
             // Переводим в новый лег, если соперник закрылся
             if ($game['require2'] == 0 && $game['current_throw'] == 0) { 
@@ -511,18 +505,11 @@ if ($stage == 'game') {
             }
         } if (!isset($data['score'])) { // Если в запросе нет информации о наборе очков
            
-            // Удаляем игру 
-            if ($game['deleteGame'] == 1 && $game['current_throw'] == 2){
-                $arr = [
-                    'deleteGame' => $game['deleteGame']
-                ];
-                echo json_encode($arr);
-                $stmt = pdo()->prepare("DELETE FROM p2p_games WHERE `key`= ?");
-                $stmt->execute([$data['key']]);
-                die;
-            }
             // Помечаем игру на удаление. 
             if (isset($data['deleteGame']) === true){
+                if ($game['current_throw'] != 2) {
+                    die('error_Невозможно удалить игру в ход соперника.');
+                }
                 if ($game['deleteGame'] == 1) {
                 echo 'error_Удаление игры уже активировано другим игроком';
                 die;
@@ -609,6 +596,8 @@ if ($stage == 'game') {
                     }
                  }
                  echo json_encode($arr);
+                 $stmt = pdo()->prepare("UPDATE p2p_games SET `setGame` = ? WHERE `key`= ?");
+                 $stmt->execute([0, $data['key']]);
                  die;
             }
         }
