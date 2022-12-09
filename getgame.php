@@ -77,8 +77,22 @@ if ($list === "p2p") {
                             <?php echo $row['gamer1_name'];?> VS <?php echo $row['gamer2_name']; ?>
                         </div>
                         <div class="col">
+                            <?php if ($idView['game_type'] == 'Cricket' && $idView['end_match'] != true) { ?>
+                            <div class="d-block d-md-none">Игра уже идёт. <a href=cricket.php?id=<?php echo $idView['id'];?>&view=phone>смотреть</a></div>
+                            <div class="d-none d-sm-block">Игра уже идёт. <a href=cricket.php?id=<?php echo $idView['id'];?>&view=desktop>смотреть</a></div>
+                            <?php } ?>
+                            <?php if ($idView['game_type'] == 'Cricket' && $idView['end_match'] == true) { ?>
+                            <div class="d-block d-md-none">Игра закончилась. <a href=finalcricket.php?id=<?php echo $idView['id'];?>&view=phone>>>> РЕЗУЛЬТАТ </a></div>
+                            <div class="d-none d-sm-block">Игра закончилась. <a href=finalcricket.php?id=<?php echo $idView['id'];?>&view=desktop>>>> РЕЗУЛЬТАТ </a></div>
+                            <?php } ?>
+                            <?php if ($idView['game_type'] == 'x01' && $idView['end_match'] != true) { ?>
                             <div class="d-block d-md-none">Игра уже идёт. <a href=score.php?id=<?php echo $idView['id'];?>&view=phone>смотреть</a></div>
                             <div class="d-none d-sm-block">Игра уже идёт. <a href=score.php?id=<?php echo $idView['id'];?>&view=desktop>смотреть</a></div>
+                            <?php } ?>
+                            <?php if ($idView['game_type'] == 'x01' && $idView['end_match'] == true) { ?>
+                            <div class="d-block d-md-none">Игра закончилась. <a href=finalscore.php?id=<?php echo $idView['id'];?>&view=phone>>>> РЕЗУЛЬТАТ </a></div>
+                            <div class="d-none d-sm-block">Игра закончилась. <a href=finalscore.php?id=<?php echo $idView['id'];?>&view=desktop>>>> РЕЗУЛЬТАТ </a></div>
+                            <?php } ?>
                         </div>
                         <div class="col">
                             <?php echo $row['require1'];?> : <?php echo $row['require2']; ?> 

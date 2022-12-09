@@ -306,54 +306,49 @@ if ($stage == 'throw2Player') {
     $room = $_SESSION['key'];
 // echo $room;
 ?>
-    <div class="container">
-
-
+<div class="container">
     <div class="row text-center wrapper-sm" ng-show="allLoading">          
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 bg-black dker" ng-hide="gameLoading" ng-switch="game.CurrentStatus" ng-cloak>
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 bg-black dker">
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-6 bg-black dker">
-                    <div class="w-full h-full wrapper-sm">
-                        <div ng-hide="avLoading">
-                            <video id="localVideo"  autoplay="true" muted="muted" style="width:100%;"></video>
-                        </div>
+                            <video id="localVideo" class="none" autoplay="true" muted="muted" style="width:100%;"></video>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 bg-black dker max text-center" ng-show="avLoading">
+            
+                <div class="video-wrap">
+                    <video id="remoteVideo" autoplay="true"  class="video w-full h-full h"></video>
+                </div>
+            
+        </div>
+
+
+        <div class="row justify-content-center align-items-center g-2">
+            <!-- <div class="col-4"><video id="localVideo" autoplay="true" muted="muted" style="width: 640px; height: 480px;"></video></div> -->
+            <div class="col-12 col-md-6">
+            
+                
+                <div class="form-floating">
+                <div id="settingVideo">
+                    <div>
+                        <label for="audioSource">Audio source: </label><select class="form-select" id="audioSource"></select>
+                    </div>
+                    <div>
+                        <label for="audioOutput">Audio output: </label><select class="form-select" id="audioOutput"></select>
+                    </div>
+                </div>
+                    <div>
+                        <label for="videoSource">Video source: </label><select class="form-select" id="videoSource"></select>
                     </div>
                 </div>
             </div>
         </div>
-     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 bg-black dker max text-center" ng-show="avLoading">
-        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 bg-black dker max ng-hide" ng-hide="avLoading">
-            <div class="max">
-                <video id="remoteVideo" autoplay="true"  class="w-full h-full h"></video>
-            </div>
+        <div class="d-flex justify-content-end">
+            <button onclick="start()" class="btn btn-primary">Рестартовать видео</button>
         </div>
     </div>
-
-
-
-        <div class="row justify-content-center align-items-center g-2">
-            <div class="col-4">Контент игры</video></div>
-            <!-- <div class="col-8"><video id="remoteVideo" autoplay="true" style="display:none"></video></div> -->
-        </div>
-        <div class="row justify-content-center align-items-center g-2">
-            <!-- <div class="col-4"><video id="localVideo" autoplay="true" muted="muted" style="width: 640px; height: 480px;"></video></div> -->
-            <div class="col">
-                <div class="select">
-                    <label for="audioSource">Audio input source: </label><select id="audioSource"></select>
-                </div>
-                <div class="select">
-                    <label for="audioOutput">Audio output destination: </label><select id="audioOutput"></select>
-                </div>
-                <div class="select">
-                    <label for="videoSource">Video source: </label><select id="videoSource"></select>
-                </div>
-                <div class="d-flex justify-content-end">
-                    <button onclick="start()" class="btn btn-primary">Рестартовать видео</button>
-                </div>
-            </div>
-            <!-- <div class="col-4"></div> -->
-        </div>
-    </div>
+</div>
 
 <script type="text/javascript">
 
@@ -384,12 +379,12 @@ if ($stage == 'throw2Player') {
         ]
     };
     
-    // let savedVideoSource = localStorage.getItem('savedVideoSource');
+    let savedVideoSource = localStorage.getItem('savedVideoSource');
     // let savedAudioOutput = localStorage.getItem('savedAudioOutput');
-    // let savedAudioSource = localStorage.getItem('savedAudioSource');
+    let savedAudioSource = localStorage.getItem('savedAudioSource');
 
     // videoSelect.val('change', function () {
-    //     localStorage.setItem('savedVideoSource', $(this).val());
+    //      localStorage.setItem('savedVideoSource', $(this).val());
     // });
     // audioOutputSelect.on('change', function () {
     //     localStorage.setItem('savedAudioOutput', $(this).val());
@@ -398,6 +393,8 @@ if ($stage == 'throw2Player') {
     //     localStorage.setItem('savedAudioSource', $(this).val());
     // });
 
+    
+    
     audioOutputSelect.disabled = !('sinkId' in HTMLMediaElement.prototype);
 
     function gotDevices(deviceInfos) {
@@ -421,6 +418,7 @@ if ($stage == 'throw2Player') {
         } else if (deviceInfo.kind === 'videoinput') {
           option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
           videoSelect.appendChild(option);
+        //    console.log(videoSelect.appendChild(option))
         } else {
           console.log('Some other kind of source/device: ', deviceInfo);
         }
@@ -527,6 +525,10 @@ if ($stage == 'throw2Player') {
           track.stop();
         });
       }
+
+    //   localStorage.setItem('savedAudioSource', audioInputSelect.value);
+    //   localStorage.setItem('savedVideoSource', videoSelect.value);
+      
       const audioSource = audioInputSelect.value;
       const videoSource = videoSelect.value;
         // const audioSource = savedAudioSource.value;
@@ -681,7 +683,9 @@ if ($stage == 'throw2Player') {
         pc.ontrack = function (e) {
             document.getElementById('remoteVideo').style.display="block";
             // document.getElementById('localVideo').style.display="none";
-            document.getElementById('localVideo').style="width: 480px; height: 270px;";
+            document.getElementById('localVideo').className="d-none d-sm-block";
+            document.getElementById('localVideo').style="width: 240px; height: 135px;";
+            document.getElementById('settingVideo').className="d-none d-sm-block";
             remoteVideo.srcObject = e.streams[0];
         };
     }
