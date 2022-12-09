@@ -58,7 +58,7 @@
 
 .video-wrap {
     position: relative;
-    padding-bottom: 75%; /* задаёт высоту контейнера для 16:9 (если 4:3 — поставьте 75%) */
+    padding-bottom: 64%; /* задаёт высоту контейнера для 16:9 (если 4:3 — поставьте 75%) */
     height: 0;
     overflow: hidden;
   }

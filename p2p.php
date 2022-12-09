@@ -307,7 +307,7 @@ if ($stage == 'throw2Player') {
 // echo $room;
 ?>
 <div class="container">
-    <div class="row text-center wrapper-sm" ng-show="allLoading">          
+    <div class="row  wrapper-sm" ng-show="allLoading">          
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 bg-black dker">
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-6 bg-black dker">
@@ -332,20 +332,20 @@ if ($stage == 'throw2Player') {
                 <div class="form-floating">
                 <div id="settingVideo">
                     <div>
-                        <label for="audioSource">Audio source: </label><select class="form-select" id="audioSource"></select>
+                        <label class="" for="audioSource">Audio source </label><select class="form-select" id="audioSource"></select>
                     </div>
                     <div>
-                        <label for="audioOutput">Audio output: </label><select class="form-select" id="audioOutput"></select>
+                        <label class="" for="audioOutput">Audio output </label><select class="form-select" id="audioOutput"></select>
                     </div>
                 </div>
                     <div>
-                        <label for="videoSource">Video source: </label><select class="form-select" id="videoSource"></select>
+                        <label class="" for="videoSource">Video source </label><select class="form-select" id="videoSource"></select>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="d-flex justify-content-end">
-            <button onclick="start()" class="btn btn-primary">Рестартовать видео</button>
+        <div class="d-flex justify-content-center g-2">
+            <button onclick="start()" class="btn btn-primary">Рестарт видео</button>
         </div>
     </div>
 </div>
