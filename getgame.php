@@ -65,6 +65,11 @@ if ($list === "p2p") {
 
         // echo 'true';
         foreach ($stmt as $row) {
+
+            if ($row['sets1'] >= 1 || $row['sets2'] >= 1) $score = $row['sets1'].' : '.$row['sets2'];
+            elseif ($row['legs1'] >= 1 || $row['legs2'] >= 1) $score = $row['legs1'].' : '.$row['legs2'];
+            else $score = $row['require1'].' : '.$row['require2'];
+
             if ($row['gamer2_name']) {
                 $stmh = pdo()->prepare("SELECT * FROM games WHERE `guid`=?");
                 $stmh->execute([$row['guid_gamer1']]);
@@ -77,25 +82,34 @@ if ($list === "p2p") {
                             <?php echo $row['gamer1_name'];?> VS <?php echo $row['gamer2_name']; ?>
                         </div>
                         <div class="col">
-                            <?php if ($idView['game_type'] == 'Cricket' && $idView['end_match'] != true) { ?>
+                            <?php if ($row['game_type'] == 'Cricket' && $row['end_match'] != true) { ?>
                             <div class="d-block d-md-none">Игра уже идёт. <a href=cricket.php?id=<?php echo $idView['id'];?>&view=phone>смотреть</a></div>
                             <div class="d-none d-sm-block">Игра уже идёт. <a href=cricket.php?id=<?php echo $idView['id'];?>&view=desktop>смотреть</a></div>
                             <?php } ?>
-                            <?php if ($idView['game_type'] == 'Cricket' && $idView['end_match'] == true) { ?>
+                            <?php if ($row['game_type'] == 'Cricket' && $row['end_match'] == true && $idView['game_delete'] != true) { ?>
                             <div class="d-block d-md-none">Игра закончилась. <a href=finalcricket.php?id=<?php echo $idView['id'];?>&view=phone>>>> РЕЗУЛЬТАТ </a></div>
                             <div class="d-none d-sm-block">Игра закончилась. <a href=finalcricket.php?id=<?php echo $idView['id'];?>&view=desktop>>>> РЕЗУЛЬТАТ </a></div>
                             <?php } ?>
-                            <?php if ($idView['game_type'] == 'x01' && $idView['end_match'] != true) { ?>
+                            <?php if ($row['game_type'] == 'Cricket' && $row['end_match'] == true && $idView['game_delete'] == true) { ?>
+                            <div class="d-block d-md-none">Игра закончилась. <?php echo $score;?></div>
+                            <div class="d-none d-sm-block">Игра закончилась. <?php echo $score;?></div>
+                            <?php } ?>
+                            <?php if ($row['game_type'] == 'x01' && is_null($row['end_match'])) { ?>
                             <div class="d-block d-md-none">Игра уже идёт. <a href=score.php?id=<?php echo $idView['id'];?>&view=phone>смотреть</a></div>
                             <div class="d-none d-sm-block">Игра уже идёт. <a href=score.php?id=<?php echo $idView['id'];?>&view=desktop>смотреть</a></div>
                             <?php } ?>
-                            <?php if ($idView['game_type'] == 'x01' && $idView['end_match'] == true) { ?>
+                            <?php if ($row['game_type'] == 'x01' && !is_null($row['end_match']) && $idView['game_delete'] != true) { ?>
                             <div class="d-block d-md-none">Игра закончилась. <a href=finalscore.php?id=<?php echo $idView['id'];?>&view=phone>>>> РЕЗУЛЬТАТ </a></div>
                             <div class="d-none d-sm-block">Игра закончилась. <a href=finalscore.php?id=<?php echo $idView['id'];?>&view=desktop>>>> РЕЗУЛЬТАТ </a></div>
                             <?php } ?>
+                            <?php if ($row['game_type'] == 'x01' && !is_null($row['end_match']) && $idView['game_delete'] == true) { ?>
+                            <div class="d-block d-md-none">Игра закончилась.</div>
+                            <div class="d-none d-sm-block">Игра закончилась.</div>
+                            <?php } ?>
                         </div>
                         <div class="col">
-                            <?php echo $row['require1'];?> : <?php echo $row['require2']; ?> 
+                            <?php echo $score;?>
+                            
                         </div>
                     </div>
                 </div>
@@ -164,6 +178,15 @@ if ($empty) {
 
     foreach ($stmt as $row) {
         if (!empty($row['code_version'])) {
+            if ($row['sets1'] >= 1 || $row['sets2'] >= 1) {
+                $scorePlayer1 = $row['sets1'];
+                $scorePlayer2 = $row['sets2'];
+            }
+            else {
+                $scorePlayer1 = $row['legs1'];
+                $scorePlayer2 = $row['legs2'];
+            } 
+
             echo '
     <div class="row d-flex align-items-center border-bottom">
         <div class="row d-flex align-items-center">
@@ -242,14 +265,14 @@ if ($empty) {
             echo '
             <div class="col-5 d-flex flex-column">
                 <div class="text-truncate  text-end" >' . $row['gamer1_name'] . '</div>
-                <div class="text-end">' . $row['legs1'] . '</div>
+                <div class="text-end">' . $scorePlayer1 . '</div>
             </div>
             <div class="col-1 align-items-center text-center">
                 VS
             </div>
             <div class="col-5 flex-column justify-content-end">
                 <div class=" text-truncate">' . $row['gamer2_name'] . '</div>
-                <div>' . $row['legs2'] . '</div>
+                <div>' . $scorePlayer2 . '</div>
             </div> ';
             echo '
         </div>';
@@ -285,14 +308,14 @@ if ($empty) {
             </div>
     	    <div class="col-5 justify-content-end text-end align-items-center">
                 <div class="text-truncate">' . $row['gamer1_name'] . '</div>
-                <div>' . $row['legs1'] . '</div>
+                <div>' . $scorePlayer1 . '</div>
             </div>
             <div class="col-1 align-items-center text-center">
                 VS
             </div>
             <div class="col-5 flex-column justify-content-end">
                 <div class=" text-truncate">' . $row['gamer2_name'] . '</div>
-                <div>' . $row['legs2'] . '</div>
+                <div>' . $scorePlayer2 . '</div>
             </div>
         </div>
         ';
