@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__.'/inc/boot.php';
-// session_start();
 
 $user = null;
 
@@ -89,7 +88,7 @@ if (isset($_GET['pageno'])) {
 	let admGames = '<?php echo $admGames; ?>'
 	let pageno = '<?php echo $pageno; ?>'
 	let dategame = '<?php echo $dategame; ?>'
-	
+	let listSet = 'standart'
 	getgame()
 
 </script>

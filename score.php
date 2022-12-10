@@ -393,12 +393,12 @@ if ($video == true ) {
 <?php
     if ($view == "phone") {
 ?>
-    <div class="flex-fill justify-content-end text-end">
+    <div class="flex-fill justify-content-end text-end" hidden>
         <a href="/finalscore.php?id=<?php echo $id; ?>&view=phone" target="_blank">Пошаговая статистика</a>
     </div>
 <?php } else {
     ?>
-    <div class="flex-fill justify-content-end text-end">
+    <div class="flex-fill justify-content-end text-end" hidden>
         <a href="/finalscore.php?id=<?php echo $id; ?>" target="_blank">Пошаговая статистика</a>
     </div>
   <?php
@@ -413,6 +413,3 @@ if ($video == true ) {
 <?php
 require_once __DIR__.'/template/footer.php';
 ?>
-
-
-

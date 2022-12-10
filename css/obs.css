@@ -1,0 +1,337 @@
+/* треугольник */
+
+.currentThrowIcon {
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzgiIGhlaWdodD0iNDQiIHZpZXdCb3g9IjAgMCAzOCA0NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6IC8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgMjJMMzcuNSAwLjM0OTM2NVY0My42NTA2TDAgMjJaIiBmaWxsPSIjM0E3NjBBIi8+PC9zdmc+");
+}
+
+
+/* avgPlace */
+
+.avgPlace {
+    position: relative;
+    width: 120px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+
+/* avg1Player */
+
+.avg1Player {
+    position: absolute;
+    width: 78px;
+    height: 44px;
+    left: 30px;
+    top: 31px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+    /* identical to box height */
+    color: #000000;
+}
+
+
+/* avg2Player */
+
+.avg2Player {
+    position: absolute;
+    width: 77px;
+    height: 44px;
+    left: 31px;
+    top: 126px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+    /* identical to box height */
+    color: #000000;
+}
+
+
+/* Line 6 */
+
+.line6 {
+    position: absolute;
+    width: 120px;
+    height: 0px;
+    left: 0px;
+    top: 100px;
+    border: 1px solid #000000;
+}
+
+
+/* topGameCount */
+
+.topGameCount {
+    position: relative;
+    width: 800px;
+    height: 30px;
+    background: #000000;
+}
+
+
+/* Line 4 */
+
+.line4 {
+    position: absolute;
+    width: 30px;
+    height: 0px;
+    left: 600px;
+    top: 30px;
+    border: 1px solid #FFFFFF;
+    transform: rotate(-90deg);
+}
+
+
+/* Line 5 */
+
+.line5 {
+    position: absolute;
+    width: 30px;
+    height: 0px;
+    left: 500px;
+    top: 30px;
+    border: 1px solid #FFFFFF;
+    transform: rotate(-90deg);
+}
+
+
+/* gameName */
+
+.gameName {
+    position: absolute;
+    width: 387px;
+    height: 24px;
+    left: 10px;
+    top: 3px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    color: #FFFFFF;
+}
+
+
+/* gameTo */
+
+.gameTo {
+    position: absolute;
+    width: 46px;
+    height: 24px;
+    left: 527px;
+    top: 3px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    color: #FFFFFF;
+}
+
+
+/* gameCount */
+
+.gameCount {
+    position: relative;
+    width: 800px;
+    height: 200px;
+    background: #FFFFFF;
+}
+
+
+/* Line 1 */
+
+.line1 {
+    position: absolute;
+    width: 800px;
+    height: 0px;
+    left: 0px;
+    top: 100.5px;
+    border: 1px solid #000000;
+}
+
+
+/* Line 2 */
+
+.line2 {
+    position: absolute;
+    width: 200px;
+    height: 0px;
+    left: 600px;
+    top: 0px;
+    border: 1px solid #000000;
+    transform: rotate(90deg);
+}
+
+
+/* Line 3 */
+
+.line3 {
+    position: absolute;
+    width: 200px;
+    height: 0px;
+    left: 500px;
+    top: 0px;
+    border: 1px solid #000000;
+    transform: rotate(90deg);
+}
+
+
+/* name1Player */
+
+.name1player {
+    position: absolute;
+    width: 473px;
+    height: 44px;
+    left: 10px;
+    top: 32px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+    /* identical to box height */
+    color: #000000;
+}
+
+
+/* name2Player */
+
+.name2Player {
+    position: absolute;
+    width: 472px;
+    height: 44px;
+    left: 10px;
+    top: 125px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+    /* identical to box height */
+    color: #000000;
+}
+
+
+/* legs1Player */
+
+.legs1Player {
+    position: absolute;
+    width: 24px;
+    height: 44px;
+    left: 539px;
+    top: 32px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+    /* identical to box height */
+    color: #000000;
+}
+
+
+/* require1Player */
+
+.require1Player {
+    position: absolute;
+    width: 117px;
+    height: 77px;
+    left: 639px;
+    top: 16px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 64px;
+    line-height: 77px;
+    color: #000000;
+}
+
+
+/* require2Player */
+
+.require2Player {
+    position: absolute;
+    width: 117px;
+    height: 77px;
+    left: 639px;
+    top: 107px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 64px;
+    line-height: 77px;
+    color: #000000;
+}
+
+
+/* legs2Player */
+
+.legs2Player {
+    position: absolute;
+    width: 24px;
+    height: 44px;
+    left: 539px;
+    top: 125px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+    /* identical to box height */
+    color: #000000;
+}
+
+
+/* throw1Player */
+
+.throw1Player {
+    position: absolute;
+    width: 43.3px;
+    height: 37.5px;
+    left: 760px;
+    top: 75.65px;
+    background: #3A760A;
+    transform: rotate(-90deg);
+}
+
+
+/* throw2Player */
+
+.throw2Player {
+    position: absolute;
+    width: 43.3px;
+    height: 37.5px;
+    left: 760px;
+    top: 169.3px;
+    background: #3A760A;
+    transform: rotate(-90deg);
+}
+
+
+/* start2Player */
+
+.start2Player {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    left: 480px;
+    top: 180px;
+    background: #FF0000;
+}
+
+
+/* start1Player */
+
+.start1Player {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    left: 480px;
+    top: 80px;
+    background: #FF0000;
+}

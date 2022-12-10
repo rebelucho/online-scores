@@ -10,6 +10,9 @@ session_start();
 
 $_SESSION['user_role'] ?? $_SESSION['user_role'] = 0;
 
+// Переменные
+$config = include __DIR__.'/config.php';
+$page_on_list = $config['page_on_list'];
 
 // Подключение в БД
 
@@ -54,7 +57,6 @@ function check_auth(): bool
 }
 
 // Функция генератора пароля
-
 function gen_password($length = 6)
 {				
 	$chars = 'qazxswedcvfrtgbnhyujmkiolp1234567890QAZXSWEDCVFRTGBNHYUJMKIOLP'; 
@@ -64,5 +66,4 @@ function gen_password($length = 6)
 		$password .= $chars[random_int(0, $size)]; 
 	}
 	return $password;
-}
-  
+}  

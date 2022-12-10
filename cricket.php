@@ -1,17 +1,3 @@
-<!-- Bootstrap CSS -->
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <!-- Bootstrap icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-  <!-- Bootstrap JS + Popper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-  
-
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-  <!-- JS -->
-    <script src="/assets/js/NoSleep.min.js"></script> 
-    <script src="/js/functions.js"></script>
-
 <?php
 require_once __DIR__.'/inc/boot.php';
 require_once __DIR__.'/template/header.php';
@@ -108,7 +94,7 @@ else
       <input class="form-check-input" type="checkbox" role="switch" id="toggle">
       <label class="form-check-label" for="toggle">Не отключать экран</label>
     </div>
-    <div class="flex-fill justify-content-end text-end">
+    <div class="flex-fill justify-content-end text-end" hidden>
         <div class="d-block d-md-none"><a href="/finalcricket.php?id=<?php echo $id; ?>&view=phone" target="_blank">Финальная статистика</a></div>
         <div class="d-none d-lg-block"><a href="/finalcricket.php?id=<?php echo $id; ?>" target="_blank">Финальная статистика</a>
     </div>

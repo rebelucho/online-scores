@@ -113,32 +113,26 @@ else {
         <div class="col-4 col-md-5 text-start"><?php echo($data['player2']['score100Count']) ?></div>
     </div>
     <div class="row d-flex align-items-center border-bottom">
-        <div class="col-4 col-md-5 d-flex flex-wrap justify-content-end"><?php foreach ($data['player1']['allDartsLegs'] as $key => $value) {
-          echo('<span>&nbsp;'.$value.'</span>');
-        } ?>
-        </div>
+        <div class="col-4 col-md-5 d-flex flex-wrap justify-content-end"><?php echo implode(", " ,  $data['player1']['allDartsLegs']);?></div>
         <div class="col-4 col-md-2 text-center">Леги</div>
-        <div class="col-4 col-md-5 text-start d-flex flex-wrap"><?php foreach ($data['player2']['allDartsLegs'] as $key => $value) {
-          echo('<span>'.$value.'&nbsp;</span>');
-        } ?>
+        <div class="col-4 col-md-5 text-start d-flex flex-wrap"><?php echo implode(", " ,  $data['player2']['allDartsLegs']);?>
         </div>
     </div>
     <div class="row d-flex align-items-center border-bottom">
-        <div class="col-4 col-md-5 text-end d-flex flex-wrap justify-content-end"><?php foreach ($data['player1']['allCheck'] as $key => $value) {
-          echo('<span>&nbsp;'.$value.'</span>');
-        }?>
+        <div class="col-4 col-md-5 text-end d-flex flex-wrap justify-content-end"><?php echo implode(", " ,  $data['player1']['allCheck']);?>
         </div>
         <div class="col-4 col-md-2 text-center">Окончания</div>
-        <div class="col-4 col-md-5 text-start d-flex flex-wrap"><?php foreach ($data['player2']['allCheck'] as $key => $value) {
-          echo('<span>'.$value.'&nbsp;</span>');
-        }?>
+        <div class="col-4 col-md-5 text-start d-flex flex-wrap"><?php echo implode(", " ,  $data['player2']['allCheck']);?>
         </div>
     </div>
 </div>
 <?php
 // } 
 
-$setCount = count($data['stat']['player1']['sets']);
+if (isset($data['stat']['player1']['sets'])){
+  $setCount = count($data['stat']['player1']['sets']);
+} else 
+$setCount = 0;
 ?>
   <div class="clearfix container d-flex justify-content-center">
   <div  style="max-width: 700px;">
