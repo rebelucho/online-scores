@@ -86,11 +86,11 @@ if ($list === "p2p") {
                             <div class="d-block d-md-none">Игра уже идёт. <a href=cricket.php?id=<?php echo $idView['id'];?>&view=phone>смотреть</a></div>
                             <div class="d-none d-sm-block">Игра уже идёт. <a href=cricket.php?id=<?php echo $idView['id'];?>&view=desktop>смотреть</a></div>
                             <?php } ?>
-                            <?php if ($row['game_type'] == 'Cricket' && $row['end_match'] == true && $idView['game_delete'] != true) { ?>
+                            <?php if ($row['game_type'] == 'Cricket' && $row['end_match'] == true && $idView['game_delete'] == 0) { ?>
                             <div class="d-block d-md-none">Игра закончилась. <a href=finalcricket.php?id=<?php echo $idView['id'];?>&view=phone>>>> РЕЗУЛЬТАТ </a></div>
                             <div class="d-none d-sm-block">Игра закончилась. <a href=finalcricket.php?id=<?php echo $idView['id'];?>&view=desktop>>>> РЕЗУЛЬТАТ </a></div>
                             <?php } ?>
-                            <?php if ($row['game_type'] == 'Cricket' && $row['end_match'] == true && $idView['game_delete'] == true) { ?>
+                            <?php if ($row['game_type'] == 'Cricket' && $row['end_match'] == true && $idView['game_delete'] == 1) { ?>
                             <div class="d-block d-md-none">Игра закончилась. <?php echo $score;?></div>
                             <div class="d-none d-sm-block">Игра закончилась. <?php echo $score;?></div>
                             <?php } ?>
@@ -98,11 +98,11 @@ if ($list === "p2p") {
                             <div class="d-block d-md-none">Игра уже идёт. <a href=score.php?id=<?php echo $idView['id'];?>&view=phone>смотреть</a></div>
                             <div class="d-none d-sm-block">Игра уже идёт. <a href=score.php?id=<?php echo $idView['id'];?>&view=desktop>смотреть</a></div>
                             <?php } ?>
-                            <?php if ($row['game_type'] == 'x01' && !is_null($row['end_match']) && $idView['game_delete'] != true) { ?>
+                            <?php if ($row['game_type'] == 'x01' && !is_null($row['end_match']) && $idView['game_delete'] == 0) { ?>
                             <div class="d-block d-md-none">Игра закончилась. <a href=finalscore.php?id=<?php echo $idView['id'];?>&view=phone>>>> РЕЗУЛЬТАТ </a></div>
                             <div class="d-none d-sm-block">Игра закончилась. <a href=finalscore.php?id=<?php echo $idView['id'];?>&view=desktop>>>> РЕЗУЛЬТАТ </a></div>
                             <?php } ?>
-                            <?php if ($row['game_type'] == 'x01' && !is_null($row['end_match']) && $idView['game_delete'] == true) { ?>
+                            <?php if ($row['game_type'] == 'x01' && !is_null($row['end_match']) && $idView['game_delete'] == 1) { ?>
                             <div class="d-block d-md-none">Игра закончилась.</div>
                             <div class="d-none d-sm-block">Игра закончилась.</div>
                             <?php } ?>

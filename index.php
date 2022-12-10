@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__.'/inc/boot.php';
-// session_start();
 
 $user = null;
 

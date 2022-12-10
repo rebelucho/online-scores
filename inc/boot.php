@@ -66,5 +66,4 @@ function gen_password($length = 6)
 		$password .= $chars[random_int(0, $size)]; 
 	}
 	return $password;
-}
-  
+}  

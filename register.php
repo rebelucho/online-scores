@@ -58,4 +58,3 @@ if (check_auth()) {
 <?php
 require_once __DIR__.'/template/footer.php';
 ?>
-

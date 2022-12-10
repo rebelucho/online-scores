@@ -413,6 +413,3 @@ if ($video == true ) {
 <?php
 require_once __DIR__.'/template/footer.php';
 ?>
-
-
-

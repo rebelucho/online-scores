@@ -129,7 +129,10 @@ else {
 <?php
 // } 
 
-$setCount = count($data['stat']['player1']['sets']);
+if (isset($data['stat']['player1']['sets'])){
+  $setCount = count($data['stat']['player1']['sets']);
+} else 
+$setCount = 0;
 ?>
   <div class="clearfix container d-flex justify-content-center">
   <div  style="max-width: 700px;">

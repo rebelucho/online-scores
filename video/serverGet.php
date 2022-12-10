@@ -74,4 +74,3 @@ if (count($all)!=0) {
 
 echo 'retry: 1000', PHP_EOL, PHP_EOL; // shorten the 3 seconds to 1 sec
 
-?>

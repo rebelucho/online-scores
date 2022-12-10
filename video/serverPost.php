@@ -42,4 +42,3 @@ fclose($file);
 flock($mainlock,LOCK_UN);
 fclose($mainlock);
 
-?>
